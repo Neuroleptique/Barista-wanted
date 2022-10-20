@@ -5,7 +5,7 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const posts = await Post.find({ user: req.user.id });
-      res.render("profile.ejs", { posts: posts, user: req.user });
+      res.render("baristaprofile.ejs", { posts: posts, user: req.user });
     } catch (err) {
       console.log(err);
     }
@@ -13,7 +13,7 @@ module.exports = {
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();
-      res.render("feed.ejs", { posts: posts });
+      res.render("baristafeed.ejs", { posts: posts });
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +40,7 @@ module.exports = {
         user: req.user.id,
       });
       console.log("Post has been added!");
-      res.redirect("/profile");
+      res.redirect("/baristaprofile");
     } catch (err) {
       console.log(err);
     }
@@ -68,9 +68,9 @@ module.exports = {
       // Delete post from db
       await Post.remove({ _id: req.params.id });
       console.log("Deleted Post");
-      res.redirect("/profile");
+      res.redirect("/baristaprofile");
     } catch (err) {
-      res.redirect("/profile");
+      res.redirect("/baristaprofile");
     }
   },
 };
