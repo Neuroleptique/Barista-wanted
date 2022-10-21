@@ -11,7 +11,7 @@ router.get("/baristaprofile", ensureAuth, postsController.getProfile);
 // router.get("/baristafeed", ensureAuth, postsController.getFeed);
 router.get("/baristalogin", authController.getLogin);
 router.post("/baristalogin", authController.postLogin);
-router.get("/baristalogout", authController.logout);
+router.get("/logout", authController.logout);
 // router.get("/ownersignup", authController.getSignup);
 // router.post("/ownersignup", authController.postSignup);
 router.get("/baristasignup", authController.getSignup);
