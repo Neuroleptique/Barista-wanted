@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 exports.getLogin = (req, res) => {
   if (req.user) {
-    return res.redirect("/baristaprofile");
+    return res.redirect("/dashboard_barista");
   }
   res.render("baristalogin", {
     title: "Login",
@@ -39,7 +39,7 @@ exports.postLogin = (req, res, next) => {
         return next(err);
       }
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/baristaprofile");
+      res.redirect(req.session.returnTo || "/dashboard_barista");
     });
   })(req, res, next);
 };
@@ -58,7 +58,7 @@ exports.logout = (req, res) => {
 
 exports.getSignup = (req, res) => {
   if (req.user) {
-    return res.redirect("/baristaprofile");
+    return res.redirect("/dashboard_barista");
   }
   res.render("baristasignup", {
     title: "Create Account",
@@ -86,6 +86,8 @@ exports.postSignup = (req, res, next) => {
 
   const user = new User({
     userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
   });
@@ -110,7 +112,7 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.redirect("../baristaprofile");
+          res.redirect("../dashboard_barista");
         });
       });
     }

@@ -1,0 +1,28 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <h1>this is <%= user.firstName.replace( /\w/, c => c.toUpperCase() ) %>'s profile</h1>
+</div>
+<form action="/profile_barista" enctype="multipart/form-data" method="PUT">
+  <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %> ">
+  </div>
+  <div class="mb-3">
+    <label for="LastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %> ">
+  </div>
+  <div class="mb-3">
+    <label for="phone" class="form-label">Phone Number</label>
+    <input type="number" class="form-control" id="phone" name="phone" value="<%= user.phone || null %> ">
+  </div>
+  <!-- <div class="mb-3">
+    <label for="lastName" class="form-label">Last Name</label>
+    <textarea class="form-control" id="caption" name="caption"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="imgUpload" class="form-label">Image</label>
+    <input type="file" class="form-control" id="imageUpload" name="file">
+  </div> -->
+  <button type="submit" class="btn btn-primary" value="Update">Submit</button>
+</form>
+<%- include('partials/footer') -%>
