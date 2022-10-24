@@ -1,15 +1,25 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
+const BaristaSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
+  firstName: { type: String },
+  lastName: { type: String },
   email: { type: String, unique: true },
-  password: String,
+  password: { type: String },
+  phone: { type: Number, unique: true },
+  address: { type: String },
+  photo: { type: String },
+  cloudinaryId: { type: String },
+  haristaLevel: { type: String },
+  exp: { type: String },
+  salery: { type: Number },
+  notification: { type: Boolean, default: false },
 });
 
 // Password hash middleware.
 
-UserSchema.pre("save", function save(next) {
+BaristaSchema.pre("save", function save(next) {
   const user = this;
   if (!user.isModified("password")) {
     return next();
@@ -30,7 +40,7 @@ UserSchema.pre("save", function save(next) {
 
 // Helper method for validating user's password.
 
-UserSchema.methods.comparePassword = function comparePassword(
+BaristaSchema.methods.comparePassword = function comparePassword(
   candidatePassword,
   cb
 ) {
@@ -39,4 +49,4 @@ UserSchema.methods.comparePassword = function comparePassword(
   });
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", BaristaSchema);

@@ -1,14 +1,25 @@
 const cloudinary = require("../middleware/cloudinary");
 const Post = require("../models/Post");
+const User = require("../models/User")
 
 module.exports = {
-  getProfile: async (req, res) => {
+  getDashboard: async (req, res) => {
     try {
       const posts = await Post.find({ user: req.user.id });
-      res.render("baristaprofile.ejs", { posts: posts, user: req.user });
+      res.render("dashboard_barista.ejs", { posts: posts, user: req.user });
     } catch (err) {
       console.log(err);
     }
+  },
+  getProfile: async (req, res) => {
+    console.log(req.user._id)
+    try{
+      const userData = await User.findById(req.user._id)
+      console.log(userData)
+      res.render('profile_barista.ejs', { user: userData })
+    }catch(err){
+      console.log(err)
+  }
   },
   getFeed: async (req, res) => {
     try {
@@ -40,7 +51,7 @@ module.exports = {
         user: req.user.id,
       });
       console.log("Post has been added!");
-      res.redirect("/baristaprofile");
+      res.redirect("/dashboard_barista");
     } catch (err) {
       console.log(err);
     }
@@ -68,9 +79,9 @@ module.exports = {
       // Delete post from db
       await Post.remove({ _id: req.params.id });
       console.log("Deleted Post");
-      res.redirect("/baristaprofile");
+      res.redirect("/dashboard_barista");
     } catch (err) {
-      res.redirect("/baristaprofile");
+      res.redirect("/dashboard_barista");
     }
   },
 };
