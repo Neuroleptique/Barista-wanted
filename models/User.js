@@ -8,12 +8,10 @@ const BaristaSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: { type: String },
   phone: { type: Number, unique: true },
-  address: { type: String },
   photo: { type: String },
   cloudinaryId: { type: String },
-  haristaLevel: { type: String },
   exp: { type: String },
-  salery: { type: Number },
+  ig: { type: String },
   notification: { type: Boolean, default: false },
 });
 

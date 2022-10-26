@@ -57,7 +57,7 @@ app.use(express.static('/public'));
 
 app.use('/', mainRoutes);
 // app.use('/cafeowner', ownerRoutes);
-// app.use('/barista', baristaRoutes);
+app.use('/barista', baristaRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running, you better catch it!");
