@@ -16,6 +16,8 @@ router.get("/logout", authController.logout);
 // router.post("/ownersignup", authController.postSignup);
 router.get("/baristasignup", authController.getSignup);
 router.post("/baristasignup", authController.postSignup);
-router.get("/profile_barista", ensureAuth, postsController.getProfile)
+router.get("/profile_barista", ensureAuth, postsController.getProfile);
+router.put("/profile_barista", ensureAuth, postsController.updateProfile);
+
 
 module.exports = router;

@@ -13,6 +13,7 @@ const BaristaSchema = new mongoose.Schema({
   exp: { type: String },
   ig: { type: String },
   notification: { type: Boolean, default: false },
+  more: { type: String}
 });
 
 // Password hash middleware.
