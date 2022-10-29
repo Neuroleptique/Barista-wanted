@@ -5,8 +5,13 @@ const User = require("../models/User")
 module.exports = {
   getDashboard: async (req, res) => {
     try {
-      const posts = await Post.find({ user: req.user.id });
-      res.render("dashboard_barista.ejs", { posts: posts, user: req.user });
+      // const posts = await Post.find({ user: req.user.id });
+      if (req.user.userType == 'barista') {
+        res.render("dashboard_barista.ejs", { user: req.user });
+      } else {
+        res.render("dashboard_cafeOwner.ejs", { user: req.user });
+      }
+
     } catch (err) {
       console.log(err);
     }
