@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
-  firstName: { type: String },
-  lastName: { type: String },
   email: { type: String, unique: true },
-  password: { type: String },
-  phone: { type: Number, unique: true },
-  
-  userType: { type: String, default: 'barista' }
+  password: { type: String },  
+  userType: { type: String },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   // photo: { type: String },
   // cloudinaryId: { type: String },
   // exp: { type: String },
