@@ -1,5 +1,6 @@
 const cloudinary = require("../middleware/cloudinary");
-const Post = require("../models/Post");
+// const Post = require("../models/Post");
+const Barista = require("../models/Barista")
 const User = require("../models/User")
 
 module.exports = {
@@ -21,7 +22,12 @@ module.exports = {
     try{
       const userData = await User.findById(req.user._id)
       console.log(userData)
-      res.render('profile_barista.ejs', { user: userData })
+      if (req.user.userType == 'barista') {
+        res.render("profile_barista.ejs", { user: userData });
+      } else {
+        res.render("profile_cafeOwner.ejs", { user: userData });
+      }
+      // res.render('profile_barista.ejs', { user: userData })
     }catch(err){
       console.log(err)
   }
