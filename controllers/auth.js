@@ -1,12 +1,15 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const Barista = require("../models/Barista")
+const Cafe = require("../models/Cafe")
+
 
 exports.getLogin = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
-  res.render("baristalogin", {
+  res.render("login_barista", {
     title: "Login",
   });
 };
@@ -20,7 +23,7 @@ exports.postLogin = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("/baristalogin");
+    return res.redirect("/login_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -32,7 +35,7 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      return res.redirect("/baristalogin");
+      return res.redirect("/login_barista");
     }
     req.logIn(user, (err) => {
       if (err) {
@@ -60,12 +63,13 @@ exports.getSignup = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
-  res.render("baristasignup", {
+  res.render("signup_barista", {
     title: "Create Account",
   });
 };
 
 exports.postSignup = (req, res, next) => {
+  console.log(req)
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
@@ -78,7 +82,7 @@ exports.postSignup = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../baristasignup");
+    return res.redirect("../signup_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -101,21 +105,29 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.redirect("../baristasignup");
+        return res.redirect("../signup_barista");
       }
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          // async await for profile creating?
 
-          res.redirect("../dashboard");
-        });
-      });
+      
     }
   );
+  user.save((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      // Create profile according to userType
+      if (req.body.userType == 'barista') {
+        Barista.create({ userName: req.body.userName })
+      } else if (req.body.userType == 'cafe') {
+        Cafe.create({ userName: req.body.userName })
+      }
+      res.redirect("../dashboard");
+    });
+  });
+
+
 };
