@@ -10,12 +10,6 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  // photo: { type: String },
-  // cloudinaryId: { type: String },
-  // exp: { type: String },
-  // ig: { type: String },
-  // notification: { type: Boolean, default: false },
-  // more: { type: String}
 });
 
 // Password hash middleware.

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const BaristaSchema= new mongoose.Schema({
+const CafeSchema= new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -17,4 +17,4 @@ const BaristaSchema= new mongoose.Schema({
   more: { type: String},
 });
 
-module.exports = mongoose.model("Barista", BaristaSchema);
+module.exports = mongoose.model("Cafe", CafeSchema);
