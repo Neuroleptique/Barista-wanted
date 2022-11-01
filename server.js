@@ -9,8 +9,8 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require('./routes/main');
-const ownerRoutes = require('./routes/owner');
-const baristaRoutes = require('./routes/barista');
+// const ownerRoutes = require('./routes/owner');
+// const baristaRoutes = require('./routes/barista');
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/config.env" });

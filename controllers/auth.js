@@ -23,7 +23,13 @@ exports.postLogin = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("/login_barista");
+    if (req.user.userType == 'barista') {
+      return res.redirect("/login_barista");
+    } else {
+      return res.redirect("/login_cafe");
+    }
+      
+    // return res.redirect("/login_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -35,7 +41,12 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      return res.redirect("/login_barista");
+      if (req.user.userType == 'barista') {
+        return res.redirect("/login_barista");
+      } else {
+        return res.redirect("/login_cafe");
+      }
+      // return res.redirect("/login_barista");
     }
     req.logIn(user, (err) => {
       if (err) {
@@ -59,11 +70,21 @@ exports.logout = (req, res) => {
   });
 };
 
-exports.getSignup = (req, res) => {
+exports.getSignupBarista = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
+  
   res.render("signup_barista", {
+    title: "Create Account",
+  });
+};
+exports.getSignupCafe = (req, res) => {
+  if (req.user) {
+    return res.redirect("/dashboard");
+  }
+  
+  res.render("signup_cafe", {
     title: "Create Account",
   });
 };
@@ -82,7 +103,12 @@ exports.postSignup = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../signup_barista");
+    if (req.user.userType == 'barista') {
+      return res.redirect("../signup_barista");
+    } else {
+      return res.redirect("../signup_cafe");
+    }
+    // return res.redirect("../signup_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -105,9 +131,13 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.redirect("../signup_barista");
+        if (req.user.userType == 'barista') {
+          return res.redirect("../signup_barista");
+        } else {
+          return res.redirect("../signup_cafe");
+        }
+        // return res.redirect("../signup_barista");
       }
-
       
     }
   );
