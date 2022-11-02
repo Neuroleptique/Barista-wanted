@@ -5,15 +5,13 @@ const CafeSchema= new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  shopName: { type: String },
   userName: { type: String },
   firstName: { type: String },
   lastName: { type: String },
   phone: { type: Number },
-  photo: { type: String },
-  cloudinaryId: { type: String },
-  exp: { type: String },
+  address: { type: String }, 
   ig: { type: String },
-  notification: { type: Boolean, default: false },
   more: { type: String},
 });
 

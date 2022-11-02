@@ -1,0 +1,44 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <h1>-- Cafe Owner --</h1>
+  <h1>this is <%= user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile</h1>
+</div>
+<form>
+  <div class="mb-3">
+    <label for="shopName" class="form-label">Cafe Name</label>
+    <input type="text" class="form-control" id="shopName" name="shopName" value="<%= cafe.shopName %> ">
+</div>
+  <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" value="<%= cafe.firstName %> ">
+  </div>
+  <div class="mb-3">
+    <label for="lastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= cafe.lastName %> ">
+  </div>
+  <div class="mb-3">
+    <label for="phone" class="form-label">Phone Number</label>
+    <input type="tel" class="form-control" id="phone" name="phone" value="<%= cafe.phone || null %> ">
+  </div>
+  <div class="mb-3">
+    <label for="address" class="form-label">Cafe location</label>
+    <input type="tel" class="form-control" id="address" name="address" value="<%= cafe.address || null %> ">
+  </div>
+  <!-- <div class="mb-3">
+    <label for="photo" class="form-label">Headshot</label>
+    <input type="file" class="form-control" id="photo" name="file">
+  </div> -->
+  <div class="mb-3">
+    <label for="ig" class="form-label">Instagram</label>
+    <input type="text" class="form-control" id="ig" name="ig" value="<%= cafe.ig || null %> ">
+  </div>
+  <!-- add uploaded image here -->
+  <div class="mb-3">
+    <label for="more" class="form-label">Anything else to add</label>
+    <textarea class="form-control" id="more" name="more" value="<%= cafe.more || null %>"></textarea>
+  </div>
+
+  
+  <button id="updateProfile" type="button" class="btn btn-primary">Submit</button>
+</form>
+<%- include('partials/footer') -%>
