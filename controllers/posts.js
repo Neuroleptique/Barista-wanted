@@ -1,6 +1,6 @@
 const cloudinary = require("../middleware/cloudinary");
-// const Post = require("../models/Post");
-const Barista = require("../models/Barista")
+const Barista = require("../models/Barista");
+const Cafe = require("../models/Cafe");
 const User = require("../models/User")
 
 module.exports = {
@@ -20,19 +20,22 @@ module.exports = {
   getProfile: async (req, res) => {
     // console.log(req.user._id)
     try{
-      const userData = await User.findById(req.user._id)
+      const userData = await User.findById(req.user._id);
+    const baristaData = await Barista.find({ userName: req.user.userName });
+      const cafeData = await Cafe.find({ userName: req.user.userName });
       console.log(userData)
+      console.log(cafeData)
       if (req.user.userType == 'barista') {
-        res.render("profile_barista.ejs", { user: userData });
+        res.render("profile_barista.ejs", { user: userData, barista: baristaData });
       } else {
-        res.render("profile_cafeOwner.ejs", { user: userData });
+        res.render("profile_cafe.ejs", { user: userData, cafe: cafeData });
       }
       // res.render('profile_barista.ejs', { user: userData })
     }catch(err){
       console.log(err)
-  }
+    }
   },
-  updateProfile: async (req, res) => {
+  updateProfileBarista: async (req, res) => {
     // console.log(req)
     try {
       // const photo = await cloudinary.uploader.upload(req.file.path);
