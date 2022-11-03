@@ -16,7 +16,7 @@ router.post("/signup_barista", authController.postSignup);
 router.get("/signup_cafe", authController.getSignupCafe);
 router.post("/signup_cafe", authController.postSignup);
 
-// Get Profile from dashboard  
+// Get Profile from dashboard
 router.get("/profile_barista", ensureAuth, postsController.getProfile);
 router.put("/profile_barista", ensureAuth, postsController.updateProfileBarista);
 router.get("/profile_cafe", ensureAuth, postsController.getProfile);

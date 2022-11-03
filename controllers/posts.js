@@ -21,12 +21,10 @@ module.exports = {
     // console.log(req.user._id)
     try{
       const userData = await User.findById(req.user._id);
-    const baristaData = await Barista.find({ userName: req.user.userName });
-      const cafeData = await Cafe.find({ userName: req.user.userName });
-      console.log(userData)
-      console.log(cafeData)
+      const baristaData = await Barista.find({ userName: req.user.userName });
+      // const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
-        res.render("profile_barista.ejs", { user: userData, barista: baristaData });
+        res.render("profile_barista.ejs", { user: userData,barista: new Object(...baristaData) });
       } else {
         res.render("profile_cafe.ejs", { user: userData, cafe: cafeData });
       }
@@ -39,8 +37,8 @@ module.exports = {
     // console.log(req)
     try {
       // const photo = await cloudinary.uploader.upload(req.file.path);
-      await User.findOneAndUpdate(
-        { _id: req.user._id },{
+      await Barista.findOneAndUpdate(
+        { userName: req.user.userName },{
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           email: req.body.email,
@@ -54,7 +52,7 @@ module.exports = {
         }
       );
       console.log("profile updated!")
-      res.redirect('profile_barista.ejs', { user: req.user })
+      res.redirect('profile_barista.ejs')
     } catch (err) {
       console.log(err)
     }

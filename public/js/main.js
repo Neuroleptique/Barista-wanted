@@ -1,3 +1,4 @@
+// update BARISTA profile
 document.getElementById('updateProfile').addEventListener('click', updateProfile)
 
 async function updateProfile() {
