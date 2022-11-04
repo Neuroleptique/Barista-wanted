@@ -22,11 +22,11 @@ module.exports = {
     try{
       const userData = await User.findById(req.user._id);
       const baristaData = await Barista.find({ userName: req.user.userName });
-      // const cafeData = await Cafe.find({ userName: req.user.userName });
+      const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
         res.render("profile_barista.ejs", { user: userData,barista: new Object(...baristaData) });
       } else {
-        res.render("profile_cafe.ejs", { user: userData, cafe: cafeData });
+        res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
       }
       // res.render('profile_barista.ejs', { user: userData })
     }catch(err){
@@ -48,7 +48,8 @@ module.exports = {
           ig: req.body.ig,
           exp: req.body.exp,
           more: req.body.more,
-          notification: req.body.notification
+          notification: req.body.notification,
+          userID: req.body.userID,
         }
       );
       console.log("profile updated!")
@@ -57,5 +58,25 @@ module.exports = {
       console.log(err)
     }
   },
-  
+  updateProfileCafe: async (req, res) => {
+    console.log(req)
+    try {
+      await Cafe.findOneAndUpdate(
+        { userName: req.user.userName },{
+          shopName: req.body.shopName,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          phone: req.body.phone,
+          address: req.body.address,
+          ig: req.body.ig,
+          more: req.body.more,
+          userID: req.body.userID,
+        }
+      );
+      console.log("profile updated!")
+      res.redirect('/profile_cafe')
+    } catch (err) {
+      console.log(err)
+    }
+  },
 };
