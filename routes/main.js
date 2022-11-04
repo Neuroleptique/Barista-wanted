@@ -20,7 +20,7 @@ router.post("/signup_cafe", authController.postSignup);
 router.get("/profile_barista", ensureAuth, postsController.getProfile);
 router.put("/profile_barista", ensureAuth, postsController.updateProfileBarista);
 router.get("/profile_cafe", ensureAuth, postsController.getProfile);
-// router.put("/profile_cafe", ensureAuth, postsController.updateProfile);
+router.put("/profile_cafe", ensureAuth, postsController.updateProfileCafe);
 
 
 module.exports = router;

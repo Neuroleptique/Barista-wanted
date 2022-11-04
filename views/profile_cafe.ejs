@@ -3,9 +3,10 @@
   <h1>-- Cafe Owner --</h1>
   <h1>this is <%= user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile</h1>
 </div>
-<form>
+<form action="/profile_cafe?_method=PUT" 
+      method="POST">
   <div class="mb-3">
-    <label for="shopName" class="form-label">Cafe Name</label>
+    <label for="shopName" class="form-label">Company name</label>
     <input type="text" class="form-control" id="shopName" name="shopName" value="<%= cafe.shopName %> ">
 </div>
   <div class="mb-3">
@@ -37,8 +38,8 @@
     <label for="more" class="form-label">Anything else to add</label>
     <textarea class="form-control" id="more" name="more" value="<%= cafe.more || null %>"></textarea>
   </div>
-
+  <input type="text" id="userID" name="userID" value="<%= user.id %>" hidden>
   
-  <button id="updateProfile" type="button" class="btn btn-primary">Submit</button>
+  <button id="updateProfile" type="submit" class="btn btn-primary">Submit</button>
 </form>
 <%- include('partials/footer') -%>

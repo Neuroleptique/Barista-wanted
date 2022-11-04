@@ -10,8 +10,9 @@ async function updateProfile() {
   const exp = document.getElementById('exp').value
   const more = document.getElementById('more').value
   const notification = document.getElementById('notification').value
+  const userID = document.getElementById('userID').value
 
-  console.log(notification)
+  console.log(userID)
   try {
     const response = await fetch('profile_barista', {
       method: 'put',
@@ -25,11 +26,12 @@ async function updateProfile() {
         exp: exp,
         more: more,
         notification: notification,
+        userID: userID,
       }),
     })
     const data = await response.json()
     console.log(data)
-    // location.reload()
+    location.reload()
   } catch (err) {
     console.log(err)
   }
