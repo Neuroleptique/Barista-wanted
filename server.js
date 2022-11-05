@@ -9,7 +9,7 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require('./routes/main');
-// const ownerRoutes = require('./routes/owner');
+const cafeOwnerRoutes = require('./routes/cafe');
 // const baristaRoutes = require('./routes/barista');
 
 //Use .env file in config folder
@@ -56,7 +56,7 @@ app.use(flash());
 app.use(express.static('/public'));
 
 app.use('/', mainRoutes);
-// app.use('/cafeowner', ownerRoutes);
+app.use('/cafe', cafeOwnerRoutes);
 // app.use('/barista', baristaRoutes);
 
 app.listen(process.env.PORT, () => {
