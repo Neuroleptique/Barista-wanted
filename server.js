@@ -9,8 +9,8 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require('./routes/main');
-const ownerRoutes = require('./routes/owner');
-const baristaRoutes = require('./routes/barista');
+const cafeOwnerRoutes = require('./routes/cafe');
+// const baristaRoutes = require('./routes/barista');
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/config.env" });
@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(logger("dev"));
 
 //Use forms for put / delete
-// app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 
 // Setup Sessions - stored in MongoDB
 app.use(
@@ -56,7 +56,7 @@ app.use(flash());
 app.use(express.static('/public'));
 
 app.use('/', mainRoutes);
-// app.use('/cafeowner', ownerRoutes);
+app.use('/cafe', cafeOwnerRoutes);
 // app.use('/barista', baristaRoutes);
 
 app.listen(process.env.PORT, () => {
