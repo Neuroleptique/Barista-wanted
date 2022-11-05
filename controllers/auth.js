@@ -9,7 +9,7 @@ exports.getLogin = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
-  res.render("login_barista", {
+  res.render("login", {
     title: "Login",
   });
 };
@@ -23,13 +23,13 @@ exports.postLogin = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    if (req.user.userType == 'barista') {
-      return res.redirect("/login_barista");
-    } else {
-      return res.redirect("/login_cafe");
-    }
+    // if (req.user.userType == 'barista') {
+    //   return res.redirect("/login_barista");
+    // } else {
+    //   return res.redirect("/login_cafe");
+    // }
       
-    // return res.redirect("/login_barista");
+    return res.redirect("/login");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -41,12 +41,12 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      if (req.user.userType == 'barista') {
-        return res.redirect("/login_barista");
-      } else {
-        return res.redirect("/login_cafe");
-      }
-      // return res.redirect("/login_barista");
+      // if (req.user.userType == 'barista') {
+      //   return res.redirect("/login_barista");
+      // } else {
+      //   return res.redirect("/login_cafe");
+      // }
+      return res.redirect("/login");
     }
     req.logIn(user, (err) => {
       if (err) {
@@ -79,6 +79,7 @@ exports.getSignupBarista = (req, res) => {
     title: "Create Account",
   });
 };
+
 exports.getSignupCafe = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
