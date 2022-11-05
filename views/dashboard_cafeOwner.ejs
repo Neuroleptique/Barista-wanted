@@ -1,14 +1,75 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row mt-5">
-      <div class="col-6">
+<div>
+  <div>
+      <div>
           <div>
-              <p><strong>Welcome</strong>: <%= user.userName %></p>
+              <p><strong>Welcome</strong>: <%= cafe.shopName %></p>
               <p><strong>Email</strong>: <%= user.email %></p>
               <a href="/profile_cafe" class="col-3 btn btn-primary">Profile</a>
               <a href="/logout" class="col-3 btn btn-primary">Logout</a>
           </div>
       </div>
+      <section>
+        <form action="/cafe/postShift" method="POST">
+          <label for="location">Location:</label>
+          <input type="text" name="location" id="location" placeholder="Junction, Leslieville">
+          <label for="wage">Hourly Wage:</label>
+          <input type="number" name="wage" id="wege" placeholder="$15.5/hour" min="15.5">
+          <label for="date">Date:</label>
+          <input type="date" name="date" id="date">
+          <label for="from_time">From:</label>
+          <input type="time" name="from_time" id="from_time">
+          <label for="end_time">To</label>
+          <input type="time" name="end_time" id="end_time">
+          <label for="more">Specification</label>
+          <input type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
+          <input type="text" name="userID" value="<%= user.id %>" hidden>
+          <button type="submit">Submit</button>
+        </form>
+     
+        <table>
+          <caption>Active needs</caption>
+          <thead>
+            <tr>
+              <th scope="col">Location</th>
+              <th scope="col">Wage</th>
+              <th scope="col">Date</th>
+              <th scope="col">time</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tr>
+            <th scope="row">Cafe</th>
+            <td>Wage data</td>
+            <td>Date data</td>
+            <td>Hour data</td>
+            <td>
+              <button>Edit</button>
+              <button>Fulfilled</button>
+              <button>Delete</button>
+            </td>
+          </tr>
+        </table>
+        <table>
+          <caption>Past request</caption>
+          <thead>
+            <tr>
+              <th scope="col">Location</th>
+              <th scope="col">Wage</th>
+              <th scope="col">Date</th>
+              <th scope="col">time</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tr>
+            <th scope="row">Cafe</th>
+            <td>Wage data</td>
+            <td>Date data</td>
+            <td>Hour data</td>
+            <td><button>Edit</button><button>Re-active</button><button>Delete</button></td>
+          </tr>
+        </table>
+      </section>
     </div>
   </div>
 </div>

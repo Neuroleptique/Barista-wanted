@@ -10,7 +10,8 @@ module.exports = {
       if (req.user.userType == 'barista') {
         res.render("dashboard_barista.ejs", { user: req.user });
       } else {
-        res.render("dashboard_cafeOwner.ejs", { user: req.user });
+        const cafeData = await Cafe.find({ userName: req.user.userName });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData) });
       }
 
     } catch (err) {
@@ -24,7 +25,7 @@ module.exports = {
       const baristaData = await Barista.find({ userName: req.user.userName });
       const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
-        res.render("profile_barista.ejs", { user: userData,barista: new Object(...baristaData) });
+        res.render("profile_barista.ejs", { user: userData, barista: new Object(...baristaData) });
       } else {
         res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
       }
@@ -53,7 +54,7 @@ module.exports = {
         }
       );
       console.log("profile updated!")
-      res.redirect('profile_barista.ejs')
+      res.redirect('/dashboard')
     } catch (err) {
       console.log(err)
     }
@@ -74,7 +75,7 @@ module.exports = {
         }
       );
       console.log("profile updated!")
-      res.redirect('/profile_cafe')
+      res.redirect('/dashboard')
     } catch (err) {
       console.log(err)
     }
