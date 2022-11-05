@@ -1,12 +1,15 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const Barista = require("../models/Barista")
+const Cafe = require("../models/Cafe")
+
 
 exports.getLogin = (req, res) => {
   if (req.user) {
-    return res.redirect("/dashboard_barista");
+    return res.redirect("/dashboard");
   }
-  res.render("baristalogin", {
+  res.render("login_barista", {
     title: "Login",
   });
 };
@@ -20,7 +23,13 @@ exports.postLogin = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("/baristalogin");
+    if (req.user.userType == 'barista') {
+      return res.redirect("/login_barista");
+    } else {
+      return res.redirect("/login_cafe");
+    }
+      
+    // return res.redirect("/login_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -32,14 +41,19 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      return res.redirect("/baristalogin");
+      if (req.user.userType == 'barista') {
+        return res.redirect("/login_barista");
+      } else {
+        return res.redirect("/login_cafe");
+      }
+      // return res.redirect("/login_barista");
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/dashboard_barista");
+      res.redirect(req.session.returnTo || "/dashboard");
     });
   })(req, res, next);
 };
@@ -56,16 +70,27 @@ exports.logout = (req, res) => {
   });
 };
 
-exports.getSignup = (req, res) => {
+exports.getSignupBarista = (req, res) => {
   if (req.user) {
-    return res.redirect("/dashboard_barista");
+    return res.redirect("/dashboard");
   }
-  res.render("baristasignup", {
+  
+  res.render("signup_barista", {
+    title: "Create Account",
+  });
+};
+exports.getSignupCafe = (req, res) => {
+  if (req.user) {
+    return res.redirect("/dashboard");
+  }
+  
+  res.render("signup_cafe", {
     title: "Create Account",
   });
 };
 
 exports.postSignup = (req, res, next) => {
+  console.log(req)
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
@@ -78,7 +103,12 @@ exports.postSignup = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../baristasignup");
+    if (req.user.userType == 'barista') {
+      return res.redirect("../signup_barista");
+    } else {
+      return res.redirect("../signup_cafe");
+    }
+    // return res.redirect("../signup_barista");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -86,10 +116,9 @@ exports.postSignup = (req, res, next) => {
 
   const user = new User({
     userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
+    userType: req.body.userType,
   });
 
   User.findOne(
@@ -102,19 +131,33 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.redirect("../baristasignup");
-      }
-      user.save((err) => {
-        if (err) {
-          return next(err);
+        if (req.user.userType == 'barista') {
+          return res.redirect("../signup_barista");
+        } else {
+          return res.redirect("../signup_cafe");
         }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("../dashboard_barista");
-        });
-      });
+        // return res.redirect("../signup_barista");
+      }
+      
     }
   );
+  user.save((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      // Create profile according to userType
+      if (req.body.userType == 'barista') {
+        Barista.create({ userName: req.body.userName })
+      } else if (req.body.userType == 'cafe') {
+        Cafe.create({ userName: req.body.userName })
+      }
+      res.redirect("../dashboard");
+    });
+  });
+
+
 };
