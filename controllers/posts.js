@@ -1,7 +1,8 @@
 const cloudinary = require("../middleware/cloudinary");
 const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
-const User = require("../models/User")
+const User = require("../models/User");
+const Shift = require("../models/Shift")
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -9,9 +10,10 @@ module.exports = {
       // const posts = await Post.find({ user: req.user.id });
       if (req.user.userType == 'barista') {
         res.render("dashboard_barista.ejs", { user: req.user });
-      } else {
+      } else if (req.user.userType == 'cafe' ) {
         const cafeData = await Cafe.find({ userName: req.user.userName });
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData) });
+        const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData });
       }
 
     } catch (err) {

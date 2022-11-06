@@ -15,9 +15,9 @@ module.exports = {
         shopName: cafeData.shopName,
         location: req.body.location,
         wage: req.body.wage,
-        date: req.body.date,
-        from_time: req.body["from-time"],
-        end_time: req.body["end-time"],
+        date: Date.parse(req.body.date),
+        from_time: req.body.from_time,
+        end_time: req.body.end_time,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
 

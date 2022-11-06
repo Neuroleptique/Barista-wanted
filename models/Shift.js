@@ -8,7 +8,7 @@ const ShiftSchema= new mongoose.Schema({
   shopName: { type: String },
   location: { type: String },
   wage: { type: Number },
-  date: { type: Date },
+  date: { type: Number },
   from_time: { type: String },
   end_time: { type: String },
   activeStatus: { type: Boolean, default: true }, 
