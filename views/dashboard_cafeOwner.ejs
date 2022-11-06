@@ -38,17 +38,37 @@
               <th scope="col">Status</th>
             </tr>
           </thead>
-          <tr>
+          
+          <% for(let i = 0; i < shift.length; i++) { %>
+            <% if (shift[i].activeStatus) { %>
+              <tr data-id="<%= shift[i]._id %>">
+                <th scope="row"><%= shift[i].location %></th>
+                <td><%= shift[i].wage %></td>
+                <td>
+                <!-- Set timeZone to UTC to prevent date short by 1 -->
+                <% let rightDate = new Date(+shift[i].date).toLocaleString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'} ) %>
+                <%= rightDate %> 
+                </td>
+                <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
+                <td>
+                  <button type="button" id="editShift">Edit</button>
+                  <button type="button" id="activeStatusFalse">Fulfilled</button>
+                  <button type="button" id="deleteShift">Delete</button>
+                </td>
+              </tr>
+            <% } %>
+          <% }  %> 
+          <!-- <tr>
             <th scope="row">Cafe</th>
             <td>Wage data</td>
             <td>Date data</td>
             <td>Hour data</td>
             <td>
-              <button>Edit</button>
-              <button>Fulfilled</button>
-              <button>Delete</button>
+              <button type="button" id="editShift">Edit</button>
+                  <button type="button" id="activeStatusFalse">Fulfilled</button>
+                  <button type="button" id="deleteShift">Delete</button>
             </td>
-          </tr>
+          </tr> -->
         </table>
         <table>
           <caption>Past request</caption>
