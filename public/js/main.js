@@ -1,5 +1,10 @@
+const profileUpdate = document.getElementById('updateProfile')
+
+
+
+
 // update BARISTA profile
-document.getElementById('updateProfile').addEventListener('click', updateProfile)
+profileUpdate.addEventListener('click', updateProfile)
 
 async function updateProfile() {
   const firstName = document.getElementById('firstName').value
