@@ -1,37 +1,44 @@
-const profileUpdate = document.getElementById('updateProfile')
+const changeStatusBtn = document.querySelectorAll('.inactiveShift')
+const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 
 
+// Change shift activeStatus to false
+Array.from(changeStatusBtn).forEach(btn => {
+  btn.addEventListener('click', changeStatusFalse)
+})
 
-
-// update BARISTA profile
-profileUpdate.addEventListener('click', updateProfile)
-
-async function updateProfile() {
-  const firstName = document.getElementById('firstName').value
-  const lastName = document.getElementById('lastName').value
-  const email = document.getElementById('email').value
-  const phone = document.getElementById('phone').value
-  const ig = document.getElementById('ig').value
-  const exp = document.getElementById('exp').value
-  const more = document.getElementById('more').value
-  const notification = document.getElementById('notification').value
-  const userID = document.getElementById('userID').value
-
-  console.log(userID)
-  try {
-    const response = await fetch('profile_barista', {
+async function changeStatusFalse() {
+  console.log('click')
+  const shiftID = this.parentNode.parentNode.dataset.id
+  try{
+    const response = await fetch('cafe/inactiveShift', {
       method: 'put',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        ig: ig,
-        exp: exp,
-        more: more,
-        notification: notification,
-        userID: userID,
+        shiftID: shiftID
+      }),
+    })
+    const data = await response.json()
+    console.log(data)
+    location.reload()
+  }catch(err){
+    console.log(err)
+  }
+}
+
+// Delete shift
+Array.from(deleteShiftBtn).forEach(btn => {
+  btn.addEventListener('click', deleteShift)
+})
+
+async function deleteShift() {
+  const shiftID = this.parentNode.parentNode.dataset.id
+  try {
+    const response = await fetch('cafe/deleteShift', {
+      method: 'delete',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        shiftID: shiftID
       }),
     })
     const data = await response.json()
@@ -40,5 +47,4 @@ async function updateProfile() {
   } catch (err) {
     console.log(err)
   }
-
 }

@@ -56,8 +56,8 @@
                   <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
                   <td>
                     <button type="button" id="editShift">Edit</button>
-                    <button type="button" id="activeStatusFalse">Fulfilled</button>
-                    <button type="button" id="deleteShift">Delete</button>
+                    <button type="button" class="inactiveShift">Fulfilled</button>
+                    <button type="button" class="deleteShift">Delete</button>
                   </td>
                 </tr>
               <% } %>
@@ -108,9 +108,8 @@
                   </td>
                   <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
                   <td>
-                    <button type="button" id="editShift">Edit</button>
-                    <button type="button" id="activeStatusFalse">Fulfilled</button>
-                    <button type="button" id="deleteShift">Delete</button>
+                    <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
+                    <button type="button" class="deleteShift">Delete</button>
                   </td>
                 </tr>
               <% } %>
