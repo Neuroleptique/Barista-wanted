@@ -1,4 +1,4 @@
-const cloudinary = require("../middleware/cloudinary");
+// const cloudinary = require("../middleware/cloudinary");
 const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");

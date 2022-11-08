@@ -132,14 +132,8 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        if (req.user.userType == 'barista') {
-          return res.redirect("../signup_barista");
-        } else {
-          return res.redirect("../signup_cafe");
-        }
-        // return res.redirect("../signup_barista");
+        return res.redirect("../login");
       }
-      
     }
   );
   user.save((err) => {

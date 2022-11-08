@@ -12,29 +12,29 @@ const mainRoutes = require('./routes/main');
 const cafeOwnerRoutes = require('./routes/cafe');
 // const baristaRoutes = require('./routes/barista');
 
-//Use .env file in config folder
+// Use .env file in config folder
 require("dotenv").config({ path: "./config/config.env" });
 
 // Passport config
 require("./config/passport")(passport);
 
-//Connect To Database
+// Connect To Database
 connectDB();
 
-//Using EJS for views
+// Using EJS for views
 app.set("view engine", "ejs");
 
-//Static Folder
+// Static Folder
 app.use(express.static("public"));
 
-//Body Parsing
+// Body Parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Logging
+// Logging
 app.use(logger("dev"));
 
-//Use forms for put / delete
+// Use forms for put / delete
 app.use(methodOverride("_method"));
 
 // Setup Sessions - stored in MongoDB
@@ -53,6 +53,7 @@ app.use(passport.session());
 
 app.use(flash());
 
+// Views in public folder
 app.use(express.static('/public'));
 
 app.use('/', mainRoutes);
