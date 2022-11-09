@@ -10,6 +10,7 @@
           </div>
       </div>
       <section>
+        <!-- Active shifts input section -->
         <form action="/cafe/postShift" method="POST">
           <label for="location">Location:</label>
           <input type="text" name="location" id="location" placeholder="Junction, Leslieville">
@@ -26,7 +27,7 @@
           <input type="text" name="userID" value="<%= user.id %>" hidden>
           <button type="submit">Submit</button>
         </form>
-     
+        <!-- active shift display -->
         <table>
           <caption>Active needs</caption>
           <thead>
@@ -68,18 +69,8 @@
             </tr>
           
           <% }  %> 
-          <!-- <tr>
-            <th scope="row">Cafe</th>
-            <td>Wage data</td>
-            <td>Date data</td>
-            <td>Hour data</td>
-            <td>
-              <button type="button" id="editShift">Edit</button>
-                  <button type="button" id="activeStatusFalse">Fulfilled</button>
-                  <button type="button" id="deleteShift">Delete</button>
-            </td>
-          </tr> -->
         </table>
+        <!-- Past/inactive shifts display area -->
         <table>
           <caption>Past request</caption>
           <thead>
@@ -92,8 +83,6 @@
             </tr>
           </thead>
           <% let pastShift = 0 %>
-      
-
             <% for(let i = 0; i < shift.length; i++) { %>
               <!-- 1.44e+8 == 40 hours in milliseconds, due to date.now() get ms in UTC, so 4h+ from GMT-4 -->
               <% if (!shift[i].activeStatus || shift[i].date < (Date.now() - 1.44e+8) ) { %>
