@@ -6,10 +6,8 @@ const Shift = require("../models/Shift")
 
 module.exports = {
   postShift: async (req, res) => {
-    // console.log(req)
     try {
       const cafeData = await Cafe.findOne({ userID: req.user._id })
-      console.log(cafeData)
       await Shift.create({
         userID: req.body.userID,
         shopName: cafeData.shopName,
@@ -21,7 +19,6 @@ module.exports = {
         end_time: req.body.end_time,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
-
       })
       console.log('Shift created!')
       res.redirect('/dashboard')
@@ -49,4 +46,4 @@ module.exports = {
     console.log(err)
     }
   },
-  } 
+} 

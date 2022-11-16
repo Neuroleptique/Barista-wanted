@@ -1,5 +1,5 @@
 # Barista Wanted #
-A simple job posting app that uses MVC Architecture, with account creation and user authentication.
+A simple job posting app that uses MVC Architecture, it comes with account creation and user authentication.
 
 ## How does this app work?
 This app will allows:
@@ -12,7 +12,7 @@ This app will allows:
 **Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB 
 
 ## Packages/Dependencies used 
-bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-session, express-flash, mongodb, mongoose, morgan, multer, nodemon, passport, passport-local, validator
+bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-session, express-flash, mongodb, mongoose, morgan, multer, nodemailer, nodemon, passport, passport-local, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
 `npm install` 
