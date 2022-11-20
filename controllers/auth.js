@@ -146,7 +146,7 @@ exports.postSignup = (req, res, next) => {
       }
       // Create profile according to userType
       if (req.body.userType == 'barista') {
-        Barista.create({ userName: req.body.userName })
+        Barista.create({ userName: req.body.userName, email: req.body.email })
       } else if (req.body.userType == 'cafe') {
         Cafe.create({ userName: req.body.userName })
       }

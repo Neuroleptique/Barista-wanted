@@ -5,7 +5,7 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const methodOverride = require("method-override");
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
@@ -59,8 +59,7 @@ app.use(express.static('/public'));
 
 // Send email
 // const transporter = nodemailer.createTransport({
-//   host: 'smtp.gmail.com',
-//   port: 587,
+//   service: "gmail",
 //   auth: {
 //     user: process.env.GMAIL_USER,
 //     pass: process.env.GMAIL_PWD,
