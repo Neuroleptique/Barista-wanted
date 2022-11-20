@@ -5,6 +5,7 @@ const BaristaSchema= new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  email: { type: String },
   userName: { type: String },
   firstName: { type: String },
   lastName: { type: String },
