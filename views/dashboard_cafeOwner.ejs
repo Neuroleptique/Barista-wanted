@@ -3,7 +3,7 @@
   <div>
       <div>
           <div>
-              <p><strong>Welcome</strong>: <%= cafe.shopName %></p>
+              <p><strong>Welcome</strong>: <%= cafe.cafeName %></p>
               <p><strong>Email</strong>: <%= user.email %></p>
               <a href="/profile_cafe" class="col-3 btn btn-primary">Profile</a>
               <a href="/logout" class="col-3 btn btn-primary">Logout</a>
@@ -16,13 +16,11 @@
           <input type="text" name="location" id="location" placeholder="Junction, Leslieville">
           <label for="wage">Hourly Wage:</label>
           <input type="number" name="wage" id="wege" placeholder="$15.5/hour" min="15.5">
-          <label for="date">Date:</label>
-          <input type="date" name="date" id="date">
-          <label for="from_time">From:</label>
-          <input type="time" name="from_time" id="from_time">
-          <label for="end_time">To</label>
+          <label for="date">Date and Shift start time:</label>
+          <input type="datetime-local" name="date" id="date">
+          <label for="end_time">Shift end time:</label>
           <input type="time" name="end_time" id="end_time">
-          <label for="more">Specification</label>
+          <label for="more">Specification:</label>
           <input type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
           <input type="text" name="userID" value="<%= user.id %>" hidden>
           <button type="submit">Submit</button>
@@ -43,18 +41,19 @@
       
 
             <% for(let i = 0; i < shift.length; i++) { %>
-              <!-- 1.44e+8 == 40 hours in milliseconds, due to date.now() get ms in UTC, so 4h+ from GMT-4 -->
-              <% if (shift[i].activeStatus && shift[i].date >= (Date.now() - 1.44e+8) ) { %>
+              <% let shiftDate = new Date(shift[i].date) %>
+              <% if (shift[i].activeStatus && shiftDate >= Date.now()) { %>
                 <% activeShift++ %>
                 <tr data-id="<%= shift[i]._id %>">
                   <th scope="row"><%= shift[i].location %></th>
                   <td><%= shift[i].wage %></td>
                   <td>
-                  <!-- Set timeZone to UTC to prevent date short by 1 -->
-                  <% let rightDate = new Date(+shift[i].date).toLocaleString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'} ) %>
-                  <%= rightDate %> 
+
+                  
+                 
+                  <%= shiftDate.toDateString() %> 
                   </td>
-                  <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
+                  <td><%= `${shiftDate.getHours()}:${shiftDate.getMinutes()} - ${shift[i].end_time}` %></td>
                   <td>
                     <button type="button" id="editShift">Edit</button>
                     <button type="button" class="inactiveShift">Fulfilled</button>
@@ -65,7 +64,7 @@
             <% }  %>
             <% if (shift.length == 0 || activeShift == 0 ){ %>
             <tr>
-              <th colspan="5"><%= cafe.shopName %> has no active shift to display</th>
+              <th colspan="5"><%= cafe.cafeName %> has no active shift to display</th>
             </tr>
           
           <% }  %> 
@@ -84,18 +83,17 @@
           </thead>
           <% let pastShift = 0 %>
             <% for(let i = 0; i < shift.length; i++) { %>
-              <!-- 1.44e+8 == 40 hours in milliseconds, due to date.now() get ms in UTC, so 4h+ from GMT-4 -->
-              <% if (!shift[i].activeStatus || shift[i].date < (Date.now() - 1.44e+8) ) { %>
+              <% let shiftDate = new Date(shift[i].date) %>
+              <% if (!shift[i].activeStatus || shiftDate < Date.now()) { %>
                 <% pastShift++ %>
                 <tr data-id="<%= shift[i]._id %>">
                   <th scope="row"><%= shift[i].location %></th>
                   <td><%= shift[i].wage %></td>
                   <td>
-                  <!-- Set timeZone to UTC to prevent date short by 1 -->
-                  <% let rightDate = new Date(+shift[i].date).toLocaleString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'} ) %>
-                  <%= rightDate %> 
+                                    
+                  <%= shiftDate.toDateString() %> 
                   </td>
-                  <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
+                  <td><%= `${shiftDate.getHours()}:${shiftDate.getMinutes()} - ${shift[i].end_time}` %></td>
                   <td>
                     <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
                     <button type="button" class="deleteShift">Delete</button>
@@ -105,7 +103,7 @@
             <% }  %>
             <% if (shift.length == 0 || pastShift == 0 ){ %>
             <tr>
-              <th colspan="5"><%= cafe.shopName %> has no past shift to display</th>
+              <th colspan="5"><%= cafe.cafeName %> has no past shift to display</th>
             </tr>
           
           <% }  %> 
