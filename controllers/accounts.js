@@ -9,13 +9,16 @@ module.exports = {
     try {
       // const posts = await Post.find({ user: req.user.id });
       const cafeData = await Cafe.find({ userName: req.user.userName });
+      
       if (req.user.userType == 'barista') {
         
         const shiftData = await Shift.find({ activeStatus: true }).sort({ date: 1 });
         res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData});
       } else if (req.user.userType == 'cafe' ) {
         // const cafeData = await Cafe.find({ userName: req.user.userName });
+        
         const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
+        console.log(shiftData)
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData });
       }
 
@@ -69,7 +72,7 @@ module.exports = {
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName },{
-          shopName: req.body.shopName,
+          cafeName: req.body.cafeName,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,

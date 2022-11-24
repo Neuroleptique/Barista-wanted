@@ -148,7 +148,7 @@ exports.postSignup = (req, res, next) => {
       if (req.body.userType == 'barista') {
         Barista.create({ userName: req.body.userName, email: req.body.email })
       } else if (req.body.userType == 'cafe') {
-        Cafe.create({ userName: req.body.userName })
+        Cafe.create({ userName: req.body.userName, cafeName: req.body.cafeName })
       }
       res.redirect("../dashboard");
     });

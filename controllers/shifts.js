@@ -9,43 +9,42 @@ module.exports = {
   postShift: async (req, res) => {
     try {
       // create shift to database
-      const cafeData = await Cafe.findOne({ userID: req.user._id })
+      const cafeData = await Cafe.findOne({ userName: req.user.userName })
       await Shift.create({
-        userID: req.body.userID,
-        shopName: cafeData.shopName,
+        userID: req.user._id,
+        cafeName: cafeData.cafeName,
         location: req.body.location,
         wage: req.body.wage,
-        // Parse to ms and store as number
-        date: Date.parse(req.body.date),
-        from_time: req.body.from_time,
+        date: req.body.date,
+        // from_time: req.body.from_time,
         end_time: req.body.end_time,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
       // sent email to baristas 
-      const baristas = await Barista.find({ notification: true })
-      const baristaEmails = baristas.map(b => b.email)
-      console.log(baristas)
-      if(baristas){
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-              user: process.env.MAIL_USER,
-              pass: process.env.MAIL_PWD
-          }
-        })
-        const mailOptions = {
-            to: baristaEmails,
-            from: process.env.MAIL_USER,
-            subject: 'Barista Wanted: New shift available',
-            text: `${cafeData.shopName} is looking for barista at ${req.body.location} on ${req.body.date} for ${req.body.from_time} - ${req.body.end_time}.\n Please login to your profile for more info.`
-        };
-        transporter.sendMail(mailOptions, function (err) {
-            req.flash('info', 'An e-mail has been sent to ' + baristaEmails + ' with further instructions.');
-            done(err, 'done');
-        });
+      // const baristas = await Barista.find({ notification: true })
+      // const baristaEmails = baristas.map(b => b.email)
+      // console.log(baristas)
+      // if(baristas){
+      //   const transporter = nodemailer.createTransport({
+      //     service: "gmail",
+      //     auth: {
+      //         user: process.env.MAIL_USER,
+      //         pass: process.env.MAIL_PWD
+      //     }
+      //   })
+      //   const mailOptions = {
+      //       to: baristaEmails,
+      //       from: process.env.MAIL_USER,
+      //       subject: 'Barista Wanted: New shift available',
+      //       text: `${cafeData.cafeName} is looking for barista at ${req.body.location} on ${req.body.date} for ${req.body.from_time} - ${req.body.end_time}.\n Please login to your profile for more info.`
+      //   };
+      //   transporter.sendMail(mailOptions, function (err) {
+      //       req.flash('info', 'An e-mail has been sent to ' + baristaEmails + ' with further instructions.');
+      //       done(err, 'done');
+      //   });
 
-      }
+      // }
       
       console.log('Shift created!')
       res.redirect('/dashboard')

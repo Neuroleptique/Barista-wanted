@@ -30,24 +30,24 @@
 
             <% for(let i = 0; i < shift.length; i++) { %>
               <!-- 1.44e+8 == 40 hours in milliseconds, due to date.now() get ms in UTC, so 4h+ from GMT-4 -->
-              <% if (shift[i].activeStatus && shift[i].date >= (Date.now() - 1.44e+8) ) { %>
+              <% if (shift[i].activeStatus && shift[i].date >= Date.now()) { %>
                 <% activeShift++ %>
                 <tr data-id="<%= shift[i]._id %>">
                   <th scope="row"><%= shift[i].location %></th>
                   <td><%= shift[i].wage %></td>
                   <td>
                   <!-- Set timeZone to UTC to prevent date short by 1 -->
-                  <% let rightDate = new Date(+shift[i].date).toLocaleString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'} ) %>
-                  <%= rightDate %> 
+                  
+                  <%= shift[i].date %> 
                   </td>
-                  <td><%= `${shift[i].from_time} - ${shift[i].end_time}` %></td>
+                  <td><%= shift[i].end_time %></td>
                   
                 </tr>
               <% } %>
             <% }  %>
             <% if (shift.length == 0 || activeShift == 0 ){ %>
             <tr>
-              <th colspan="4"><%= cafe.shopName %> has no active shift to display</th>
+              <th colspan="4"><%= cafe.cafeName %> has no active shift to display</th>
             </tr>
           
           <% }  %> 
