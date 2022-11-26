@@ -16,35 +16,37 @@ module.exports = {
         location: req.body.location,
         wage: req.body.wage,
         date: req.body.date,
-        // from_time: req.body.from_time,
         end_time: req.body.end_time,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
-      // sent email to baristas 
-      // const baristas = await Barista.find({ notification: true })
-      // const baristaEmails = baristas.map(b => b.email)
-      // console.log(baristas)
-      // if(baristas){
-      //   const transporter = nodemailer.createTransport({
-      //     service: "gmail",
-      //     auth: {
-      //         user: process.env.MAIL_USER,
-      //         pass: process.env.MAIL_PWD
-      //     }
-      //   })
-      //   const mailOptions = {
-      //       to: baristaEmails,
-      //       from: process.env.MAIL_USER,
-      //       subject: 'Barista Wanted: New shift available',
-      //       text: `${cafeData.cafeName} is looking for barista at ${req.body.location} on ${req.body.date} for ${req.body.from_time} - ${req.body.end_time}.\n Please login to your profile for more info.`
-      //   };
-      //   transporter.sendMail(mailOptions, function (err) {
-      //       req.flash('info', 'An e-mail has been sent to ' + baristaEmails + ' with further instructions.');
-      //       done(err, 'done');
-      //   });
+      // Sent email to baristas who opt in for email notification
+      const baristas = await Barista.find({ notification: true })
+      const baristaEmails = baristas.map(b => b.email)
+      // Retrive date and start time
+      const shiftDate = new Date(req.body.date)
+      const shiftStartTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}`
+      console.log(shiftStartTime)
 
-      // }
+      if(baristas){
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+              user: process.env.MAIL_USER,
+              pass: process.env.MAIL_PWD
+          }
+        })
+        const mailOptions = {
+            to: baristaEmails,
+            from: process.env.MAIL_USER,
+            subject: 'Barista Wanted: New shift available',
+            text: `${cafeData.cafeName} is looking for barista at ${req.body.location} on ${shiftDate.toDateString()} for ${shiftStartTime} - ${req.body.end_time}.\n Please login to your profile for more info.`
+        };
+        transporter.sendMail(mailOptions, function (err) {
+            req.flash('info', 'An e-mail has been sent to ' + baristaEmails + ' with further instructions.');
+            done(err, 'done');
+        });
+      }
       
       console.log('Shift created!')
       res.redirect('/dashboard')
