@@ -37,23 +37,20 @@
               <th scope="col">Status</th>
             </tr>
           </thead>
-            <% let activeShift = 0 %>
-      
-
+            <% let activeShift = 0 %>  
             <% for(let i = 0; i < shift.length; i++) { %>
+              <!-- date is saved as string in DB to allow date obj manipulation -->
               <% let shiftDate = new Date(shift[i].date) %>
               <% if (shift[i].activeStatus && shiftDate >= Date.now()) { %>
                 <% activeShift++ %>
                 <tr data-id="<%= shift[i]._id %>">
                   <th scope="row"><%= shift[i].location %></th>
                   <td><%= shift[i].wage %></td>
-                  <td>
-
-                  
-                 
-                  <%= shiftDate.toDateString() %> 
-                  </td>
-                  <td><%= `${shiftDate.getHours()}:${shiftDate.getMinutes()} - ${shift[i].end_time}` %></td>
+                  <!-- Extract date of the shift -->
+                  <td><%= shiftDate.toDateString() %></td>
+                  <!-- Extract shift start time -->
+                  <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+                  <td><%= `${startTime} - ${shift[i].end_time}` %></td>
                   <td>
                     <button type="button" id="editShift">Edit</button>
                     <button type="button" class="inactiveShift">Fulfilled</button>
@@ -83,17 +80,18 @@
           </thead>
           <% let pastShift = 0 %>
             <% for(let i = 0; i < shift.length; i++) { %>
+              
               <% let shiftDate = new Date(shift[i].date) %>
               <% if (!shift[i].activeStatus || shiftDate < Date.now()) { %>
                 <% pastShift++ %>
                 <tr data-id="<%= shift[i]._id %>">
                   <th scope="row"><%= shift[i].location %></th>
                   <td><%= shift[i].wage %></td>
-                  <td>
-                                    
-                  <%= shiftDate.toDateString() %> 
-                  </td>
-                  <td><%= `${shiftDate.getHours()}:${shiftDate.getMinutes()} - ${shift[i].end_time}` %></td>
+                  <!-- Extract date of the shift -->
+                  <td><%= shiftDate.toDateString() %></td>
+                  <!-- Extract shift start time -->
+                  <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+                  <td><%= `${startTime} - ${shift[i].end_time}` %></td>
                   <td>
                     <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
                     <button type="button" class="deleteShift">Delete</button>
