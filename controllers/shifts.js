@@ -20,13 +20,15 @@ module.exports = {
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
+
       // Sent email to baristas who opt in for email notification
       const baristas = await Barista.find({ notification: true })
       const baristaEmails = baristas.map(b => b.email)
       // Retrive date and start time
-      const shiftDate = new Date(req.body.date)
-      const shiftStartTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}`
-      console.log(shiftStartTime)
+      const dateObj = new Date(req.body.date)
+      const shiftDate = dateObj.toDateString()
+      // Prevent time to be displayed as single digit
+      const shiftStartTime = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`
 
       if(baristas){
         const transporter = nodemailer.createTransport({
@@ -39,8 +41,8 @@ module.exports = {
         const mailOptions = {
             to: baristaEmails,
             from: process.env.MAIL_USER,
-            subject: 'Barista Wanted: New shift available',
-            text: `${cafeData.cafeName} is looking for barista at ${req.body.location} on ${shiftDate.toDateString()} for ${shiftStartTime} - ${req.body.end_time}.\n Please login to your profile for more info.`
+            subject: `Barista Wanted: ${cafeData.cafeName} is looking for barista`,
+            text: `${cafeData.cafeName} is looking for a barista at ${req.body.location} on ${shiftDate} from ${shiftStartTime} to ${req.body.end_time}.\nPlease login to your profile for more info.`
         };
         transporter.sendMail(mailOptions, function (err) {
             req.flash('info', 'An e-mail has been sent to ' + baristaEmails + ' with further instructions.');
