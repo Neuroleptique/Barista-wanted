@@ -1,10 +1,10 @@
 # Barista Wanted #
-A simple job posting app that uses MVC Architecture, with account creation and user authentication.
+A simple job posting app that uses MVC Architecture, it comes with account creation and user authentication.
 
 ## How does this app work?
 This app will allows:
 - coffee shop owner to post their unfulfilled shifts
-- registered barista users will get notified through email (in progress)
+- barista users will get notified through email
 
 **Link to project:** (work in progress)
 
@@ -12,7 +12,7 @@ This app will allows:
 **Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB 
 
 ## Packages/Dependencies used 
-bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-session, express-flash, mongodb, mongoose, morgan, multer, nodemon, passport, passport-local, validator
+bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-session, express-flash, mongodb, mongoose, morgan, multer, nodemailer, nodemon, passport, passport-local, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
 `npm install` 
@@ -24,6 +24,8 @@ bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-
   - CLOUD_NAME = `your cloud_name from cloudinary`
   - API_KEY = `your API_KEY from cloudinary`
   - API_SECRET = `your API_SECRET from cloudinary`
+  - MAIL_USER = `your GMAIL ACCOUNT`
+  - MAIL_PWD = `your GMAIL APP PASSWORD`
 
 ## Lessons Learned:
-Mongoose Schema
+Mongoose Schema, Date object manipulation, email sending from server

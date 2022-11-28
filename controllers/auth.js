@@ -132,14 +132,8 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        if (req.user.userType == 'barista') {
-          return res.redirect("../signup_barista");
-        } else {
-          return res.redirect("../signup_cafe");
-        }
-        // return res.redirect("../signup_barista");
+        return res.redirect("../login");
       }
-      
     }
   );
   user.save((err) => {
@@ -152,9 +146,9 @@ exports.postSignup = (req, res, next) => {
       }
       // Create profile according to userType
       if (req.body.userType == 'barista') {
-        Barista.create({ userName: req.body.userName })
+        Barista.create({ userName: req.body.userName, email: req.body.email })
       } else if (req.body.userType == 'cafe') {
-        Cafe.create({ userName: req.body.userName })
+        Cafe.create({ userName: req.body.userName, cafeName: req.body.cafeName })
       }
       res.redirect("../dashboard");
     });
