@@ -4,7 +4,7 @@ A simple job posting app that uses MVC Architecture, it comes with account creat
 ## How does this app work?
 This app will allows:
 - coffee shop owner to post their unfulfilled shifts
-- registered barista users will get notified through email (in progress)
+- barista users will get notified through email
 
 **Link to project:** (work in progress)
 
@@ -24,6 +24,8 @@ bcrypt, cloudinary, connect-mongo, dotenv, ejs, express, express-flash, express-
   - CLOUD_NAME = `your cloud_name from cloudinary`
   - API_KEY = `your API_KEY from cloudinary`
   - API_SECRET = `your API_SECRET from cloudinary`
+  - MAIL_USER = `your GMAIL ACCOUNT`
+  - MAIL_PWD = `your GMAIL APP PASSWORD`
 
 ## Lessons Learned:
-Mongoose Schema
+Mongoose Schema, Date object manipulation, email sending from server
