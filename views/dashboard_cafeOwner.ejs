@@ -34,6 +34,7 @@
               <th scope="col">Wage</th>
               <th scope="col">Date</th>
               <th scope="col">time</th>
+              <th scope="col">Available baristas</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -51,6 +52,7 @@
                   <!-- Extract shift start time -->
                   <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
                   <td><%= `${startTime} - ${shift[i].end_time}` %></td>
+                  <td></td>
                   <td>
                     <button type="button" id="editShift">Edit</button>
                     <button type="button" class="inactiveShift">Fulfilled</button>
@@ -61,7 +63,7 @@
             <% }  %>
             <% if (shift.length == 0 || activeShift == 0 ){ %>
             <tr>
-              <th colspan="5"><%= cafe.cafeName %> has no active shift to display</th>
+              <th colspan="6"><%= cafe.cafeName %> has no active shift to display</th>
             </tr>
           
           <% }  %> 
@@ -75,6 +77,7 @@
               <th scope="col">Wage</th>
               <th scope="col">Date</th>
               <th scope="col">time</th>
+              <th scope="col">Available baristas</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -92,6 +95,7 @@
                   <!-- Extract shift start time -->
                   <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
                   <td><%= `${startTime} - ${shift[i].end_time}` %></td>
+                  <td></td>
                   <td>
                     <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
                     <button type="button" class="deleteShift">Delete</button>
@@ -101,7 +105,7 @@
             <% }  %>
             <% if (shift.length == 0 || pastShift == 0 ){ %>
             <tr>
-              <th colspan="5"><%= cafe.cafeName %> has no past shift to display</th>
+              <th colspan="6"><%= cafe.cafeName %> has no past shift to display</th>
             </tr>
           
           <% }  %> 

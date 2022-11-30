@@ -38,7 +38,12 @@
                 <!-- Extract shift start time -->
                 <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
                 <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-                <td><button type="button" class="available">I'm available</button></td>
+                <td><% if (shift[i].availability.includes(user.userName)){ %>
+                  <button type="button" class="not-available">I'm no longer available</button>
+                  <% } else { %>
+                  <button type="button" class="available">I'm available</button>
+                  <% } %>
+                </td>
               </tr>
             <% } %>
           <% }  %>
