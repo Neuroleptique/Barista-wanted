@@ -3,7 +3,7 @@ A simple job posting app that uses MVC Architecture, it comes with account creat
 
 ## How does this app work?
 This app will allows:
-- coffee shop owner to post their unfulfilled shifts
+- coffee shop to post their barista wanted request 
 - barista users will get notified through email
 
 **Link to project:** (work in progress)
