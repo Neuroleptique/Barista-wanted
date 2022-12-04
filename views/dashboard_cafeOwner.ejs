@@ -25,7 +25,7 @@
           <input type="text" name="userID" value="<%= user.id %>" hidden>
           <button type="submit">Submit</button>
         </form>
-        <!-- active shift display -->
+        <!-- Active shift display table -->
         <table>
           <caption>Active needs</caption>
           <thead>
@@ -52,7 +52,26 @@
                   <!-- Extract shift start time -->
                   <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
                   <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-                  <td></td>
+                  <!-- loop through available baristas -->
+                  <td>
+                    <% let availBarista = barista.filter(e => shift[i].availability.includes(e.userName) ) %>
+                    <% availBarista.map((b, idx) => { %>
+                      <div class="available"><a class="click" href="#popup<%= idx %>"><%= `${b.firstName + " " + b.lastName} - ${b.exp} of experience` %></a></div>
+                      <div id="popup<%= idx %>" class="overlay">
+                        <div class="popup">
+                          <h2>Contact me at</h2>
+                          <a class="close" href="#">&times;</a>
+                          <a href="mailto:<%= b.email %>"><i class="fa fa-regular fa-envelope fa-lg"></i></a>
+                          <% if (b.ig) { %>
+                            <a href="https://www.instagram.com/<%= b.ig %>"><i class="fa fa-brands fa-instagram fa-lg"></i></a>
+                          <% } %>
+                          <% if (b.phone) { %>
+                            <a href="tel:+1<%= b.phone %>"><i class="fa fa-phone"></i></a>
+                          <% } %>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </td>
                   <td>
                     <button type="button" id="editShift">Edit</button>
                     <button type="button" class="inactiveShift">Fulfilled</button>
@@ -68,7 +87,7 @@
           
           <% }  %> 
         </table>
-        <!-- Past/inactive shifts display area -->
+        <!-- Past/inactive shifts display table -->
         <table>
           <caption>Past request</caption>
           <thead>
@@ -95,7 +114,25 @@
                   <!-- Extract shift start time -->
                   <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
                   <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-                  <td></td>
+                  <td>
+                    <% let availBarista = barista.filter(e => shift[i].availability.includes(e.userName) ) %>
+                    <% availBarista.map((b, idx) => { %>
+                      <div class="available"><a class="click" href="#popup<%= idx %>"><%= `${b.firstName + " " + b.lastName || b.userName} - ${b.exp} of experience` %></a></div>
+                      <div id="popup<%= idx %>" class="overlay">
+                        <div class="popup">
+                          <h2>Contact me at</h2>
+                          <a class="close" href="#">&times;</a>
+                          <a href="mailto:<%= b.email %>"><i class="fa fa-regular fa-envelope fa-lg"></i></a>
+                          <% if (b.ig) { %>
+                            <a href="https://www.instagram.com/<%= b.ig %>"><i class="fa fa-brands fa-instagram fa-lg"></i></a>
+                          <% } %>
+                          <% if (b.phone) { %>
+                            <a href="tel:+1<%= b.phone %>"><i class="fa fa-phone"></i></a>
+                          <% } %>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </td>
                   <td>
                     <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
                     <button type="button" class="deleteShift">Delete</button>
