@@ -3,7 +3,8 @@ const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift")
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const { findOneAndUpdate } = require("../models/Barista");
 
 module.exports = {
   postShift: async (req, res) => {
@@ -76,4 +77,15 @@ module.exports = {
     console.log(err)
     }
   },
+  putAvailable: async(req, res) => {
+    try {
+      await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
+        $push: { availability: req.user.userName }
+      })
+      console.log(`${req.user.userName} is available for the shift`)
+      res.json('Candidate added')
+    } catch(err) {
+      console.log(err)
+    }
+  }
 } 

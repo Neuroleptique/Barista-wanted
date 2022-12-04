@@ -13,6 +13,7 @@ const ShiftSchema= new mongoose.Schema({
   end_time: { type: String },
   activeStatus: { type: Boolean, default: true }, 
   more: { type: String },
+  availability: [{ type: String }]
 });
 
 module.exports = mongoose.model("Shift", ShiftSchema);
