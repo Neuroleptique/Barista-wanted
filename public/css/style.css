@@ -1,4 +1,8 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
   text-align: center;
 }
 caption {
@@ -7,7 +11,7 @@ caption {
 }
 i {
   color: #000;
-}
+} */
 /* popup box */
 
 .click {
@@ -81,3 +85,16 @@ i {
     width: 70%;
   }
 }
+
+/* dropdown menu */
+li:focus-within > button > .arrow {
+  transform: rotate(-225deg);
+  margin-top: 4px;
+}
+li:focus-within .dropdown {
+  height: 4rem;
+}
+ul li:hover .dropdown {
+  height: 4rem;
+}
+

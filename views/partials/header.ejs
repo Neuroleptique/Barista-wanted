@@ -15,14 +15,34 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/output.css" />
   </head>
   <body>
-    <header class="container">
-      <div class="text-center">
-        <h1 class=""><a href="/dashboard">Barista Wanted</a></h1>
-        <span>Looking for barista? Looking for work?</span>
+    <header class="relative container mx-auto p-6">
+      <div class=" flex item-center justify-between">
+        <div class="pt-0">
+          <h1 class=""><a href="/dashboard">Barista Wanted</a></h1>
+        </div>
+        <nav>
+          <ul class="hidden md:flex space-x-6 menus -translate-y-1 transition-transform ease-in duration-100">
+            <li><a href="/login">Login</a></li>
+            <!-- Submenu dropdown -->
+            <li>
+              <button 
+                type="button" 
+                aria-haspopup="true" 
+                aria-expanded="true" 
+                aria-controls="dropdown1"
+              >
+                Signup<span class="arrow w-2 h-2 align-middle inline-block border-black border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
+              </button>
+              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-200 md:absolute right-0 left-auto p-0 z-99 bg-white"id="dropdown1">
+                <li><a href="/signup_barista">Barista</a></li>
+                <li><a href="/signup_cafe">Cafe</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
-  </body>
-</html>
+
