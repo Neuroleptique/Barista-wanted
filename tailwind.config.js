@@ -7,7 +7,7 @@ module.exports = {
   "./views/partials/*.ejs"
   ],
   theme: {
-    screen: {
+    screens: {
       sm: '480px',
       md: '760px',
       lg: '960px',
