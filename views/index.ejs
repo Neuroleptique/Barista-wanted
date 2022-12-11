@@ -1,12 +1,23 @@
 <%- include('partials/header') -%>
-
-<main class="container">
-    <div>
-        <a href="/login">Login</a>
-        <a href="/signup_barista">Barista Signup</a>
-        <a href="/signup_cafe">Cafe owner Signup</a>
-    </div>
-</main>
-    
+<section>
+    <main class="container flex flex-col-reverse items-center px-6 mx-auto space-y-0 md:space-y-0 md:flex-row">
+        <div class="flex flex-col mt-9 space-y-12 md:w-1/2">
+            <h1 class="max-w-lg text-4xl font-bold text-center md:text-5xl md:text-left">
+               Looking for baristas? Want to make amazing coffee?
+            </h1>
+            <p class="max-w-sm text-md text-center text-grey-300 md:text-left">
+                <span class="underline decoration-red-400 decoration-2 underline-offset-4 font-bold">Barista Wanted</span> allows user to post available shift, receive email notification, put yourself available for work.
+            </p>
+            <div class="flex justify-center space-x-3 md:justify-start">
+                <a href="/signup_barista" class="p-3 px-6 pt-2 text-white bg-red-500 rounded-full baseline hover:bg-red-400">Barista</a>
+                <a href="/signup_cafe" class="p-3 px-6 pt-2 text-white bg-red-500 rounded-full baseline hover:bg-red-400">Shop Owner</a>
+            </div>
+        </div>
+        <div class="md:w-1/2">
+            <img src="/images/coffee-shop-color.png" alt="">
+        </div>
+        
+    </main>
+</section>    
 
 <%- include('partials/footer') -%>
