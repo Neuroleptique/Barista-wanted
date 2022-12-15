@@ -12,8 +12,44 @@ caption {
 i {
   color: #000;
 } */
-/* popup box */
 
+
+
+/**** BASE STYLE ****/
+input {
+  background-color: lightgray;
+  width: 100%;
+}
+form > div {
+  margin-bottom: 2rem;
+}
+
+form > button {
+  padding: 0.75rem 1.5rem;
+  color: #fff;
+  background-color: rgba(239, 68, 68, 1) !important;
+  border-radius: 9999px;
+}
+
+/**** MODULES ****/
+body {
+  position: relative;
+  padding-bottom: 6rem;
+  min-height: 100vh;
+}
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
+/**** COMPONENTS ****/
+
+/* popup box */
 .click {
   font-size: 1em;
   padding: 10px;
@@ -87,7 +123,8 @@ i {
 }
 
 /* dropdown menu */
-li:focus-within > button > .arrow {
+li:focus-within > button > .arrow,
+ul li:hover > button > .arrow {
   transform: rotate(-225deg);
   margin-top: 4px;
 }
@@ -97,4 +134,6 @@ li:focus-within .dropdown {
 ul li:hover .dropdown {
   height: 4rem;
 }
+
+
 

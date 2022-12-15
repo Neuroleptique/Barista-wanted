@@ -1,40 +1,40 @@
 <%- include('partials/header') -%>
-<div class="container">
+<div class="container mx-auto relative text-3xl md:max-w-2xl">
   <h1>-- Cafe Owner --</h1>
   <h1>this is <%= user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile</h1>
 </div>
 <form action="/profile_cafe?_method=PUT" 
       method="POST">
-  <div class="mb-3">
+  <div class="">
     <label for="cafeName" class="form-label">Company name</label>
     <input type="text" class="form-control" id="cafeName" name="cafeName" value="<%= cafe.cafeName %>">
 </div>
-  <div class="mb-3">
+  <div class="">
       <label for="firstName" class="form-label">First Name</label>
       <input type="text" class="form-control" id="firstName" name="firstName" value="<%= cafe.firstName %>">
   </div>
-  <div class="mb-3">
+  <div class="">
     <label for="lastName" class="form-label">Last Name</label>
     <input type="text" class="form-control" id="lastName" name="lastName" value="<%= cafe.lastName %>">
   </div>
-  <div class="mb-3">
+  <div class="">
     <label for="phone" class="form-label">Phone Number</label>
     <input type="tel" class="form-control" id="phone" name="phone" value="<%= cafe.phone || null %>">
   </div>
-  <div class="mb-3">
+  <div class="">
     <label for="address" class="form-label">Cafe location</label>
     <input type="tel" class="form-control" id="address" name="address" value="<%= cafe.address || null %>">
   </div>
-  <!-- <div class="mb-3">
+  <!-- <div class="">
     <label for="photo" class="form-label">Headshot</label>
     <input type="file" class="form-control" id="photo" name="file">
   </div> -->
-  <div class="mb-3">
+  <div class="">
     <label for="ig" class="form-label">Instagram</label>
     <input type="text" class="form-control" id="ig" name="ig" value="<%= cafe.ig || null %>">
   </div>
   <!-- add uploaded image here -->
-  <div class="mb-3">
+  <div class="">
     <label for="more" class="form-label">Anything else to add</label>
     <textarea class="form-control" id="more" name="more" value="<%= cafe.more || null %>"></textarea>
   </div>
