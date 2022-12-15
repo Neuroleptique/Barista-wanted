@@ -1,19 +1,16 @@
 <%- include('partials/header') -%>
-<div class="container">
+<div class="container mx-auto relative text-3xl md:max-w-6xl">
   <div class="row mt-5">
       <div class="col-6">
           <div>
-              <p><strong>Welcome</strong>: <%= user.userName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/profile_barista" class="col-3 btn btn-primary">Profile</a>
-              <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+              <p><strong>Welcome!</strong> <%= user.userName %></p>
           </div>
       </div>
       <!-- Search area -->
 
       <!-- Active shifts display section -->
       <section>
-        <table>
+        <table class="table-auto">
           <caption>Active needs</caption>
           <thead>
             <tr>

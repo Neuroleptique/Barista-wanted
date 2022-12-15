@@ -36,7 +36,7 @@ module.exports = {
         })
         console.log(baristaData)
 
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData});
       }
 
     } catch (err) {

@@ -28,7 +28,17 @@
         </div>
         <nav>
           <ul class="hidden md:flex space-x-6 menus -translate-y-1 transition-transform ease-in duration-100">
-            <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/login">Login</a></li>
+            <% if (user) { %> 
+              <li>
+                <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/profile_barista" class="col-3 btn btn-primary">Profile</a>
+              </li>
+              <li>
+                <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/logout" class="col-3 btn btn-primary">Logout</a>
+              </li>
+            <% } else { %> 
+            <li>
+              <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/login">Login</a>
+            </li>
             <!-- Submenu dropdown -->
             <li>
               <button 
@@ -37,13 +47,14 @@
                 aria-expanded="true" 
                 aria-controls="dropdown1"
               >
-                Signup<span class="arrow w-2 h-2 align-middle inline-block border-black border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
+                Signup<span class="arrow transition-transform duration-100 ease-in-out w-2 h-2 align-middle inline-block border-black border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
               </button>
-              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-200 text-right md:absolute right-0 left-auto p-0 z-99 bg-white"id="dropdown1">
+              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-300 text-right right-0 left-auto p-0 z-99 bg-white md:absolute"id="dropdown1">
                 <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_barista">Barista</a></li>
                 <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_cafe">Shop Owner</a></li>
               </ul>
             </li>
+          <% } %> 
           </ul>
         </nav>
       </div>

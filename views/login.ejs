@@ -1,8 +1,8 @@
 <%- include('partials/header') -%>
 
-<main class="container">
-  <div class="row justify-content-center">
-    <section class="col-6 mt-5">
+<main class="container mx-auto relative text-3xl mb-28 md:max-w-2xl">
+  <div class="">
+    <section class="">
       <% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
       <div class="alert alert-danger"><%= el.msg %></div>
       <% }) %> <% } %> <% if (locals.messages.info) { %> <%
@@ -10,28 +10,26 @@
       <div class="alert alert-info"><%= el.msg %></div>
       <% }) %> <% } %>
       <form action="/login" method="POST">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >Email address</label
-          >
+        <div class="">
+          <label for="exampleInputEmail1" class="">Email address</label>
           <input
             type="email"
-            class="form-control"
+            class=""
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             name="email"
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
+        <div class="">
+          <label for="exampleInputPassword1" class="">Password</label>
           <input
             type="password"
-            class="form-control"
+            class=""
             id="exampleInputPassword1"
             name="password"
           />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button class="" type="submit" class="btn btn-primary">Submit</button>
       </form>
     </section>
   </div>
