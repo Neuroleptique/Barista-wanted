@@ -1,30 +1,41 @@
 <%- include('partials/header') -%>
-<div class="container mx-auto relative text-3xl md:max-w-4xl">
-  <div>
+<div class="container mx-auto relative text-2xl mb-28 md:max-w-4xl">
+
       <div>
-          <div>
-              <p><strong>Welcome</strong>: <%= cafe.cafeName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/profile_cafe" class="col-3 btn btn-primary">Profile</a>
-              <a href="/logout" class="col-3 btn btn-primary">Logout</a>
-          </div>
+
+        <h1 class="text-3xl text-center"><strong>Welcome</strong>, <%= cafe.cafeName %></h1>
+
       </div>
       <section>
         <!-- Active shifts input section -->
+        
         <form action="/cafe/postShift" method="POST">
-          <label for="location">Location:</label>
-          <input type="text" name="location" id="location" placeholder="Junction, Leslieville">
-          <label for="wage">Hourly Wage:</label>
+          <div>
+            <label for="location">Location:</label>
+          <input type="text" name="location" id="location" placeholder="Junction, Leslieville" required="required">
+          </div>
+          <div>
+            <label for="wage">Hourly Wage:</label>
           <input type="number" name="wage" id="wege" placeholder="$15.5/hour" min="15.5">
-          <label for="date">Date and Shift start time:</label>
-          <input type="datetime-local" name="date" id="date">
-          <label for="end_time">Shift end time:</label>
-          <input type="time" name="end_time" id="end_time">
-          <label for="more">Specification:</label>
+          </div>
+          <div>
+            <label for="date">Date and start time:</label>
+          <input type="datetime-local" name="date" id="datefield" required="required">
+          </div>
+          <div>
+            <label for="end_time">End time:</label>
+          <input type="time" name="end_time" id="end_time" required="required">
+          </div>
+          <div>
+            <label for="more">More info (optional):</label>
           <input type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
+          </div>
           <input type="text" name="userID" value="<%= user.id %>" hidden>
           <button type="submit">Submit</button>
         </form>
+      </section>
+
+      <section>
         <!-- Active shift display table -->
         <table>
           <caption>Active needs</caption>
@@ -149,6 +160,6 @@
         </table>
       </section>
     </div>
-  </div>
+
 </div>
 <%- include('partials/footer') -%>

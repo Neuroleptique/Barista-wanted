@@ -17,8 +17,9 @@ i {
 
 /**** BASE STYLE ****/
 input {
-  background-color: lightgray;
+  background-color: rgb(206, 218, 244);
   width: 100%;
+  padding: 0.25rem 1rem;
 }
 form > div {
   margin-bottom: 2rem;
@@ -29,6 +30,9 @@ form > button {
   color: #fff;
   background-color: rgba(239, 68, 68, 1) !important;
   border-radius: 9999px;
+}
+input:invalid {
+  border: 2px solid rgb(246, 57, 57);
 }
 
 /**** MODULES ****/

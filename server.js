@@ -57,17 +57,7 @@ app.use(flash());
 // Views in public folder
 app.use(express.static('/public'));
 
-// Send email
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.GMAIL_USER,
-//     pass: process.env.GMAIL_PWD,
-//   },
-// });
-
-// transporter.verify().then(console.log).catch(console.error)
-
+// Router directories
 app.use('/', mainRoutes);
 app.use('/cafe', cafeOwnerRoutes);
 app.use('/barista', baristaRoutes);

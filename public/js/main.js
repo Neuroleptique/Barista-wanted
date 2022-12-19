@@ -1,7 +1,28 @@
 const changeStatusBtn = document.querySelectorAll('.inactiveShift')
 const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
+const shiftDateField = document.getElementById('datefield')
 
+// Limit shift start date input to accept value no earlier than the current date
+shiftDateField.addEventListener('focus', minDate)
+
+function minDate() {
+  let today = new Date()
+  let dd = today.getDate()
+  let mm = today.getMonth() + 1
+  let yyyy = today.getFullYear()
+  let hh = today.getHours()
+  let min = today.getMinutes()
+
+  if (dd < 10) {
+    dd = '0' + dd
+  }
+  if (mm < '10') {
+    mm = '0' + mm
+  }
+  today = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min
+  shiftDateField.setAttribute('min', today)
+}
 
 // Change shift activeStatus to false
 Array.from(changeStatusBtn).forEach(btn => {
@@ -72,3 +93,4 @@ async function availableToWork() {
     console.log(err)
   }
 }
+
