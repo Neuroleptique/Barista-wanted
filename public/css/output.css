@@ -598,6 +598,11 @@ video {
   margin-right: auto;
 }
 
+.my-9 {
+  margin-top: 2.25rem;
+  margin-bottom: 2.25rem;
+}
+
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -640,6 +645,18 @@ video {
 
 .mb-10 {
   margin-bottom: 2.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mb-9 {
+  margin-bottom: 2.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 
 .block {
@@ -729,6 +746,11 @@ video {
 
 .w-3 {
   width: 0.75rem;
+}
+
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .min-w-max {
@@ -833,6 +855,26 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .space-x-6 > :not([hidden]) ~ :not([hidden]) {
@@ -1030,6 +1072,11 @@ video {
   line-height: 2.25rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1152,8 +1199,9 @@ i {
 /**** BASE STYLE ****/
 
 input {
-  background-color: lightgray;
+  background-color: rgb(206, 218, 244);
   width: 100%;
+  padding: 0.25rem 1rem;
 }
 
 form > div {
@@ -1165,6 +1213,10 @@ form > button {
   color: #fff;
   background-color: rgba(239, 68, 68, 1) !important;
   border-radius: 9999px;
+}
+
+input:invalid {
+  border: 2px solid rgb(246, 57, 57);
 }
 
 /**** MODULES ****/
@@ -1301,10 +1353,6 @@ ul li:hover .dropdown {
     display: flex;
   }
 
-  .md\:w-1\/2 {
-    width: 50%;
-  }
-
   .md\:max-w-6xl {
     max-width: 72rem;
   }
@@ -1317,12 +1365,8 @@ ul li:hover .dropdown {
     max-width: 42rem;
   }
 
-  .md\:flex-row {
-    flex-direction: row;
-  }
-
-  .md\:justify-start {
-    justify-content: flex-start;
+  .md\:gap-4 {
+    gap: 1rem;
   }
 
   .md\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -1331,18 +1375,32 @@ ul li:hover .dropdown {
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
 
-  .md\:text-left {
-    text-align: left;
-  }
-
-  .md\:text-5xl {
-    font-size: 3rem;
-    line-height: 1;
-  }
-
   .md\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
+  }
+
+  .lg\:text-left {
+    text-align: left;
+  }
+
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
 }
 
