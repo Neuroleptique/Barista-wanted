@@ -12,6 +12,7 @@ const connectDB = require("./config/database");
 const mainRoutes = require('./routes/main');
 const cafeOwnerRoutes = require('./routes/cafe');
 const baristaRoutes = require('./routes/barista');
+const daisyui = require('daisyui')
 
 // Use .env file in config folder
 require("dotenv").config({ path: "./config/config.env" });
