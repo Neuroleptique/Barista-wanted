@@ -17,7 +17,7 @@ i {
 
 /**** BASE STYLE ****/
 input {
-  background-color: rgb(206, 218, 244);
+  /* background-color: rgb(206, 218, 244); */
   width: 100%;
   padding: 0.25rem 1rem;
 }
@@ -28,11 +28,11 @@ form > div {
 form > button {
   padding: 0.75rem 1.5rem;
   color: #fff;
-  background-color: rgba(239, 68, 68, 1) !important;
+  /* background-color: rgba(239, 68, 68, 1) !important; */
   border-radius: 9999px;
 }
 input:invalid {
-  border: 2px solid rgb(246, 57, 57);
+  /* border: 2px solid rgb(246, 57, 57); */
 }
 
 /**** MODULES ****/
@@ -47,14 +47,14 @@ footer {
   bottom: 0;
   left: 0;
   padding: 1rem;
-  background-color: #efefef;
+  /* background-color: #efefef; */
   text-align: center;
 }
 
 /**** COMPONENTS ****/
 
 /* popup box */
-.click {
+/* .click {
   font-size: 1em;
   padding: 10px;
   color: rgb(35, 34, 34);
@@ -124,7 +124,7 @@ footer {
   .popup{
     width: 70%;
   }
-}
+} */
 
 /* dropdown menu */
 li:focus-within > button > .arrow,
