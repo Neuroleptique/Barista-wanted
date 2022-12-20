@@ -3,7 +3,7 @@ const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
 const shiftDateField = document.getElementById('datefield')
 
-// Limit shift start date input to accept value no earlier than the current date
+// Limit shift starting date input to accept value no earlier than the current date
 shiftDateField.addEventListener('focus', minDate)
 
 function minDate() {
@@ -14,13 +14,20 @@ function minDate() {
   let hh = today.getHours()
   let min = today.getMinutes()
 
-  if (dd < 10) {
+  if (dd < '10') {
     dd = '0' + dd
   }
   if (mm < '10') {
     mm = '0' + mm
   }
+  if (hh < '10') {
+    hh = '0' + hh
+  }
+  if (min < '10') {
+    min = '0' + min
+  }
   today = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min
+  console.log(today)
   shiftDateField.setAttribute('min', today)
 }
 
