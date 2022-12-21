@@ -16,6 +16,16 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     />
     <link rel="stylesheet" href="/css/output.css" />
+    <script>
+      // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
+      if (
+        (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
+      ) {
+        document.documentElement.setAttribute("data-theme", "night");
+      } else {
+        document.documentElement.setAttribute("data-theme", "cupcake");
+      }
+    </script>
   </head>
   <body>
     <header class="relative container mx-auto p-6">
@@ -26,7 +36,7 @@
         <div class="pt-0">
           <h1 class="max-w-lg font-mono text-4xl font-bold text-center md:text-4xl"><a href="/dashboard">Barista Wanted</a></h1>
         </div>
-        <nav>
+        <nav class="py-3">
           <ul class="hidden md:flex space-x-6 menus -translate-y-1 transition-transform ease-in duration-100">
             <% if (user) { %> 
               <li>
@@ -47,9 +57,10 @@
                 aria-expanded="true" 
                 aria-controls="dropdown1"
               >
-                Signup<span class="arrow transition-transform duration-100 ease-in-out w-2 h-2 align-middle inline-block border-black border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
+                Signup
+                <span class="arrow transition-transform duration-100 ease-in-out w-2 h-2 align-middle inline-block border-black dark:border-primary-focus border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
               </button>
-              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-300 text-right right-0 left-auto p-0 z-99 bg-white md:absolute"id="dropdown1">
+              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-300 text-right right-0 top-8 left-auto p-0 z-99 md:absolute" id="dropdown1">
                 <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_barista">Barista</a></li>
                 <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_cafe">Shop Owner</a></li>
               </ul>

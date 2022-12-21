@@ -1,218 +1,219 @@
 <%- include('partials/header') -%>
 <div class="container mx-auto relative mb-28 md:max-w-4xl">
 
-      <div>
+  <h1 class="text-3xl text-center"><strong>Welcome</strong>, <%= cafe.cafeName %></h1>
 
-        <h1 class="text-3xl text-center"><strong>Welcome</strong>, <%= cafe.cafeName %></h1>
-
-      </div>
-      <section class="collapse text-center py-5">
-        <!-- Active shifts input section -->
-        <input type="checkbox" /> 
-        <button class="btn btn-outline btn-primary collapse-title text-xl font-medium mb-4">
-          Click me to add a new shift
-        </button>
-        <div class="collapse-content">
-          <form action="/cafe/postShift" method="POST">
-            <div class="form-control">  
-              <label class="input-group" for="location">
-                <span>Location</span>
-                <input class="input input-bordered" type="text" name="location" id="location" placeholder="Junction, Leslieville" required="required" />
-              </label>
-            </div>
-            <div class="form-control"> 
-              <label class="input-group" for="wage" >
-                <span>Wage</span>
-                <input class="input input-bordered" type="number" name="wage" id="wege" placeholder="$15.5/hour" min="15.5">
-              </label>
-            </div>
-            <div class="form-control">   
-              <label class="input-group" for="date">
-                <span>Date + start time</span>
-                <input class="input input-bordered" type="datetime-local" name="date" id="datefield" required="required">
-              </label>
-            </div>
-            <div class="form-control">   
-              <label class="input-group" for="end_time">
-                <span>End time</span>
-                <input class="input input-bordered" type="time" name="end_time" id="end_time" required="required">
-              </label>
-            </div>
-            <div class="form-control">   
-              <label class="input-group" for="more">
-                <span>More Info</span>
-                <input class="input input-bordered" type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
-              </label>
-              </div>
-            <input type="text" name="userID" value="<%= user.id %>" hidden>
-            <button class="btn" type="submit">Post the shift</button>
-          </form>
+  <!-- New shift posting section -->
+  <section class="collapse text-center py-5">
+    <input type="checkbox" /> 
+    <button class="btn btn-outline btn-primary collapse-title text-xl font-medium mb-4">
+      Click me to add a new shift
+    </button>
+    <div class="collapse-content">
+      <form action="/cafe/postShift" method="POST">
+        <div class="form-control">  
+          <label class="input-group" for="location">
+            <span>Location</span>
+            <input class="input input-bordered" type="text" name="location" id="location" placeholder="Junction, Leslieville" required="required" />
+          </label>
         </div>
-      </section>
-
-
-      <!-- Active shifts display area -->
-      <section class="overflow-x-auto">
-        <table class="table w-full">
-          <caption class="text-xl font-bold">Active needs</caption>
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Location</th>
-              <th scope="col">Wage</th>
-              <th scope="col">time</th>
-              <th scope="col">Available baristas</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-            <% let activeShift = 0 %>  
-            <% for(let i = 0; i < shift.length; i++) { %>
-              <% let shiftDate = new Date(shift[i].date) %>
-              <% if (shift[i].activeStatus && shiftDate >= Date.now()) { %>
-                <% activeShift++ %>
-                <tr data-id="<%= shift[i]._id %>">
-                  <!-- Extract date of the shift -->
-                  <th scope="row"><%= shiftDate.toDateString() %></th>
-                  <td><%= shift[i].location %></td>
-                  <td><%= shift[i].wage %></td>               
-                  <!-- Extract shift start time -->
-                  <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
-                  <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-
-                  <!-- Show all available baristas per shift-->
-                  <td>
-                    <% let availBarista = barista.filter(e => shift[i].availability.includes(e.userName) ) %>
-                    <% availBarista.map((b, idx) => { %>
-                      <label for="my-modal" class="btn">
-                        <% if (!b.firstName) { %>
-                          <%= b.userName %>
-                        <% }else{ %>
-                          <%= `${b.firstName} ${b.lastName[0]}`%>
-                        <% } %>                        
-                      </label>
-
-
-                      <input type="checkbox" id="my-modal" class="modal-toggle" />
-                      <div class="modal">
-                        <div class="modal-box">
-                          <h3 class="text-xl">Contact <span class="font-bold"><%= `${b.firstName} ${b.lastName[0]}` %></span> at :</h2>
-                          <p class="py-6">
-                            <a class="px-2" href="mailto:<%= b.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
-                            <% if (b.ig) { %>
-                              <a class="px-2" href="https://www.instagram.com/<%= b.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
-                            <% } %>
-                            <% if (b.phone) { %>
-                              <a class="px-2" href="tel:+1<%= b.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
-                            <% } %>
-                          </p>
-                          <div class="modal-action">
-                            <label for="my-modal" class="btn">Close</label>
-                          </div>
-                        </div>
-                      </div>
-
-
-                      
-                    <% }) %>
-                  </td>
-                  <td>
-                    <button type="button" id="editShift">Edit</button>
-                    <button type="button" class="inactiveShift">Fulfilled</button>
-                    <button type="button" class="deleteShift">Delete</button>
-                  </td>
-                </tr>
-              <% } %>
-            <% }  %>
-            <% if (shift.length == 0 || activeShift == 0 ){ %>
-            <tr>
-              <th colspan="6"><%= cafe.cafeName %> has no active shift to display</th>
-            </tr>
-          
-          <% }  %> 
-        </table>
-      </section>
-
-      <!-- Past/inactive shifts display area -->
-      <section class="overflow-x-auto">
-        <table class="table w-full">
-          <caption>Past request</caption>
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Location</th>
-              <th scope="col">Wage</th>
-              <th scope="col">time</th>
-              <th scope="col">Available baristas</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <% let pastShift = 0 %>
-            <% for(let i = 0; i < shift.length; i++) { %>
-              <% let shiftDate = new Date(shift[i].date) %>
-              <% if (!shift[i].activeStatus || shiftDate < Date.now()) { %>
-                <% pastShift++ %>
-                <tr data-id="<%= shift[i]._id %>">
-                  <!-- Extract date of the shift -->
-                  <th scope="row"><%= shiftDate.toDateString() %></th>
-                  <td><%= shift[i].location %></td>
-                  <td><%= shift[i].wage %></td>                  
-                  <!-- Extract shift start time -->
-                  <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
-                  <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-
-                  <!-- Show all available baristas per shift-->
-                  <td>
-                    <% let availBarista = barista.filter(e => shift[i].availability.includes(e.userName) ) %>
-                    <% availBarista.map((b, idx) => { %>
-                      <label for="my-modal" class="btn">
-                        <% if (!b.firstName) { %>
-                          <%= b.userName %>
-                        <% }else{ %>
-                          <%= `${b.firstName} ${b.lastName[0]}`%>
-                        <% } %>                        
-                      </label>
-
-
-                      <input type="checkbox" id="my-modal" class="modal-toggle" />
-                      <div class="modal">
-                        <div class="modal-box">
-                          <h3 class="text-xl font-bold"><%= `${b.firstName} ${b.lastName}` %></span></h2>
-                          <span class="inline-block py-4">Level of experience: <%= b.exp %> </span>
-                          <p class="py-6">
-                            <a class="px-2" href="mailto:<%= b.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
-                            <% if (b.ig) { %>
-                              <a class="px-2" href="https://www.instagram.com/<%= b.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
-                            <% } %>
-                            <% if (b.phone) { %>
-                              <a class="px-2" href="tel:+1<%= b.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
-                            <% } %>
-                          </p>
-                          <div class="modal-action">
-                            <label for="my-modal" class="btn">Close</label>
-                          </div>
-                        </div>
-                      </div>
-
-
-                      
-                    <% }) %>
-                  </td>
-                  <td>
-                    <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
-                    <button type="button" class="deleteShift"><i class="fa-regular fa-trash-can"></i></button>
-                  </td>
-                </tr>
-              <% } %>
-            <% }  %>
-            <% if (shift.length == 0 || pastShift == 0 ){ %>
-            <tr>
-              <th colspan="6"><%= cafe.cafeName %> has no past shift to display</th>
-            </tr>
-          
-          <% }  %> 
-        </table>
-      </section>
+        <div class="form-control"> 
+          <label class="input-group" for="wage" >
+            <span>Wage</span>
+            <input class="input input-bordered" type="number" name="wage" id="wege" placeholder="$15.5/hour" min="15.5">
+          </label>
+        </div>
+        <div class="form-control">   
+          <label class="input-group" for="date">
+            <span>Date + start time</span>
+            <input class="input input-bordered" type="datetime-local" name="date" id="datefield" required="required">
+          </label>
+        </div>
+        <div class="form-control">   
+          <label class="input-group" for="end_time">
+            <span>End time</span>
+            <input class="input input-bordered" type="time" name="end_time" id="end_time" required="required">
+          </label>
+        </div>
+        <div class="form-control">   
+          <label class="input-group" for="more">
+            <span>More Info</span>
+            <input class="input input-bordered" type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
+          </label>
+          </div>
+        <input type="text" name="userID" value="<%= user.id %>" hidden>
+        <button class="btn btn-primary" type="submit">Post the shift</button>
+      </form>
     </div>
+  </section>
+
+
+  <!-- Active shifts display area -->
+  <section class="overflow-x-auto">
+    <table class="table w-full">
+      <caption class="text-secondary text-xl font-bold">Current requests</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Location</th>
+          <th scope="col">Wage</th>
+          <th scope="col">time</th>
+          <th scope="col">Available baristas</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+
+        <% let activeShift = 0 %>  
+        <% for(let i = 0; i < shift.length; i++) { %>
+          <% let shiftDate = new Date(shift[i].date) %>
+          <% if (shift[i].activeStatus && shiftDate >= Date.now()) { %>
+            <% activeShift++ %>
+
+            <tr data-id="<%= shift[i]._id %>">
+              <!-- Extract date of the shift -->
+              <th scope="row"><%= shiftDate.toDateString() %></th>
+              <td><%= shift[i].location %></td>
+              <td><%= shift[i].wage %></td>               
+              <!-- Extract shift start time as hh:mm -->
+              <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+              <td><%= `${startTime} - ${shift[i].end_time}` %></td>
+
+              <!-- Show all available baristas per shift-->
+              <td>
+                <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
+                <% availableBarista.map(oneBarista => { %>
+                  <label for="pick-me" class="btn">
+                    <% if (!oneBarista.firstName) { %>
+                      <%= oneBarista.userName %>
+                    <% }else{ %>
+                      <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
+                    <% } %>                        
+                  </label>
+
+                  <input type="checkbox" id="pick-me" class="modal-toggle" />
+                  <div class="modal">
+                    <div class="modal-box">
+                      <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
+                      <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
+                      <% if(oneBarista.more){ %>
+                        <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
+                      <% } %> 
+                      <p class="py-6">
+                        <a class="px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
+                        <% if (oneBarista.ig) { %>
+                          <a class="px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                        <% } %>
+                        <% if (oneBarista.phone) { %>
+                          <a class="px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
+                        <% } %>
+                      </p>
+                      <div class="modal-action">
+                        <label for="pick-me" class="btn">Close</label>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </td>
+              <td>
+                <!-- <button type="button" id="editShift">Edit</button> -->
+                <button type="button" class="inactiveShift btn btn-secondary"><i class="fa-solid fa-check"></i></button>
+                <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+          <% } %>
+        <% }  %>
+        <% if (shift.length == 0 || activeShift == 0 ){ %>
+        <tr>
+          <th colspan="6"><%= cafe.cafeName %> has no active shift to display</th>
+        </tr>
+      
+      <% }  %> 
+    </table>
+  </section>
+
+  <!-- Past/inactive shifts display area -->
+  <section class="overflow-x-auto">
+    <table class="table w-full">
+      <caption class="text-secondary text-xl font-bold">Past request</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Location</th>
+          <th scope="col">Wage</th>
+          <th scope="col">time</th>
+          <th scope="col">Available baristas</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <% let pastShift = 0 %>
+        <% for(let i = 0; i < shift.length; i++) { %>
+          <% let shiftDate = new Date(shift[i].date) %>
+          <% if (!shift[i].activeStatus || shiftDate < Date.now()) { %>
+            <% pastShift++ %>
+            <tr data-id="<%= shift[i]._id %>">
+              <!-- Extract date of the shift -->
+              <th scope="row"><%= shiftDate.toDateString() %></th>
+              <td><%= shift[i].location %></td>
+              <td><%= shift[i].wage %></td>                  
+              <!-- Extract shift start time -->
+              <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+              <td><%= `${startTime} - ${shift[i].end_time}` %></td>
+
+              <!-- Show all available baristas per shift-->
+              <td>
+                <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
+                <% availableBarista.map(oneBarista => { %>
+                  <label for="pick-me" class="btn">
+                    <% if (!oneBarista.firstName) { %>
+                      <%= oneBarista.userName %>
+                    <% }else{ %>
+                      <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
+                    <% } %>                        
+                  </label>
+
+                  <input type="checkbox" id="pick-me" class="modal-toggle" />
+                  <div class="modal">
+                    <div class="modal-box">
+                      <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
+                      <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
+                      <% if(oneBarista.more){ %>
+                        <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
+                      <% } %> 
+                      <p class="py-6">
+                        <a class="px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
+                        <% if (oneBarista.ig) { %>
+                          <a class="px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                        <% } %>
+                        <% if (oneBarista.phone) { %>
+                          <a class="px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
+                        <% } %>
+                      </p>
+                      <div class="modal-action">
+                        <label for="pick-me" class="btn">Close</label>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
+                <% }) %>
+              </td>
+              <td>
+                <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
+                <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+              </td>
+            </tr>
+          <% } %>
+        <% }  %>
+        <% if (shift.length == 0 || pastShift == 0 ){ %>
+        <tr>
+          <th colspan="6"><%= cafe.cafeName %> has no past shift to display</th>
+        </tr>
+      
+      <% }  %> 
+    </table>
+  </section>
+  
 
 </div>
 <%- include('partials/footer') -%>
