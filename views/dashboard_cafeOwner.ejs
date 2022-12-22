@@ -51,7 +51,7 @@
   <!-- Active shifts display area -->
   <section class="overflow-x-auto">
     <table class="table w-full">
-      <caption class="text-secondary text-xl font-bold">Current requests</caption>
+      <caption class="py-2 text-secondary text-xl font-bold">Current requests</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -65,17 +65,17 @@
 
         <% let activeShift = 0 %>  
         <% for(let i = 0; i < shift.length; i++) { %>
-          <% let shiftDate = new Date(shift[i].date) %>
-          <% if (shift[i].activeStatus && shiftDate >= Date.now()) { %>
+          <% let shiftDateAndTime = new Date(shift[i].date) %>
+          <% if (shift[i].activeStatus && shiftDateAndTime >= Date.now()) { %>
             <% activeShift++ %>
 
             <tr data-id="<%= shift[i]._id %>">
-              <!-- Extract date of the shift -->
-              <th scope="row"><%= shiftDate.toDateString() %></th>
+              <% let shiftDate = shiftDateAndTime.toDateString() %> 
+              <th scope="row"><%= shiftDate %></th>
               <td><%= shift[i].location %></td>
               <td><%= shift[i].wage %></td>               
-              <!-- Extract shift start time as hh:mm -->
-              <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+              <!-- Extract shift start time as hh:mm format -->
+              <% let startTime = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}` %> 
               <td><%= `${startTime} - ${shift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
@@ -99,12 +99,12 @@
                         <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
                       <% } %> 
                       <p class="py-6">
-                        <a class="px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
+                        <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
                         <% if (oneBarista.ig) { %>
-                          <a class="px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                          <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
                         <% } %>
                         <% if (oneBarista.phone) { %>
-                          <a class="px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
+                          <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
                         <% } %>
                       </p>
                       <div class="modal-action">
@@ -116,8 +116,12 @@
               </td>
               <td>
                 <!-- <button type="button" id="editShift">Edit</button> -->
-                <button type="button" class="inactiveShift btn btn-secondary"><i class="fa-solid fa-check"></i></button>
-                <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+                <div class="tooltip" data-tip="Fulfilled">
+                  <button type="button" class="inactiveShift btn btn-secondary"><i class="fa-solid fa-check"></i></button>
+                </div>
+                <div class="tooltip" data-tip="Delete">
+                  <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+                </div>                
               </td>
             </tr>
           <% } %>
@@ -147,16 +151,16 @@
       </thead>
       <% let pastShift = 0 %>
         <% for(let i = 0; i < shift.length; i++) { %>
-          <% let shiftDate = new Date(shift[i].date) %>
-          <% if (!shift[i].activeStatus || shiftDate < Date.now()) { %>
+          <% let shiftDateAndTime = new Date(shift[i].date) %>
+          <% if (!shift[i].activeStatus || shiftDateAndTime < Date.now()) { %>
             <% pastShift++ %>
             <tr data-id="<%= shift[i]._id %>">
-              <!-- Extract date of the shift -->
-              <th scope="row"><%= shiftDate.toDateString() %></th>
+              <% let shiftDate = shiftDateAndTime.toDateString() %> 
+              <th scope="row"><%= shiftDate %></th>
               <td><%= shift[i].location %></td>
               <td><%= shift[i].wage %></td>                  
-              <!-- Extract shift start time -->
-              <% let startTime = `${shiftDate.getHours().toString().padStart(2, '0')}:${shiftDate.getMinutes().toString().padStart(2, '0')}` %> 
+              <!-- Extract shift start time as hh:mm format -->
+              <% let startTime = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}` %> 
               <td><%= `${startTime} - ${shift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
@@ -180,27 +184,27 @@
                         <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
                       <% } %> 
                       <p class="py-6">
-                        <a class="px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
+                        <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
                         <% if (oneBarista.ig) { %>
-                          <a class="px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                          <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
                         <% } %>
                         <% if (oneBarista.phone) { %>
-                          <a class="px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-xl"></i></a>
+                          <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
                         <% } %>
                       </p>
                       <div class="modal-action">
                         <label for="pick-me" class="btn">Close</label>
                       </div>
                     </div>
-                  </div>
-
-
-                  
+                  </div>                  
                 <% }) %>
               </td>
               <td>
                 <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
-                <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+                <div class="tooltip" data-tip="Delete">
+                  <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+                
               </td>
             </tr>
           <% } %>
