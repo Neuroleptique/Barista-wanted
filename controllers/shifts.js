@@ -117,5 +117,16 @@ module.exports = {
     } catch(err) {
       console.log(err)
     }
+  },
+  removeAvailable: async(req, res) => {
+    try {
+      await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
+        $pull: { availability: req.user.userName }
+      })
+      console.log(`${req.user.userName} is no longer available for the shift`)
+      res.json('Candidate removed')
+    }catch(err){
+      console.log(err)
+    }
   }
 } 

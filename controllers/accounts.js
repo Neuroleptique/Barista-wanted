@@ -15,7 +15,7 @@ module.exports = {
         const shiftData = await Shift.find({ activeStatus: true }).sort({ date: 1 });
         
         const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        console.log(availableBarista)
+        // console.log(availableBarista)
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
@@ -28,7 +28,7 @@ module.exports = {
         
         const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
         const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        console.log(availableBarista)
+        // console.log(availableBarista)
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista

@@ -13,8 +13,8 @@
       <form action="/cafe/postShift" method="POST">
         <div class="form-control">  
           <label class="input-group" for="location">
-            <span>Location</span>
-            <input class="input input-bordered" type="text" name="location" id="location" placeholder="Junction, Leslieville" required="required" />
+            <span>Address</span>
+            <input class="input input-bordered" type="text" name="location" id="location" placeholder="37 Baldwin St" required="required" />
           </label>
         </div>
         <div class="form-control"> 
@@ -26,7 +26,7 @@
         <div class="form-control">   
           <label class="input-group" for="date">
             <span>Date + start time</span>
-            <input class="input input-bordered" type="datetime-local" name="date" id="datefield" required="required">
+            <input class="date-input input input-bordered" type="datetime-local" name="date" id="datefield" required="required">
           </label>
         </div>
         <div class="form-control">   
@@ -51,7 +51,7 @@
   <!-- Active shifts display area -->
   <section class="overflow-x-auto">
     <table class="table w-full">
-      <caption class="py-2 text-secondary text-xl font-bold">Current requests</caption>
+      <caption class="py-3 text-secondary text-xl font-bold">Current requests</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -82,46 +82,42 @@
               <td>
                 <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
                 <% availableBarista.map(oneBarista => { %>
-                  <label for="pick-me" class="btn">
-                    <% if (!oneBarista.firstName) { %>
-                      <%= oneBarista.userName %>
-                    <% }else{ %>
-                      <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
-                    <% } %>                        
-                  </label>
+                    <label for="pick<%= oneBarista %>" class="btn">
+                      <% if (!oneBarista.firstName) { %>
+                        <%= oneBarista.userName %>
+                      <% }else{ %>
+                        <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
+                      <% } %>                        
+                    </label>
 
-                  <input type="checkbox" id="pick-me" class="modal-toggle" />
-                  <div class="modal">
-                    <div class="modal-box">
-                      <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
-                      <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
-                      <% if(oneBarista.more){ %>
-                        <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
-                      <% } %> 
-                      <p class="py-6">
-                        <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
-                        <% if (oneBarista.ig) { %>
-                          <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
-                        <% } %>
-                        <% if (oneBarista.phone) { %>
-                          <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
-                        <% } %>
-                      </p>
-                      <div class="modal-action">
-                        <label for="pick-me" class="btn">Close</label>
+                    <input type="checkbox" id="pick<%= oneBarista %>" class="modal-toggle" />
+                    <div class="modal">
+                      <div class="modal-box">
+                        <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
+                        <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
+                        <% if(oneBarista.more){ %>
+                          <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
+                        <% } %> 
+                        <p class="py-6">
+                          <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
+                          <% if (oneBarista.ig) { %>
+                            <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                          <% } %>
+                          <% if (oneBarista.phone) { %>
+                            <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
+                          <% } %>
+                        </p>
+                        <div class="modal-action">
+                          <label for="pick<%= oneBarista %>" class="btn">Close</label>
+                        </div>
                       </div>
                     </div>
-                  </div>
                 <% }) %>
               </td>
               <td>
                 <!-- <button type="button" id="editShift">Edit</button> -->
-                <div class="tooltip" data-tip="Fulfilled">
-                  <button type="button" class="inactiveShift btn btn-secondary"><i class="fa-solid fa-check"></i></button>
-                </div>
-                <div class="tooltip" data-tip="Delete">
-                  <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
-                </div>                
+                <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>             
+                <button type="button" class="deleteShift btn btn-secondary tooltip" data-tip="Delete"><i class="fa-regular fa-trash-can"></i></button>          
               </td>
             </tr>
           <% } %>
@@ -138,7 +134,7 @@
   <!-- Past/inactive shifts display area -->
   <section class="overflow-x-auto">
     <table class="table w-full">
-      <caption class="text-secondary text-xl font-bold">Past request</caption>
+      <caption class="py-3 text-secondary text-xl font-bold">Past requests</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -167,7 +163,7 @@
               <td>
                 <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
                 <% availableBarista.map(oneBarista => { %>
-                  <label for="pick-me" class="btn">
+                  <label for="pick<%= oneBarista %>" class="btn">
                     <% if (!oneBarista.firstName) { %>
                       <%= oneBarista.userName %>
                     <% }else{ %>
@@ -175,7 +171,7 @@
                     <% } %>                        
                   </label>
 
-                  <input type="checkbox" id="pick-me" class="modal-toggle" />
+                  <input type="checkbox" id="pick<%= oneBarista %>" class="modal-toggle" />
                   <div class="modal">
                     <div class="modal-box">
                       <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
@@ -193,7 +189,7 @@
                         <% } %>
                       </p>
                       <div class="modal-action">
-                        <label for="pick-me" class="btn">Close</label>
+                        <label for="pick<%= oneBarista %>" class="btn">Close</label>
                       </div>
                     </div>
                   </div>                  
@@ -201,9 +197,9 @@
               </td>
               <td>
                 <!-- <button type="button" id="activeStatusTrue">Re-active</button> -->
-                <div class="tooltip" data-tip="Delete">
-                  <button type="button" class="deleteShift btn btn-secondary"><i class="fa-regular fa-trash-can"></i></button>
-                </div>
+                
+                  <button type="button" class="deleteShift tooltip btn btn-secondary" data-tip="Delete"><i class="fa-regular fa-trash-can"></i></button>
+                
                 
               </td>
             </tr>
