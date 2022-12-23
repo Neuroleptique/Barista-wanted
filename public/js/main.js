@@ -1,10 +1,13 @@
 const changeStatusBtn = document.querySelectorAll('.inactiveShift')
 const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
-const shiftDateField = document.getElementById('datefield')
+const notAvailableBtn = document.querySelectorAll('.not-available')
+const shiftDateField = document.querySelectorAll('.date-input')
 
-// Limit shift starting date input to accept value no earlier than the current date
-shiftDateField.addEventListener('focus', minDate)
+// Cafe: Restrict shift starting date input to only accept value no earlier than the current date
+Array.from(shiftDateField).forEach(input => {
+  input.addEventListener('focus', minDate)
+})
 
 function minDate() {
   let today = new Date()
@@ -28,10 +31,10 @@ function minDate() {
   }
   today = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min
   console.log(today)
-  shiftDateField.setAttribute('min', today)
+  document.getElementById('datefield').setAttribute('min', today)
 }
 
-// Change shift activeStatus to false
+// Cafe: Make shift inavtive
 Array.from(changeStatusBtn).forEach(btn => {
   btn.addEventListener('click', changeStatusFalse)
 })
@@ -55,7 +58,7 @@ async function changeStatusFalse() {
   }
 }
 
-// Delete shift
+// Cafe: Delete shift
 Array.from(deleteShiftBtn).forEach(btn => {
   btn.addEventListener('click', deleteShift)
 })
@@ -78,7 +81,7 @@ async function deleteShift() {
   }
 }
 
-// Put themself (barista) available for the shift
+// Barista: Put themself (barista) available for the shift
 Array.from(availableToWorkBtn).forEach(btn => {
   btn.addEventListener('click', availableToWork)
 })
@@ -87,6 +90,29 @@ async function availableToWork() {
   const shiftID = this.parentNode.parentNode.dataset.id
   try {
     const response = await fetch('barista/putAvailable', {
+      method: 'put',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        shiftID: shiftID
+      })
+    })
+    const data = await response.json()
+    console.log(data)
+    location.reload()
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+// Barista: Remove themself from being available for the shift
+Array.from(notAvailableBtn).forEach(btn => {
+  btn.addEventListener('click', notAvailableToWork)
+})
+
+async function notAvailableToWork() {
+  const shiftID = this.parentNode.parentNode.dataset.id
+  try {
+    const response = await fetch('barista/removeAvailable', {
       method: 'put',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
