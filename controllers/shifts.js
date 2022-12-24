@@ -13,6 +13,7 @@ module.exports = {
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       await Shift.create({
         userID: req.user._id,
+        cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
         location: req.body.location,
         wage: req.body.wage,

@@ -4,46 +4,47 @@
     <div class="tooltip flex-none" data-tip="back to dashboard">
       <a class="left-2 btn" href="/dashboard"><i class="fa-solid fa-arrow-left"></i></a>
     </div>
-
     <h1 class="flex-1 text-3xl text-center">
       This is <%= cafe.cafeName ? cafe.cafeName : user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile
     </h1>
   </div>
+
   <form action="/profile_cafe?_method=PUT" 
         method="POST">
-    <div class="">
-      <label for="cafeName">Company name</label>
-      <input type="text" id="cafeName" name="cafeName" value="<%= cafe.cafeName %>">
-  </div>
-    <div class="">
-        <label for="firstName">Your First Name</label>
-        <input type="text" id="firstName" name="firstName" value="<%= cafe.firstName %>">
+    <div class="form-control">
+      <label class="label" for="cafeName">Company name</label>
+      <input class="input input-bordered" type="text" id="cafeName" name="cafeName" value="<%= cafe.cafeName %>">
     </div>
-    <div class="">
-      <label for="lastName">Your Last Name</label>
-      <input type="text" id="lastName" name="lastName" value="<%= cafe.lastName %>">
+    <div class="form-control">
+        <label class="label" for="firstName">Your First Name</label>
+        <input class="input input-bordered" type="text" id="firstName" name="firstName" value="<%= cafe.firstName %>">
     </div>
-    <div class="">
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" value="<%= cafe.phone || null %>">
+    <div class="form-control">
+      <label class="label" for="lastName">Your Last Name</label>
+      <input class="input input-bordered" type="text" id="lastName" name="lastName" value="<%= cafe.lastName %>">
     </div>
-    <div class="">
-      <label for="address">Cafe location</label>
-      <input type="tel" id="address" name="address" value="<%= cafe.address || null %>">
+    <div class="form-control">
+      <label class="label" for="phone">Phone Number</label>
+      <input class="input input-bordered" type="tel" id="phone" name="phone" value="<%= cafe.phone || null %>">
     </div>
-    <!-- <div>
-      <label for="logo">Brand Logo</label>
-      <input type="file" id="logo" name="file">
-    </div> -->
-    <div class="">
-      <label for="ig">Instagram</label>
-      <input type="text" id="ig" name="ig" placeholder="amazingcoffee" value="<%= cafe.ig || null %>">
+    <div class="form-control">
+      <label class="label" for="address">Store Google Map link</label>
+      <input class="input input-bordered" type="tel" id="address" name="address" placeholder="Your cafe's shareable link on Google Map" value="<%= cafe.address || null %>">
     </div>
-    <!-- add uploaded image here -->
-    <div>
-      <label for="more">Anything else to add</label>
-      <input type="text" id="more" name="more" value="<%= cafe.more || null %>"></input>
+    <div class="form-control">
+      <label class="label" for="ig">
+        <span class="label-text">Cafe's Instagram</span>
+      </label>
+      <label class="input-group">
+        <span>https://www.instagram.com/</span>
+        <input class="input input-bordered" type="text" id="ig" name="ig" placeholder="Cafe's instagram id" value="<%= cafe.ig || null %>">
+      </label>
     </div>
+    <div class="form-control">
+      <label class="label" for="more">Anything else you want to add?</label>
+      <input class="input input-bordered" type="text" id="more" name="more" value="<%= cafe.more || null %>"></input>
+    </div>
+
     <input type="text" id="userID" name="userID" value="<%= user.id %>" hidden>
     
     <button id="updateProfile" type="submit" class="btn btn-primary">Save</button>

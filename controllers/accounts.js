@@ -8,24 +8,34 @@ module.exports = {
   getDashboard: async (req, res) => {
     try {
       // const posts = await Post.find({ user: req.user.id });
-      const cafeData = await Cafe.find({ userName: req.user.userName });
+      const today = new Date().toJSON()
       
       if (req.user.userType == 'barista') {
         
-        const shiftData = await Shift.find({ activeStatus: true }).sort({ date: 1 });
+        const shiftData = await Shift.find({ 
+          activeStatus: true,
+          date: { $gte: today }
+        }).sort({ date: 1 });
         
-        const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        // console.log(availableBarista)
+        const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )        
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
           }
         })
-        console.log(baristaData)
+
+        const shiftPoster = shiftData.map(s => s.cafeName)
+        const cafeData = await Cafe.find({
+          cafeName: {
+            $in: shiftPoster
+          }
+        })
+        console.log(cafeData)
         res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
-      } else if (req.user.userType == 'cafe' ) {
-        // const cafeData = await Cafe.find({ userName: req.user.userName });
         
+      } else if (req.user.userType == 'cafe' ) {
+
+        const cafeData = await Cafe.find({ userName: req.user.userName });
         const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
         const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
         // console.log(availableBarista)

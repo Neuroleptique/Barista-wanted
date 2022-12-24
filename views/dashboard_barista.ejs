@@ -1,7 +1,7 @@
 <%- include('partials/header') -%>
 <div class="container mx-auto relative mb-28 md:max-w-4xl">
 
-  <h1 class="text-3xl text-center"><strong>Welcome</strong>, <%= user.userName %></h1>
+  <h1 class="text-3xl text-center">Hey <strong><%= user.userName %></strong>, ready to make coffee and get paid?</h1>
 
   <!-- Search area -->
 
@@ -25,7 +25,10 @@
           <% activeShift++ %>
 
           <tr data-id="<%= shift[i]._id %>">
-            <th scope="row"><%= shift[i].cafeName %></th>
+            <th scope="row">
+              <!-- pending: make popup window to show cafe info here -->
+              <%= shift[i].cafeName %>
+            </th>
             <td><%= shift[i].wage %></td>
             <% let shiftDate = shiftDateAndTime.toDateString() %>
             <td><%= shiftDate %></td>
