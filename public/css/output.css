@@ -4874,26 +4874,6 @@ ul li:hover .dropdown {
   }
 }
 
-@media (min-width: 480px) {
-  .sm\:input-group-vertical {
-    flex-direction: column;
-  }
-
-  .sm\:input-group-vertical :first-child {
-    border-top-left-radius: var(--rounded-btn, 0.5rem);
-    border-top-right-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .sm\:input-group-vertical :last-child {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-right-radius: var(--rounded-btn, 0.5rem);
-  }
-}
-
 @media (min-width: 760px) {
   .md\:absolute {
     position: absolute;
@@ -4921,49 +4901,6 @@ ul li:hover .dropdown {
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
 
-  .md\:input-group {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
-  }
-
-  .md\:input-group > .input {
-    isolation: isolate;
-  }
-
-  .md\:input-group > *,.md\:input-group > .input,.md\:input-group > .select {
-    border-radius: 0px;
-  }
-
-  .md\:input-group-md {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    line-height: 2;
-  }
-
-  .md\:input-group :where(span) {
-    display: flex;
-    align-items: center;
-    --tw-bg-opacity: 1;
-    background-color: hsl(var(--b3, var(--b2)) / var(--tw-bg-opacity));
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .md\:input-group > :first-child {
-    border-top-left-radius: var(--rounded-btn, 0.5rem);
-    border-top-right-radius: 0;
-    border-bottom-left-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-right-radius: 0;
-  }
-
-  .md\:input-group > :last-child {
-    border-top-left-radius: 0;
-    border-top-right-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: var(--rounded-btn, 0.5rem);
-  }
-
   .md\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
@@ -4981,24 +4918,6 @@ ul li:hover .dropdown {
 
   .lg\:justify-center {
     justify-content: center;
-  }
-
-  .lg\:input-group-vertical {
-    flex-direction: column;
-  }
-
-  .lg\:input-group-vertical :first-child {
-    border-top-left-radius: var(--rounded-btn, 0.5rem);
-    border-top-right-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .lg\:input-group-vertical :last-child {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: var(--rounded-btn, 0.5rem);
-    border-bottom-right-radius: var(--rounded-btn, 0.5rem);
   }
 
   .lg\:text-left {

@@ -11,7 +11,7 @@ module.exports = {
       const today = new Date().toJSON()
       
       if (req.user.userType == 'barista') {
-        
+      // need to test this out!  
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
@@ -30,7 +30,6 @@ module.exports = {
             $in: shiftPoster
           }
         })
-        console.log(cafeData)
         res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
         
       } else if (req.user.userType == 'cafe' ) {
@@ -44,8 +43,6 @@ module.exports = {
             $in: availableBarista
           }
         })
-        console.log(baristaData)
-
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData});
       }
 

@@ -11,44 +11,77 @@
       <caption class="py-3 text-secondary text-xl font-bold">Active needs</caption>
       <thead>
         <tr>
-          <th scope="col">Location</th>
-          <th scope="col">Wage</th>
           <th scope="col">Date</th>
+          <th scope="col">Location</th>
+          
           <th scope="col">time</th>
+          <th scope="col">Wage</th>
           <th scope="col">action</th>
         </tr>
       </thead>
-      <% let activeShift = 0 %>  
+
       <% for(let i = 0; i < shift.length; i++) { %>
-        <% let shiftDateAndTime = new Date(shift[i].date) %>
-        <% if (shift[i].activeStatus && shiftDateAndTime >= Date.now()) { %>
-          <% activeShift++ %>
+
+        <% let shiftDateAndTime = new Date(shift[i].date) %>        
 
           <tr data-id="<%= shift[i]._id %>">
             <th scope="row">
-              <!-- pending: make popup window to show cafe info here -->
-              <%= shift[i].cafeName %>
+              <% let shiftDate = shiftDateAndTime.toDateString() %>
+              <%= shiftDate %>
             </th>
+            <td>             
+              <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn"><%= shift[i].cafeName %></label>
+              
+              <% let cafeInfo = cafe.filter(coffeeShop => coffeeShop.userName == shift[i].cafeUserName )[0] %>
+              
+              <input type="checkbox" id="<%= `${i}-${shift[i].cafeUserName}` %>" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box">
+                  <h2 class="font-bold text-lg"><%= cafeInfo.cafeName %></h2>
+                  <% if(cafeInfo.more){ %>
+                    <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
+                  <% } %>
+                  <p>
+                  <% if(cafeInfo.address) { %> 
+                    <a class="btn px-2" href="<%= cafeInfo.address %>" target="_blank">
+                      <i class="fa-regular fa-map fa-2xl"></i>
+                    </a>
+                  <% } %>
+                  <% if (cafeInfo.ig) { %>
+                    <a class="btn px-2" href="https://www.instagram.com/<%= cafeInfo.ig %>" target="_blank">
+                      <i class="fa fa-brands fa-instagram fa-2xl"></i>
+                    </a>
+                  </p>
+                  <% } %>
+                  <div class="modal-action">
+                    <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn">Close</label>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <% let hh = shiftDateAndTime.getHours().toString().padStart(2, '0'), mm = shiftDateAndTime.getMinutes().toString().padStart(2, '0') %>
+            <% let start_Time = `${hh}:${mm}` %> 
+            <td><%= `${start_Time} - ${shift[i].end_time}` %></td>
             <td><%= shift[i].wage %></td>
-            <% let shiftDate = shiftDateAndTime.toDateString() %>
-            <td><%= shiftDate %></td>
-            <!-- Extract shift start time as hh:mm format -->
-            <% let startTime = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}` %> 
-            <td><%= `${startTime} - ${shift[i].end_time}` %></td>
-            <td><% if (shift[i].availability.includes(user.userName)){ %>
-              <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available"><i class="fa-regular fa-circle-xmark"></i></button>
+            <td>
+              <% if (shift[i].availability.includes(user.userName)) { %>
+                  <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                  </button>
               <% } else { %>
-              <button type="button" class="available btn btn-secondary tooltip" data-tip="Put myself available"><i class="fa-regular fa-hand"></i></button>
+                  <button type="button" class="available btn btn-secondary tooltip" data-tip="Put myself available">
+                    <i class="fa-regular fa-hand"></i>
+                  </button>
               <% } %>
             </td>
           </tr>
         <% } %>
-      <% }  %>
-      <% if (shift.length == 0 || activeShift == 0 ){ %>
-      <tr>
-        <th colspan="4">There is no shift needs to be picked up</th>
-      </tr>        
-    <% }  %>           
+
+      <% if (shift.length == 0 ) { %>
+          <tr>
+            <th colspan="4">There is no active shift</th>
+          </tr>        
+      <% } %>           
     </table>
   </section>
 </div>
