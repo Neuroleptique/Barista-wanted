@@ -33,4 +33,4 @@ bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash,
 Mongoose Schema, Date object manipulation, email sending from server, TailwindCss
 
 ## Optimization:
-Could use Google place API to give users the option to define the display shift data in their dashboard
+Could use Google place API to give users the option of defining their own display shift data
