@@ -4,7 +4,6 @@ const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift")
 const nodemailer = require('nodemailer');
-const { findOneAndUpdate } = require("../models/Barista");
 
 module.exports = {
   postShift: async (req, res) => {
@@ -78,36 +77,6 @@ module.exports = {
     console.log(err)
     }
   },
-  // emailNotification: async (req, res) => {
-  //   try {
-  //     const baristas = await User.find({ userType: "barista" })
-  //     console.log(baristas)
-  //     console.log('email sent')
-  //     const transporter = nodemailer.createTransport({
-  //       service: "gmail",
-  //       auth: {
-  //           user: process.env.MAIL_USER,
-  //           pass: process.env.MAIL_PWD
-  //       }
-  //     })
-  //     const mailOptions = {
-  //         to: req.user.email,
-  //         from: process.env.MAIL_USER,
-  //         subject: 'Barista Wanted: New shift available',
-  //         text: '' + 
-  //         'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-  //             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-  //             'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-  //             'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-  //     };
-  //     await transporter.sendMail(mailOptions, function (err) {
-  //         req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-  //         done(err, 'done');
-  //     });
-  //   } catch(err) {
-  //     console.log(err)
-  //   }
-  // },
   putAvailable: async(req, res) => {
     try {
       await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {

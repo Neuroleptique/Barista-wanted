@@ -58,7 +58,8 @@ module.exports = {
       const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
         res.render("profile_barista.ejs", { user: userData, barista: new Object(...baristaData) });
-      } else {
+      } else if (req.user.userType == 'cafe') {
+        console.log(cafeData)
         res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
       }
       // res.render('profile_barista.ejs', { user: userData })
@@ -92,7 +93,7 @@ module.exports = {
     }
   },
   updateProfileCafe: async (req, res) => {
-    console.log(req)
+    console.log(req.body)
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName },{
@@ -100,7 +101,10 @@ module.exports = {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
-          address: req.body.address,
+          address: {
+            area: req.body.area,
+            mapLink: req.body.mapLink
+          },
           ig: req.body.ig,
           more: req.body.more,
           userID: req.body.userID,
