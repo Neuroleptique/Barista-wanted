@@ -82,7 +82,7 @@
               <td>
                 <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
                 <% availableBarista.map(oneBarista => { %>
-                    <label for="pick<%= oneBarista %>" class="btn">
+                    <label for="pick<%= oneBarista.userName %>" class="btn">
                       <% if (!oneBarista.firstName) { %>
                         <%= oneBarista.userName %>
                       <% }else{ %>
@@ -90,15 +90,15 @@
                       <% } %>                        
                     </label>
 
-                    <input type="checkbox" id="pick<%= oneBarista %>" class="modal-toggle" />
+                    <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                     <div class="modal">
                       <div class="modal-box">
                         <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></h3>
-                        <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
+                        <span class="block py-1">Level of experience: <%= oneBarista.exp %> </span>
                         <% if(oneBarista.more){ %>
-                          <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
+                          <span class="block">About me: <%= oneBarista.more %> </span>
                         <% } %> 
-                        <p class="py-6">
+                        <div class="py-6">
                           <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
                           <% if (oneBarista.ig) { %>
                             <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
@@ -106,9 +106,9 @@
                           <% if (oneBarista.phone) { %>
                             <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
                           <% } %>
-                        </p>
+                        </div>
                         <div class="modal-action">
-                          <label for="pick<%= oneBarista %>" class="btn">Close</label>
+                          <label for="pick<%= oneBarista.userName %>" class="btn">Close</label>
                         </div>
                       </div>
                     </div>
@@ -124,7 +124,7 @@
         <% }  %>
         <% if (shift.length == 0 || activeShift == 0 ){ %>
         <tr>
-          <th colspan="6"><%= cafe.cafeName %> has no active shift to display</th>
+          <th colspan="6" class="text-center"><%= cafe.cafeName %> has no active shift to display</th>
         </tr>
       
       <% }  %> 
@@ -163,7 +163,7 @@
               <td>
                 <% let availableBarista = barista.filter(person => shift[i].availability.includes(person.userName) ) %>
                 <% availableBarista.map(oneBarista => { %>
-                  <label for="pick<%= oneBarista %>" class="btn">
+                  <label for="pick<%= oneBarista.userName %>" class="btn">
                     <% if (!oneBarista.firstName) { %>
                       <%= oneBarista.userName %>
                     <% }else{ %>
@@ -171,13 +171,13 @@
                     <% } %>                        
                   </label>
 
-                  <input type="checkbox" id="pick<%= oneBarista %>" class="modal-toggle" />
+                  <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                   <div class="modal">
                     <div class="modal-box">
                       <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></span></h2>
-                      <span class="inline-block py-4">Level of experience: <%= oneBarista.exp %> </span>
+                      <span class="block py-1">Level of experience: <%= oneBarista.exp %> </span>
                       <% if(oneBarista.more){ %>
-                        <span class="inline-block py-4">About me: <%= oneBarista.more %> </span>
+                        <span class="block">About me: <%= oneBarista.more %> </span>
                       <% } %> 
                       <p class="py-6">
                         <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
@@ -189,7 +189,7 @@
                         <% } %>
                       </p>
                       <div class="modal-action">
-                        <label for="pick<%= oneBarista %>" class="btn">Close</label>
+                        <label for="pick<%= oneBarista.userName %>" class="btn">Close</label>
                       </div>
                     </div>
                   </div>                  
@@ -207,7 +207,7 @@
         <% }  %>
         <% if (shift.length == 0 || pastShift == 0 ){ %>
         <tr>
-          <th colspan="6"><%= cafe.cafeName %> has no past shift to display</th>
+          <th colspan="6" class="text-center"><%= cafe.cafeName %> has no past shift to display</th>
         </tr>
       
       <% }  %> 
