@@ -8,35 +8,42 @@ module.exports = {
   getDashboard: async (req, res) => {
     try {
       // const posts = await Post.find({ user: req.user.id });
-      const cafeData = await Cafe.find({ userName: req.user.userName });
+      const today = new Date().toJSON()
       
       if (req.user.userType == 'barista') {
+      // need to test this out!  
+        const shiftData = await Shift.find({ 
+          activeStatus: true,
+          date: { $gte: today }
+        }).sort({ date: 1 });
         
-        const shiftData = await Shift.find({ activeStatus: true }).sort({ date: 1 });
-        
-        const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        console.log(availableBarista)
+        const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )        
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
           }
         })
-        console.log(baristaData)
+
+        const shiftPoster = shiftData.map(s => s.cafeName)
+        const cafeData = await Cafe.find({
+          cafeName: {
+            $in: shiftPoster
+          }
+        })
         res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
-      } else if (req.user.userType == 'cafe' ) {
-        // const cafeData = await Cafe.find({ userName: req.user.userName });
         
+      } else if (req.user.userType == 'cafe' ) {
+
+        const cafeData = await Cafe.find({ userName: req.user.userName });
         const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
         const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        console.log(availableBarista)
+        // console.log(availableBarista)
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
           }
         })
-        console.log(baristaData)
-
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData});
       }
 
     } catch (err) {
@@ -51,7 +58,8 @@ module.exports = {
       const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
         res.render("profile_barista.ejs", { user: userData, barista: new Object(...baristaData) });
-      } else {
+      } else if (req.user.userType == 'cafe') {
+        console.log(cafeData)
         res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
       }
       // res.render('profile_barista.ejs', { user: userData })
@@ -85,7 +93,7 @@ module.exports = {
     }
   },
   updateProfileCafe: async (req, res) => {
-    console.log(req)
+    console.log(req.body)
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName },{
@@ -93,7 +101,10 @@ module.exports = {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
-          address: req.body.address,
+          address: {
+            area: req.body.area,
+            mapLink: req.body.mapLink
+          },
           ig: req.body.ig,
           more: req.body.more,
           userID: req.body.userID,

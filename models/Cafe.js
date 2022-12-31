@@ -5,14 +5,18 @@ const CafeSchema= new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  cafeName: { type: String },
-  userName: { type: String },
-  firstName: { type: String },
-  lastName: { type: String },
-  phone: { type: Number },
-  address: { type: String }, 
-  ig: { type: String },
-  more: { type: String},
+  email: String ,
+  cafeName: String ,
+  address: [{
+    area: String,
+    mapLink: String
+  }],
+  userName: String,
+  firstName: String,
+  lastName: String,
+  phone: Number,
+  ig: String,
+  more: String,
 });
 
 module.exports = mongoose.model("Cafe", CafeSchema);

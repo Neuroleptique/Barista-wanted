@@ -7,10 +7,11 @@ const Cafe = require("../models/Cafe")
 
 exports.getLogin = (req, res) => {
   if (req.user) {
-    return res.redirect("/dashboard");
+    return res.redirect("/dashboard", { user: req.user });
   }
   res.render("login", {
     title: "Login",
+    user: req.user
   });
 };
 
@@ -77,6 +78,7 @@ exports.getSignupBarista = (req, res) => {
   
   res.render("signup_barista", {
     title: "Create Account",
+    user: req.user
   });
 };
 
@@ -87,6 +89,7 @@ exports.getSignupCafe = (req, res) => {
   
   res.render("signup_cafe", {
     title: "Create Account",
+    user: req.user
   });
 };
 
@@ -148,7 +151,7 @@ exports.postSignup = (req, res, next) => {
       if (req.body.userType == 'barista') {
         Barista.create({ userName: req.body.userName, email: req.body.email })
       } else if (req.body.userType == 'cafe') {
-        Cafe.create({ userName: req.body.userName, cafeName: req.body.cafeName })
+        Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
       }
       res.redirect("../dashboard");
     });
