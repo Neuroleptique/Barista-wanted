@@ -5,6 +5,7 @@ const ShiftSchema= new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  cafeUserName: { type: String },
   cafeName: { type: String },
   location: { type: String },
   wage: { type: Number },

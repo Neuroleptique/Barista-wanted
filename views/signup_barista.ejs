@@ -1,7 +1,7 @@
 <%- include('partials/header') -%>
-    <main class="container">
-        <div class="row justify-content-center">
-            <section class="col-6 mt-5">
+    <main class="container mx-auto relative text-3xl md:max-w-2xl">
+        <div class="">
+            <section class="">
                 <% if (locals.messages.errors) { %>
                     <% messages.errors.forEach( el => { %>
                         <div class="alert alert-danger"><%= el.msg %></div>
@@ -12,31 +12,30 @@
                         <div class="alert alert-info"><%= el.msg %></div>
                     <% }) %>    
                 <% } %>
-                <form action="/signup_barista" method="POST">
-                </div>
-                    <div class="mb-3">
+                <form action="/signup_barista" method="POST">                
+                    <div class="">
                       <label for="userName" class="form-label">User Name</label>
-                      <input type="text" class="form-control" id="userName" name="userName" required>
+                      <input type="text" class="" id="userName" name="userName" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="">
                       <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+                      <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
                       <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
-                    <div class="mb-3">
+                    <div class="">
                       <label for="password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="password" name="password" required>
+                      <input type="password" class="" id="password" name="password" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="">
                       <label for="confirmPassword" class="form-label">Confirm Password</label>
-                      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                      <input type="password" class="" id="confirmPassword" name="confirmPassword" required>
                     </div>
-                    <div class="mb-3">
-                      <!-- mendatory userType to barista -->
-                      <input type="text" class="form-control" id="userType" name="userType" value="barista" hidden>
+                    <div class="">
+                      <!-- Set mandatory userType as barista -->
+                      <input type="text" class="" id="userType" name="userType" value="barista" hidden>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
+                </form>
             </section>
         </div>
     </main>

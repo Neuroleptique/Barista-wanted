@@ -4,7 +4,6 @@ const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift")
 const nodemailer = require('nodemailer');
-const { findOneAndUpdate } = require("../models/Barista");
 
 module.exports = {
   postShift: async (req, res) => {
@@ -13,6 +12,7 @@ module.exports = {
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       await Shift.create({
         userID: req.user._id,
+        cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
         location: req.body.location,
         wage: req.body.wage,
@@ -85,6 +85,17 @@ module.exports = {
       console.log(`${req.user.userName} is available for the shift`)
       res.json('Candidate added')
     } catch(err) {
+      console.log(err)
+    }
+  },
+  removeAvailable: async(req, res) => {
+    try {
+      await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
+        $pull: { availability: req.user.userName }
+      })
+      console.log(`${req.user.userName} is no longer available for the shift`)
+      res.json('Candidate removed')
+    }catch(err){
       console.log(err)
     }
   }
