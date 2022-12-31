@@ -17,51 +17,81 @@
       ) {
         document.documentElement.setAttribute("data-theme", "night");
       } else {
-        document.documentElement.setAttribute("data-theme", "cupcake");
+        document.documentElement.setAttribute("data-theme", "bumblebee");
       }
     </script>
   </head>
   <body>
-    <header class="relative container mx-auto p-6">
-      <div class="flex item-center justify-between">
-        <div class="pt-0">
+    <nav class="relative container mx-auto p-6">
+      <div class="navbar bg-base-100">
+        <div class="navbar-start">
           <a href="/"><img class="h-12" src="/images/barista.png" alt="logo of barista pouring coffee"></a>
         </div>
-        <div class="pt-0">
-          <h1 class="max-w-lg font-mono text-4xl font-bold text-center md:text-4xl"><a href="/dashboard">Barista Wanted</a></h1>
+
+        <div class="navbar-center">
+          <a href="/dashboard" class="btn btn-ghost normal-case text-4xl font-mono">Barista Wanted</a>
         </div>
-        <nav class="py-3">
-          <ul class="hidden md:flex space-x-6 menus -translate-y-1 transition-transform ease-in duration-100">
+
+        <div class="navbar-end">
+          <div class="dropdown dropdown-bottom dropdown-end">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </label>
+            <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-xl">
+              <% if (user) { %>
+                <li class="text-xl">
+                  <a href="/profile_barista">Profile</a>
+                </li>
+                <li>
+                  <a href="/logout">Logout</a>
+                </li>
+              <% } else { %>
+                <li>
+                  <a href="/login">Login</a>
+                </li>
+                <li class="pl-4 py-2">                  
+                    Sign-up            
+                </li>
+                <li><a href="/signup_barista"><i class="fa-solid fa-angle-right fa-sm"></i>Barista</a></li>
+                <li><a href="/signup_cafe"><i class="fa-solid fa-angle-right fa-sm"></i>Shop Owner</a></li>
+              <% } %>
+            </ul>
+          </div>
+          
+        
+
+
+        <div class="hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
             <% if (user) { %> 
               <li>
-                <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/profile_barista" class="col-3 btn btn-primary">Profile</a>
+                <a href="/profile_barista">Profile</a>
               </li>
               <li>
-                <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/logout" class="col-3 btn btn-primary">Logout</a>
+                <a href="/logout">Logout</a>
               </li>
-            <% } else { %> 
-            <li>
-              <a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/login">Login</a>
-            </li>
-            <!-- Submenu dropdown -->
-            <li>
-              <button 
-                type="button" 
-                aria-haspopup="true" 
-                aria-expanded="true" 
-                aria-controls="dropdown1"
-              >
-                Signup
-                <span class="arrow transition-transform duration-100 ease-in-out w-2 h-2 align-middle inline-block border-black dark:border-primary-focus border-solid border-l-2 border-b-2 -rotate-45 ml-2 -mt-1"></span>                          
-              </button>
-              <ul class="dropdown overflow-hidden h-0 transition-[height] ease-in duration-300 text-right right-0 top-8 left-auto p-0 z-99 md:absolute" id="dropdown1">
-                <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_barista">Barista</a></li>
-                <li><a class="hover:underline decoration-dotted decoration-red-400 underline-offset-4" href="/signup_cafe">Shop Owner</a></li>
-              </ul>
-            </li>
-          <% } %> 
+
+            <% } else { %>
+              <li>
+                <a href="/login">Login</a>
+              </li>
+              <li tabindex="0">
+                <a>
+                  Sign-up
+                  <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
+                </a>
+                <ul class="p-2">
+                  <li><a href="/signup_barista">Barista</a></li>
+                  <li><a href="/signup_cafe">Shop Owner</a></li>
+                </ul>
+              </li>
+            <% } %>
           </ul>
-        </nav>
+        </div>
+
+
+
       </div>
-    </header>
+
+    </nav>
 

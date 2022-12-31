@@ -42,8 +42,8 @@
                     <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
                   <% } %>
                   <p>
-                  <% if(cafeInfo.address) { %> 
-                    <a class="btn px-2" href="<%= cafeInfo.address %>" target="_blank">
+                  <% if(shift[i].location) { %> 
+                    <a class="btn px-2" href="<%= shift[i].location %>" target="_blank">
                       <i class="fa-regular fa-map fa-2xl"></i>
                     </a>
                   <% } %>
@@ -70,7 +70,7 @@
                   </button>
               <% } else { %>
                   <button type="button" class="available btn btn-secondary tooltip" data-tip="I'm available">
-                    <i class="fa-regular fa-hand"></i>
+                    <i class="fa-regular fa-hand fa-bounce"></i>
                   </button>
               <% } %>
             </td>
