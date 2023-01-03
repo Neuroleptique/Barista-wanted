@@ -15,6 +15,7 @@ router.get("/signup_barista", authController.getSignupBarista);
 router.post("/signup_barista", authController.postSignup);
 router.get("/signup_cafe", authController.getSignupCafe);
 router.post("/signup_cafe", authController.postSignup);
+router.get("/confirmation/:email/:token", authController.confirmEmail);
 
 // Profile from dashboard
 router.get("/profile_barista", ensureAuth, accountsController.getProfile);
