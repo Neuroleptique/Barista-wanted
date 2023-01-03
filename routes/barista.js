@@ -1,5 +1,4 @@
 const express = require("express");
-const shifts = require("../controllers/shifts");
 const router = express.Router();
 const shiftsController = require("../controllers/shifts");
 

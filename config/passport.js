@@ -22,10 +22,13 @@ module.exports = function (passport) {
           if (err) {
             return done(err);
           }
-          if (isMatch) {
-            return done(null, user);
+          if (!isMatch) {
+            return done(null, false, { msg: "Invalid email or password." });
           }
-          return done(null, false, { msg: "Invalid email or password." });
+          if (!user.isVerified) {
+            return done(null, false, { msg: 'Your account has not been verified.' });
+          }
+          return done(null, user);
         });
       });
     })
