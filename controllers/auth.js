@@ -167,7 +167,7 @@ exports.postSignup = async (req, res, next) => {
       req.flash('info', {
         msg: 'Please check your email and verify your account.'
       });
-      res.redirect('../login')
+      res.redirect('/login')
 
     });
 
@@ -179,29 +179,35 @@ exports.postSignup = async (req, res, next) => {
 
 exports.confirmEmail = (req, res) => {
   console.log(req.params)
+
+  if (!validator.isEmail(req.params.email)){
+    req.flash("errors", { msg: "Email is not valid." })
+    res.redirect('/login')
+  };
+    
   Token.findOne({ token: req.params.token }, (err, token) => {
 
     if (!token){
-      req.flash('error',{ msg: 'We were unable to find a valid token. Your token my have expired.' })
-      res.redirect('/')
+      req.flash('errors',{ msg: 'We were unable to find a valid token. Your token may have expired.' })
+      res.redirect('/resend_email')
     } else {
       User.findOne({ _id: token._userId, email: req.params.email }, (err, user) => {
 
         if (!user) {
-          req.flash('error',{ msg: "No account with that email address exists." })
-          return res.redirect('/')
-        }
-        if (user.isVerified) {
-          req.flash('error', { msg: 'Your account has already been verified.' })
+          req.flash('errors',{ msg: "No account with that email address exists." })
           return res.redirect('/login')
         }
-        
+        if (user.isVerified) {
+          req.flash('info', { msg: 'Your account has already been verified. Please log in.' })
+          return res.redirect('/login')
+        }
+
         user.isVerified = true;
         user.save((err) => {
           if(err) {
             return next(err)
           }
-          req.flash('info', {
+          req.flash('success', {
             msg: "The account has been verified. Please log in."
           });
           res.redirect('/login')
@@ -210,4 +216,46 @@ exports.confirmEmail = (req, res) => {
     }
 
   })
-}
+};
+
+exports.getResendEmail = (req, res) => {
+  res.render("resend_email.ejs", { user: req.user });
+};
+
+exports.postResendEmail = (req, res, next) => { 
+  if (!validator.isEmail(req.body.email)){
+    req.flash("errors", { msg: "Please enter a valid email address." })
+    res.redirect('/login')
+  };
+  req.body.email = validator.normalizeEmail(req.body.email, {
+    gmail_remove_dots: false,
+  });
+
+  User.findOne( { email: req.body.email}, (err, user) => {
+    if (!user) {
+      req.flash('errors',{ msg: "No account with that email address exists." })
+      return res.redirect('/login')
+    }
+    if (user.isVerified) {
+      req.flash('info', { msg: 'Your account has already been verified. Please log in.' })
+      return res.redirect('/login')
+    }
+    const token = new Token({
+      _userId: user._id, 
+      token: crypto.randomBytes(16).toString('hex') 
+    })
+    token.save(err => {
+      if(err) {
+        return next(err)
+      }
+      const subject = 'Barista Wanted account Verification'
+      const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
+      sendEmail( req.body.email, subject, text )
+
+    })
+    req.flash('info', {
+      msg: `A verification email has been sent to ${req.body.email}. Please check your email and verify your account.`
+    });
+    res.redirect('/login')
+  })
+};

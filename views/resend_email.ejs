@@ -1,9 +1,9 @@
 <%- include('partials/header') -%>
 
-<main class="container mx-auto relative text-3xl mb-28 md:max-w-2xl">
+<main class="container mx-auto relative mb-28 md:max-w-2xl">
   
     <section>
-      <h1 class="text-center text-4xl">Log in to your account</h1>
+      <h1 class="text-center text-4xl">Resend verification email</h1>
       <div class="py-2">
         <% if (locals.messages.errors) { %>
           <% messages.errors.forEach( el => { %>
@@ -21,7 +21,7 @@
           <% }) %>
         <% } %>
       </div>
-      <form action="/login" method="POST">
+      <form action="/resend_email" method="POST">
         <div class="">
           <label for="exampleInputEmail1" class="label">Email address</label>
           <input
@@ -30,19 +30,6 @@
             id="exampleInputEmail1"
             name="email"
           />
-        </div>
-        <div class="">
-          <label for="exampleInputPassword1" class="label">Password</label>
-          <input
-            type="password"
-            class="input input-bordered"
-            id="exampleInputPassword1"
-            name="password"
-          />
-        </div>
-        <div class="flex justify-between text-sm">
-          <span><a class="link" href="/password-reset">Forgot password?</a></span>
-          <span><a class="link" href="/resend_email">Resend verification email</a></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
