@@ -153,7 +153,7 @@ exports.postSignup = async (req, res, next) => {
       }
       const token = new Token({
         _userId: user._id, 
-        token: crypto.randomBytes(16).toString('hex') 
+        token: crypto.randomBytes(16).toString('hex'),
       })
       
       token.save((err) => {
@@ -207,7 +207,7 @@ exports.confirmEmail = (req, res) => {
           if(err) {
             return next(err)
           }
-          req.flash('success', {
+          req.flash('info', {
             msg: "The account has been verified. Please log in."
           });
           res.redirect('/login')
@@ -218,12 +218,12 @@ exports.confirmEmail = (req, res) => {
   })
 };
 
-exports.getResendEmail = (req, res) => {
+exports.getResendEmailComfirmation = (req, res) => {
   res.render("resend_email.ejs", { user: req.user });
 };
 
-exports.postResendEmail = (req, res, next) => { 
-  if (!validator.isEmail(req.body.email)){
+exports.postResendEmailComfirmation = (req, res, next) => { 
+  if (!validator.isEmail(req.body.email)) {
     req.flash("errors", { msg: "Please enter a valid email address." })
     res.redirect('/login')
   };
@@ -231,7 +231,7 @@ exports.postResendEmail = (req, res, next) => {
     gmail_remove_dots: false,
   });
 
-  User.findOne( { email: req.body.email}, (err, user) => {
+  User.findOne( { email: req.body.email.toLowerCase() }, (err, user) => {
     if (!user) {
       req.flash('errors',{ msg: "No account with that email address exists." })
       return res.redirect('/login')
@@ -242,8 +242,9 @@ exports.postResendEmail = (req, res, next) => {
     }
     const token = new Token({
       _userId: user._id, 
-      token: crypto.randomBytes(16).toString('hex') 
+      token: crypto.randomBytes(16).toString('hex'),
     })
+
     token.save(err => {
       if(err) {
         return next(err)
@@ -254,8 +255,51 @@ exports.postResendEmail = (req, res, next) => {
 
     })
     req.flash('info', {
-      msg: `A verification email has been sent to ${req.body.email}. Please check your email and verify your account.`
+      msg: `A verification email has been sent to ${user.email}. Please check your email and verify your account.`
     });
     res.redirect('/login')
   })
 };
+
+exports.getPasswordResetRequest = (req, res) => {
+  res.render("password_reset_request.ejs", { user: req.user });
+};
+
+exports.postPasswordResetRequest = async (req, res) => {
+  if (!validator.isEmail(req.body.email)) {
+    req.flash("errors", { msg: "Please enter a valid email address." })
+    return res.redirect('/password_reset')
+  };
+  User.findOne( { email: req.body.email.toLowerCase() }, (err, user) => {
+    if (!user) {
+      req.flash('errors', { msg: "No account with that email address exists." })
+      return res.redirect('/password_reset')
+    }
+
+    const token = new Token({
+      _userId: user._id, 
+      token: crypto.randomBytes(20).toString('hex'),
+    })
+    
+    token.save(err => {
+      if(err) {
+        return next(err)
+      }
+      const subject = 'Barista Wanted Password Reset Request'
+      const text = 'Your are receiving this because you (or someone else) have requested the reset of the password for your account. \n\n' +
+      'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/password-reset\/'+ req.body.email + '\/' + token.token + '\n\n' +
+      'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+
+      sendEmail( req.body.email, subject, text )
+
+    })
+    req.flash('info', {
+      msg: `A password reset request has been sent to ${user.email}. Please check your email for further instructions.`
+    });
+    res.redirect('/password_reset_request')
+  })
+}
+
+exports.getPasswordResetActual = (req, res) => {
+  res.render("password_reset.ejs", { user: req.user });
+}

@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const bcryptSalt = process.env.BCRYPT_SALT;
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -20,7 +21,7 @@ UserSchema.pre("save", function save(next) {
   if (!user.isModified("password")) {
     return next();
   }
-  bcrypt.genSalt(10, (err, salt) => {
+  bcrypt.genSalt(bcryptSalt, (err, salt) => {
     if (err) {
       return next(err);
     }
