@@ -16,8 +16,11 @@ router.post("/signup_barista", authController.postSignup);
 router.get("/signup_cafe", authController.getSignupCafe);
 router.post("/signup_cafe", authController.postSignup);
 router.get("/confirmation/:email/:token", authController.confirmEmail);
-router.get("/resend_email", authController.getResendEmail)
-router.post("/resend_email", authController.postResendEmail);
+router.get("/resend_email_comfirmation", authController.getResendEmailComfirmation)
+router.post("/resend_email_comfirmation", authController.postResendEmailComfirmation);
+router.get("/password_reset_request", authController.getPasswordResetRequest);
+router.post("/password_reset_request", authController.postPasswordResetRequest);
+router.get('/password-reset/:email/:token', authController.getPasswordResetActual)
 
 // Profile from dashboard
 router.get("/profile_barista", ensureAuth, accountsController.getProfile);
