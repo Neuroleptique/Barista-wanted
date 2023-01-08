@@ -95,20 +95,22 @@ exports.postSignup = async (req, res, next) => {
   try {
     // Input Validation
     const validationErrors = [];
+    if (!validator.isLength(req.body.userName, {min:3, max:25 }))
+      validationErrors.push({ msg: "Username must be between 3 to 25 characters" });
     if (!validator.isEmail(req.body.email))
       validationErrors.push({ msg: "Please enter a valid email address." });
     if (!validator.isLength(req.body.password, { min: 8 }))
       validationErrors.push({
         msg: "Password must be at least 8 characters long",
       });
-    if (req.body.password !== req.body.confirmPassword)
+    if (!validator.equals(req.body.password, req.body.confirmPassword))
       validationErrors.push({ msg: "Passwords do not match" });
 
     if (validationErrors.length) {
       req.flash("errors", validationErrors);
-      if ( req.user.userType == 'barista' ) {
+      if ( req.body.userType == 'barista' ) {
         return res.redirect("../signup_barista");
-      } else if ( req.user.userType == 'cafe' ) {
+      } else if ( req.body.userType == 'cafe' ) {
         return res.redirect("../signup_cafe");
       }
     }
@@ -116,8 +118,9 @@ exports.postSignup = async (req, res, next) => {
     // Verify if user name or email already exist
     req.body.email = validator.normalizeEmail(req.body.email, {
       gmail_remove_dots: false,
+      all_lowercase: true
     });
-    
+  
     User.findOne(
       { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
       (err, existingUser) => {
@@ -136,7 +139,7 @@ exports.postSignup = async (req, res, next) => {
     // Add new user 
     const user = new User({
       userName: req.body.userName.toLowerCase(),
-      email: req.body.email.toLowerCase(),
+      email: req.body.email,
       password: req.body.password,
       userType: req.body.userType,
     });
@@ -189,7 +192,7 @@ exports.confirmEmail = (req, res) => {
 
     if (!token){
       req.flash('errors',{ msg: 'We were unable to find a valid token. Your token may have expired.' })
-      res.redirect('/resend_email')
+      res.redirect('/resend_email_confirmation')
     } else {
       User.findOne({ _id: token._userId, email: req.params.email }, (err, user) => {
 
@@ -207,7 +210,7 @@ exports.confirmEmail = (req, res) => {
           if(err) {
             return next(err)
           }
-          req.flash('info', {
+          req.flash('success', {
             msg: "The account has been verified. Please log in."
           });
           res.redirect('/login')
@@ -218,20 +221,21 @@ exports.confirmEmail = (req, res) => {
   })
 };
 
-exports.getResendEmailComfirmation = (req, res) => {
+exports.getResendEmailconfirmation = (req, res) => {
   res.render("resend_email.ejs", { user: req.user });
 };
 
-exports.postResendEmailComfirmation = (req, res, next) => { 
+exports.postResendEmailconfirmation = (req, res, next) => { 
   if (!validator.isEmail(req.body.email)) {
     req.flash("errors", { msg: "Please enter a valid email address." })
     res.redirect('/login')
   };
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
+    all_lowercase: true
   });
 
-  User.findOne( { email: req.body.email.toLowerCase() }, (err, user) => {
+  User.findOne( { email: req.body.email }, (err, user) => {
     if (!user) {
       req.flash('errors',{ msg: "No account with that email address exists." })
       return res.redirect('/login')
@@ -268,12 +272,12 @@ exports.getPasswordResetRequest = (req, res) => {
 exports.postPasswordResetRequest = async (req, res) => {
   if (!validator.isEmail(req.body.email)) {
     req.flash("errors", { msg: "Please enter a valid email address." })
-    return res.redirect('/password_reset')
+    return res.redirect('/password_reset_request')
   };
   User.findOne( { email: req.body.email.toLowerCase() }, (err, user) => {
     if (!user) {
       req.flash('errors', { msg: "No account with that email address exists." })
-      return res.redirect('/password_reset')
+      return res.redirect('/password_reset_request')
     }
 
     const token = new Token({
@@ -294,7 +298,7 @@ exports.postPasswordResetRequest = async (req, res) => {
 
     })
     req.flash('info', {
-      msg: `A password reset request has been sent to ${user.email}. Please check your email for further instructions.`
+      msg: `A password reset request has been sent to ${user.email}.`
     });
     res.redirect('/password_reset_request')
   })
