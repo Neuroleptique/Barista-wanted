@@ -75,7 +75,6 @@ module.exports = {
         { userName: req.user.userName },{
           firstName: req.body.firstName,
           lastName: req.body.lastName,
-          email: req.body.email,
           phone: req.body.phone,
           // photo: photo.secure_url,
           // cloudinaryId: photo.public_id,

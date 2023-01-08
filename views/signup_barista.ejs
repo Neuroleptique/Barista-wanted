@@ -1,43 +1,47 @@
 <%- include('partials/header') -%>
+
     <main class="container mx-auto relative text-3xl md:max-w-2xl">
-        <div class="">
-            <section class="">
-                <% if (locals.messages.errors) { %>
-                    <% messages.errors.forEach( el => { %>
-                        <div class="alert alert-warning"><%= el.msg %></div>
-                    <% }) %>    
-                <% } %>
-                <% if (locals.messages.info) { %>
-                    <% messages.info.forEach( el => { %>
-                        <div class="alert alert-info"><%= el.msg %></div>
-                    <% }) %>    
-                <% } %>
-                <form action="/signup_barista" method="POST">                
-                    <div class="">
-                      <label for="userName" class="form-label">User Name</label>
-                      <input type="text" class="" id="userName" name="userName" required>
-                    </div>
-                    <div class="">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" class="" id="password" name="password" required>
-                    </div>
-                    <div class="">
-                      <label for="confirmPassword" class="form-label">Confirm Password</label>
-                      <input type="password" class="" id="confirmPassword" name="confirmPassword" required>
-                    </div>
-                    <div class="">
-                      <!-- Set mandatory userType as barista -->
-                      <input type="text" class="" id="userType" name="userType" value="barista" hidden>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </section>
+      <section>
+        <div class="py-2">
+          <% if (locals.messages.errors) { %>
+            <% messages.errors.forEach( el => { %>
+              <div class="alert alert-error"><%= el.msg %></div>
+            <% }) %>
+          <% } else if (locals.messages.info) { %>
+            <% messages.info.forEach( el => { %>
+              <div class="alert alert-info"><%= el.msg %></div>
+            <% }) %>
+          <% } else if (locals.messages.success) { %>
+            <% messages.success.forEach( el => { %>
+              <div class="alert alert-success"><%= el.msg %></div>
+            <% }) %>
+          <% } %>
         </div>
+        <form action="/signup_barista" method="POST">                
+            <div class="">
+              <label for="userName" class="form-label">User Name</label>
+              <input type="text" class="" id="userName" name="userName" required>
+            </div>
+            <div class="">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="" id="password" name="password" required>
+            </div>
+            <div class="">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" class="" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <div class="">
+              <!-- Set mandatory userType as barista -->
+              <input type="text" class="" id="userType" name="userType" value="barista" hidden>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </section>   
     </main>
 
 <%- include('partials/footer') -%>
