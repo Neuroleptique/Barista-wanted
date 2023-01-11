@@ -1,10 +1,12 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
-const Barista = require("../models/Barista")
-const Cafe = require("../models/Cafe")
-const Token = require("../models/Token")
+const Barista = require("../models/Barista");
+const Cafe = require("../models/Cafe");
+const Token = require("../models/Token");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+const bcryptSalt = process.env.BCRYPT_SALT;
 const sendEmail = require("./email");
 
 
@@ -274,7 +276,11 @@ exports.postPasswordResetRequest = async (req, res) => {
     req.flash("errors", { msg: "Please enter a valid email address." })
     return res.redirect('/password_reset_request')
   };
-  User.findOne( { email: req.body.email.toLowerCase() }, (err, user) => {
+  req.body.email = validator.normalizeEmail(req.body.email, {
+    gmail_remove_dots: false,
+    all_lowercase: true
+  });
+  User.findOne( { email: req.body.email }, (err, user) => {
     if (!user) {
       req.flash('errors', { msg: "No account with that email address exists." })
       return res.redirect('/password_reset_request')
@@ -291,10 +297,10 @@ exports.postPasswordResetRequest = async (req, res) => {
       }
       const subject = 'Barista Wanted Password Reset Request'
       const text = 'Your are receiving this because you (or someone else) have requested the reset of the password for your account. \n\n' +
-      'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/password-reset\/'+ req.body.email + '\/' + token.token + '\n\n' +
+      'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/password-reset\/'+ user._id + '\/' + token.token + '\n\n' +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 
-      sendEmail( req.body.email, subject, text )
+      sendEmail( user.email, subject, text )
 
     })
     req.flash('info', {
@@ -304,6 +310,64 @@ exports.postPasswordResetRequest = async (req, res) => {
   })
 }
 
-exports.getPasswordResetActual = (req, res) => {
-  res.render("password_reset.ejs", { user: req.user });
+exports.getPasswordResetActual = async (req, res) => {
+  try{
+    const passwordResetToken = await Token.findOne({ _userId: req.params.userId })
+    if(!passwordResetToken) {
+      req.flash("errors", {
+        msg: "Invalid or expired password reset token"
+      })
+      return res.redirect('/password_reset_request')
+    }
+    if(!validator.equals(passwordResetToken.token, req.params.token) ) {
+      req.flash("errors", {
+        msg: "Invalid or expired password reset token"
+      })
+      return res.redirect('/password_reset_request')
+    }
+    res.render("password_reset.ejs", { user: req.user });
+  }catch(err){
+    console.log(err)
+  }
+}
+
+exports.postPasswordResetActual = async (req, res) => {
+  const validationErrors = [];
+  if (!validator.isLength(req.body.password, { min: 8 }))
+  validationErrors.push({
+    msg: "Password must be at least 8 characters long",
+  });
+  if (!validator.equals(req.body.password, req.body.confirmPassword))
+    validationErrors.push({ msg: "Passwords do not match" });
+  if (validationErrors.length) {
+    req.flash("errors", validationErrors);
+    return res.redirect(`/password-reset/${req.params.userId}/${req.params.token}`)
+  }
+  try{
+    const passwordResetToken = await Token.findOne({ _userId: req.params.userId })
+    if(!passwordResetToken) {
+      req.flash("errors", {
+        msg: "Invalid or expired password reset token"
+      })
+      return res.redirect('/password_reset_request')
+    }
+    if(!validator.equals( passwordResetToken.token, req.params.token) ) {
+      req.flash("errors", {
+        msg: "Invalid or expired password reset token"
+      })
+      return res.redirect('/password_reset_request')
+    }
+    if(passwordResetToken) await passwordResetToken.deleteOne()
+    const hashedPassword = await bcrypt.hash( req.body.password, Number(bcryptSalt) )
+    await User.findByIdAndUpdate( req.params.userId, {
+      password: hashedPassword 
+    }, { runValidators: true } )
+    req.flash('success', {
+      msg: "You have successfully reset your password. Please login to your account."
+    });
+    
+    res.redirect('/login')
+  }catch(err){
+    console.log(err)
+  }
 }

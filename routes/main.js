@@ -20,7 +20,8 @@ router.get("/resend_email_confirmation", authController.getResendEmailconfirmati
 router.post("/resend_email_confirmation", authController.postResendEmailconfirmation);
 router.get("/password_reset_request", authController.getPasswordResetRequest);
 router.post("/password_reset_request", authController.postPasswordResetRequest);
-router.get("/password-reset/:email/:token", authController.getPasswordResetActual)
+router.get("/password-reset/:userId/:token", authController.getPasswordResetActual);
+router.post("/password-reset/:userId/:token", authController.postPasswordResetActual)
 
 // Profile from dashboard
 router.get("/profile_barista", ensureAuth, accountsController.getProfile);
