@@ -23,6 +23,7 @@ bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash,
 - Create a `config.env` file in the config folder and add the following as `key: value` 
   - PORT = 3000 
   - DB_STRING = `your MongoDB database URI`
+  - BCRYPT_SALT = `Salt rounds value for password hashing`
   - CLOUD_NAME = `your cloud_name from cloudinary`
   - CLOUD_API_KEY = `your API_KEY from cloudinary`
   - CLOUD_API_SECRET = `your API_SECRET from cloudinary`
