@@ -18,32 +18,34 @@
           <% } %>
         </div>
         <form action="/signup_cafe" method="POST">
-            <div class="">
-              <label for="userName" class="">User Name</label>
-              <input type="text" class="" id="userName" name="userName" required>
+            <div class="form-control">
+              <label for="userName" class="label">User Name</label>
+              <input type="text" class="input input-bordered" id="userName" name="userName" required>
             </div>
             
             <div class="">
               <label for="exampleInputEmail1" class="">Email address</label>
-              <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              <input type="email" class="input input-bordered" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+              <div id="emailHelp" class="label-text">We'll never share your email with anyone else.</div>
             </div>
             <div>
-              <label for="cafeName">Name of your organization</label>
-              <input type="text" name="cafeName" id="cafeName">
+              <label for="cafeName" class="label">Name of your organization</label>
+              <input type="text" class="input input-bordered" name="cafeName" id="cafeName">
             </div>
             <div class="">
-              <label for="password" class="">Password</label>
-              <input type="password" class="" id="password" name="password" required>
+              <label for="password" class="label">Password</label>
+              <input type="password" class="input input-bordered" id="password" name="password" required>
             </div>
             <div class="">
-              <label for="confirmPassword" class="">Confirm Password</label>
-              <input type="password" class="" id="confirmPassword" name="confirmPassword" required>
+              <label for="confirmPassword" class="label">Confirm Password</label>
+              <input type="password" class="input input-bordered" id="confirmPassword" name="confirmPassword" required>
             </div>
-            <div class="">
-              <!-- Set mendatory userType as cafe -->
-              <input type="text" class="" id="userType" name="userType" value="cafe" hidden>
-            </div>
+
+            <!-- Set mendatory userType as cafe -->
+            <input type="text" id="userType" name="userType" value="cafe" hidden>
+            <!-- hCaptcha Widget -->
+            <div class="h-captcha" data-sitekey="ae615cc7-ebb1-4154-a1a2-f0b2ad4ca51f"></div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </section>
