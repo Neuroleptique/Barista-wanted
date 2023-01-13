@@ -10,8 +10,7 @@ module.exports = {
       // const posts = await Post.find({ user: req.user.id });
       const today = new Date().toJSON()
       
-      if (req.user.userType == 'barista') {
-      // need to test this out!  
+      if (req.user.userType == 'barista') {  
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
@@ -35,15 +34,36 @@ module.exports = {
       } else if (req.user.userType == 'cafe' ) {
 
         const cafeData = await Cafe.find({ userName: req.user.userName });
-        const shiftData = await Shift.find({ userID: req.user.id }).sort({ date: 1 });
-        const availableBarista = shiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        // console.log(availableBarista)
+        // Active shift = activeStatus == true && date >= today
+        const activeShiftData = await Shift.find({ 
+          $and: [
+            { _userID: req.user.id },
+            { activeStatus: true },
+            { date: { $gte: today }}
+          ]
+        }).sort({ date: 1 });
+
+        // InActive shift = active status == false || date < today
+        const inactiveShiftData = await Shift.find({ 
+          $and: [
+            { _userID: req.user.id },
+            { $or: [
+              { activeStatus: false },
+              { date: { $lt: today }}
+            ]}
+          ]
+        }).sort({ date: 1 });
+        
+        const activeAvailableBarista = activeShiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
+        const inactiveAvailableBarista = inactiveShiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
+        const availableBarista = activeAvailableBarista.concat(inactiveAvailableBarista).filter((n, idx, arr)=> arr.indexOf(n) == idx )
+        
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
           }
         })
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), shift: shiftData, barista: baristaData});
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData});
       }
 
     } catch (err) {
@@ -51,9 +71,8 @@ module.exports = {
     }
   },
   getProfile: async (req, res) => {
-    // console.log(req.user._id)
     try{
-      const userData = await User.findById(req.user._id);
+      const userData = await User.findById( req.user.id );
       const baristaData = await Barista.find({ userName: req.user.userName });
       const cafeData = await Cafe.find({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
@@ -62,17 +81,17 @@ module.exports = {
         console.log(cafeData)
         res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
       }
-      // res.render('profile_barista.ejs', { user: userData })
     }catch(err){
       console.log(err)
     }
   },
   updateProfileBarista: async (req, res) => {
-    // console.log(req)
+    req.body.ig = req.body.ig.split('www.instagram.com/').slice(-1)
     try {
       // const photo = await cloudinary.uploader.upload(req.file.path);
       await Barista.findOneAndUpdate(
         { userName: req.user.userName },{
+          _userID: req.user.id,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
@@ -82,7 +101,7 @@ module.exports = {
           exp: req.body.exp,
           more: req.body.more,
           notification: req.body.notification,
-          userID: req.body.userID,
+          
         }
       );
       console.log("profile updated!")
@@ -92,10 +111,12 @@ module.exports = {
     }
   },
   updateProfileCafe: async (req, res) => {
-    console.log(req.body)
+    req.body.ig = req.body.ig.split('instagram.com/').slice(-1)
+    req.body.mapLink = req.body.mapLink.split('goo.gl/maps/').slice(-1)
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName },{
+          _userID: req.user.id,
           cafeName: req.body.cafeName,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
@@ -106,7 +127,7 @@ module.exports = {
           },
           ig: req.body.ig,
           more: req.body.more,
-          userID: req.body.userID,
+          
         }
       );
       console.log("profile updated!")

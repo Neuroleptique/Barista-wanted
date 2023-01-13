@@ -8,6 +8,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const bcryptSalt = process.env.BCRYPT_SALT;
 const sendEmail = require("./email");
+const {verify} = require("hcaptcha")
 
 
 exports.getLogin = (req, res) => {
@@ -94,87 +95,99 @@ exports.getSignupCafe = (req, res) => {
 
 exports.postSignup = async (req, res, next) => {
   
-  try {
-    // Input Validation
-    const validationErrors = [];
-    if (!validator.isLength(req.body.userName, {min:3, max:25 }))
-      validationErrors.push({ msg: "Username must be between 3 to 25 characters" });
-    if (!validator.isEmail(req.body.email))
-      validationErrors.push({ msg: "Please enter a valid email address." });
-    if (!validator.isLength(req.body.password, { min: 8 }))
-      validationErrors.push({
-        msg: "Password must be at least 8 characters long",
-      });
-    if (!validator.equals(req.body.password, req.body.confirmPassword))
-      validationErrors.push({ msg: "Passwords do not match" });
+  // Input Validation
+  const validationErrors = [];
+  if (!validator.isLength(req.body.userName, {min:3, max:25 }))
+    validationErrors.push({ msg: "Username must be between 3 to 25 characters" });
+  if (!validator.isEmail(req.body.email))
+    validationErrors.push({ msg: "Please enter a valid email address." });
+  if (!validator.isLength(req.body.password, { min: 8 }))
+    validationErrors.push({
+      msg: "Password must be at least 8 characters long",
+    });
+  if (!validator.equals(req.body.password, req.body.confirmPassword))
+    validationErrors.push({ msg: "Passwords do not match" });
 
-    if (validationErrors.length) {
-      req.flash("errors", validationErrors);
+  if (validationErrors.length) {
+    req.flash("errors", validationErrors);
+    if ( req.body.userType == 'barista' ) {
+      return res.redirect("../signup_barista");
+    } else if ( req.body.userType == 'cafe' ) {
+      return res.redirect("../signup_cafe");
+    }
+  }
+
+  try {
+    // verify hCaptcha Token validity
+    const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
+    const hCaptchaToken = req.body["h-captcha-response"];
+
+    let data = await verify(hCaptchaSecret, hCaptchaToken)
+
+    if (!data.success) {
+      console.log('verification failed');
+      req.flash("errors", {
+        msg: "Human verification failed",
+      });
       if ( req.body.userType == 'barista' ) {
-        return res.redirect("../signup_barista");
+        return res.redirect("/signup_barista");
       } else if ( req.body.userType == 'cafe' ) {
-        return res.redirect("../signup_cafe");
+        return res.redirect("/signup_cafe");
       }
     }
 
-    // Verify if user name or email already exist
+    // Email sanitization
     req.body.email = validator.normalizeEmail(req.body.email, {
       gmail_remove_dots: false,
       all_lowercase: true
     });
-  
-    User.findOne(
-      { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
-      (err, existingUser) => {
-        if (err) {
-          return next(err);
-        }
-        if (existingUser) {
-          req.flash("errors", {
-            msg: "Account with that email address or username already exists.",
-          });
-          return res.redirect("../login");
-        }
-      }
+ 
+    // Verify if user name or email already exist
+    const existingUser = await User.findOne(
+      { $or: [{ email: req.body.email }, { userName: req.body.userName }] }
     );
 
-    // Add new user 
+    if (existingUser) {
+      req.flash("errors", {
+        msg: "Account with that email address or username already exists.",
+      });
+      return res.redirect("../login");
+    }
+      
+    // Add new user to User collection
     const user = new User({
       userName: req.body.userName.toLowerCase(),
       email: req.body.email,
       password: req.body.password,
       userType: req.body.userType,
     });
-    // Create user profile according to userType
+
+    // Create document in barista/cafe collection according to userType
     if (req.body.userType == 'barista') {
       await Barista.create({ userName: req.body.userName, email: req.body.email })
     } else if (req.body.userType == 'cafe') {
       await Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
     }
     
-    user.save((err) => {
-      if (err) {
-        return next(err);
-      }
-      const token = new Token({
-        _userId: user._id, 
-        token: crypto.randomBytes(16).toString('hex'),
-      })
-      
-      token.save((err) => {
-        if (err) {
-          return next(err)
-        }
-        const subject = 'Barista Wanted account Verification'
-        const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
-        sendEmail( req.body.email, subject, text )
-      })
-      req.flash('info', {
-        msg: 'Please check your email and verify your account.'
-      });
-      res.redirect('/login')
+    await user.save();
 
+    // Generate email validation token and store in Token collection
+    const token = new Token({
+      _userId: user._id, 
+      token: crypto.randomBytes(16).toString('hex'),
+    })
+    
+    await token.save()
+
+    // Send account verification email to user
+    const subject = 'Barista Wanted account Verification'
+    const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
+    sendEmail( req.body.email, subject, text )
+    
+    req.flash('success', {
+      msg: 'Please check your email and verify your account.'
     });
+    res.redirect('/login')  
 
   } catch(err) {
     console.log(err)

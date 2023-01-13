@@ -1,7 +1,8 @@
 <%- include('partials/header') -%>
 
-    <main class="container mx-auto relative text-3xl md:max-w-2xl">
+    <main class="container mx-auto relative text-2xl md:max-w-2xl">
       <section>
+        <h1 class="text-center text-4xl">Sign up as barista</h1>
         <div class="py-2">
           <% if (locals.messages.errors) { %>
             <% messages.errors.forEach( el => { %>
@@ -18,27 +19,29 @@
           <% } %>
         </div>
         <form action="/signup_barista" method="POST">                
-            <div class="">
-              <label for="userName" class="form-label">User Name</label>
-              <input type="text" class="" id="userName" name="userName" required>
+            <div class="form-control">
+              <label for="userName" class="label">User Name</label>
+              <input type="text" class="input input-bordered" id="userName" name="userName" required>
             </div>
-            <div class="">
-              <label for="exampleInputEmail1" class="form-label">Email address</label>
-              <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="form-control">
+              <label for="exampleInputEmail1" class="label">Email address</label>
+              <input type="email" class="input input-bordered" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+              <div id="emailHelp" class="label-text">We'll never share your email with anyone else.</div>
             </div>
-            <div class="">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="" id="password" name="password" required>
+            <div class="form-control">
+              <label for="password" class="label">Password</label>
+              <input type="password" class="input input-bordered" id="password" name="password" required>
             </div>
-            <div class="">
-              <label for="confirmPassword" class="form-label">Confirm Password</label>
-              <input type="password" class="" id="confirmPassword" name="confirmPassword" required>
+            <div class="form-control">
+              <label for="confirmPassword" class="label">Confirm Password</label>
+              <input type="password" class="input input-bordered" id="confirmPassword" name="confirmPassword" required>
             </div>
-            <div class="">
-              <!-- Set mandatory userType as barista -->
-              <input type="text" class="" id="userType" name="userType" value="barista" hidden>
-            </div>
+            
+            <!-- Set mandatory userType as barista -->
+            <input type="text" id="userType" name="userType" value="barista" hidden>
+            <!-- hCaptcha Widget -->
+            <div class="h-captcha" data-sitekey="ae615cc7-ebb1-4154-a1a2-f0b2ad4ca51f"></div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </section>   

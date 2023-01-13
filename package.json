@@ -1,7 +1,7 @@
 {
-  "name": "barista",
+  "name": "baristawanted",
   "version": "1.0.0",
-  "description": "Barista wanted that helps local coffee shops to find baristas for casual shifts",
+  "description": "Barista wanted is an full-stack app that helps local coffee shops to find baristas for casual shifts",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,6 +29,7 @@
     "express": "^4.18.2",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
+    "hcaptcha": "^0.1.1",
     "method-override": "^3.0.0",
     "mongodb": "^4.10.0",
     "mongoose": "^6.6.5",
