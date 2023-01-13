@@ -1,5 +1,5 @@
 # Barista Wanted #
-A job posting app that uses MVC Architecture, it comes with account creation, user authentication, email comfirmation and password reset.
+A job posting app that uses MVC Architecture, it comes with account creation, email confirmation and password reset functions.
 
 ## How does this app work?
 This app will allows:
@@ -11,10 +11,10 @@ This app will allows:
 **Link to project:** (work in progress)
 
 ## How It's Made:
-**Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB, TailwindCss 
+**Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS
 
 ## Packages/Dependencies used 
-bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, mongodb, mongoose, morgan, multer, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
+bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, multer, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
 `npm install` 
@@ -30,9 +30,10 @@ bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash,
   - MAIL_SERVICE = `gmail`
   - MAIL_USER = `your GMAIL account`
   - MAIL_PWD = `your GMAIL APP password`
+  - HCAPTCHA_SECRET = `your hCaptcha secret`
 
 ## Lessons Learned:
-Mongoose Schema, Date object manipulation, email sending from server, TailwindCss
+Mongoose Schema, Date object manipulation, email sending from server, token generation and verification, TailwindCSS
 
 ## Optimization:
 Could use Google place API to give users the option of defining their own display data
