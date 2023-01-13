@@ -20,6 +20,7 @@
         document.documentElement.setAttribute("data-theme", "bumblebee");
       }
     </script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   </head>
   <body>
     <nav class="relative container mx-auto p-6">
@@ -29,7 +30,7 @@
         </div>
 
         <div class="navbar-center">
-          <a href="/dashboard" class="btn btn-ghost normal-case text-4xl font-mono">Barista Wanted</a>
+          <a href="/dashboard" class="btn btn-ghost normal-case text-2xl md:text-4xl font-mono">Barista Wanted</a>
         </div>
 
         <div class="navbar-end">
@@ -38,7 +39,7 @@
             <label tabindex="0" class="btn btn-ghost lg:hidden">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </label>
-            <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-xl">
+            <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-lg md:text-xl">
               <% if (user) { %>
                 <li class="text-xl">
                   <a href="/profile_barista">Profile</a>
