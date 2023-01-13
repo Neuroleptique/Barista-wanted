@@ -34,11 +34,11 @@
         <% do { %>
 
           <label class="label" for="area<%= i %>">Cafe Area</label>
-          <input class="input input-bordered" type="text" id="area<%= i %>" name="area<%= i %>" placeholder="Yorkdall, Queen East..." value="<%= cafe.address[i].area %>">
+          <input class="input input-bordered" type="text" id="area<%= i %>" name="area<%= i %>" placeholder="Yorkdall, Queen East...">
       </div>
       <div class="form-control md:w-2/3">
           <label class="label" for="mapLink<%= i %>">Store Google Map link</label>
-          <input class="input input-bordered" type="text" id="mapLink<%= i %>" name="mapLink<%= i %>" placeholder="Your cafe's shareable link on Google Map" value="<%= cafe.address[i].mapLink%>">
+          <input class="input input-bordered" type="text" id="mapLink<%= i %>" name="mapLink<%= i %>" placeholder="Your cafe's shareable link on Google Map">
 
           <% i++ %>
         <% } while ( i < cafe.address.length ) %>
