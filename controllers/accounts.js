@@ -7,10 +7,10 @@ const Shift = require("../models/Shift")
 module.exports = {
   getDashboard: async (req, res) => {
     try {
-      // const posts = await Post.find({ user: req.user.id });
       const today = new Date().toJSON()
       
       if (req.user.userType == 'barista') {  
+
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
@@ -54,18 +54,38 @@ module.exports = {
           ]
         }).sort({ date: 1 });
         
-        const activeAvailableBarista = activeShiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        const inactiveAvailableBarista = inactiveShiftData.map(s => s.availability).flat().filter((n, idx, arr)=> arr.indexOf(n) == idx )
-        const availableBarista = activeAvailableBarista.concat(inactiveAvailableBarista).filter((n, idx, arr)=> arr.indexOf(n) == idx )
+
+        // Determine who are available for shifts posted by individual cafe user and 
+        // Retrieve available baristas' information for those shifts  
+        const activeShiftDataManipulation = activeShiftData.map(s => {
+          // Retrieve and set shift start_time as hh:mm format
+          const shiftDateAndTime = new Date(s.date)
+          s.start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
+          // return an array of all available baristas
+          return s.availability
+        })
+
+        const inactiveShiftDataManipulation = inactiveShiftData.map(s => {
+          // Retrieve and set shift start_time as hh:mm format
+          const shiftDateAndTime = new Date(s.date)
+          s.start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
+          // return an array of all available baristas
+          return s.availability
+        })
+
+        const availableBarista = activeShiftDataManipulation
+                                  .concat(inactiveShiftDataManipulation)
+                                  .flat()
+                                  .filter((n, idx, arr)=> arr.indexOf(n) == idx )
         
         const baristaData = await Barista.find({ 
           userName: {
             $in: availableBarista
           }
         })
+
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData});
       }
-
     } catch (err) {
       console.log(err);
     }

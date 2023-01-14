@@ -64,16 +64,13 @@
       </thead>
          
         <% for(let i = 0; i < activeShift.length; i++) { %>
-          <% let shiftDateAndTime = new Date(activeShift[i].date) %>      
 
             <tr data-id="<%= activeShift[i]._id %>">
-              <% let shiftDate = shiftDateAndTime.toDateString() %> 
-              <th scope="row"><%= shiftDate %></th>
+              
+              <th scope="row"><%= new Date(activeShift[i].date).toDateString() %></th>
               <td><%= activeShift[i].location %></td>
-              <td><%= activeShift[i].wage %></td>               
-              <!-- Extract shift start time as hh:mm format -->
-              <% let startTime = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}` %> 
-              <td><%= `${startTime} - ${activeShift[i].end_time}` %></td>
+              <td><%= activeShift[i].wage %></td>     
+              <td><%= `${activeShift[i].start_time} - ${activeShift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
@@ -145,16 +142,12 @@
       </thead>
       
         <% for(let i = 0; i < inactiveShift.length; i++) { %>
-          <% let shiftDateAndTime = new Date(inactiveShift[i].date) %>
-            
+                      
             <tr data-id="<%= inactiveShift[i]._id %>">
-              <% let shiftDate = shiftDateAndTime.toDateString() %> 
-              <th scope="row"><%= shiftDate %></th>
+              <th scope="row"><%= new Date(inactiveShift[i].date).toDateString() %></th>
               <td><%= inactiveShift[i].location %></td>
-              <td><%= inactiveShift[i].wage %></td>                  
-              <!-- Extract shift start time as hh:mm format -->
-              <% let startTime = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}` %> 
-              <td><%= `${startTime} - ${inactiveShift[i].end_time}` %></td>
+              <td><%= inactiveShift[i].wage %></td>                               
+              <td><%= `${inactiveShift[i].start_time} - ${inactiveShift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
