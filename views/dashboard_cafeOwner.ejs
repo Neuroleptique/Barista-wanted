@@ -4,9 +4,9 @@
   <h1 class="text-3xl text-center text-primary"><strong>Welcome</strong>, <%= cafe.cafeName %></h1>
 
   <!-- New shift posting section -->
-  <section class="collapse text-center py-5">
+  <section class="collapse text-center pt-6">
     <input type="checkbox" /> 
-    <button class="btn btn-outline btn-primary collapse-title text-xl font-medium mb-4">
+    <button class="btn btn-outline btn-primary collapse-title text-xl font-medium">
       Click me to add a new shift
     </button>
     <div class="collapse-content">
@@ -49,7 +49,7 @@
 
 
   <!-- Active shifts display area -->
-  <section class="overflow-x-auto">
+  <section class="overflow-x-auto py-4">
     <table class="table w-full">
       <caption class="py-3 text-secondary text-2xl font-bold">Current requests</caption>
       <thead>
@@ -77,15 +77,16 @@
                 <% let availableBarista = barista.filter(person => activeShift[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
-                    <label for="pick<%= oneBarista.userName %>" class="btn">
-                      <% if (!oneBarista.firstName) { %>
-                        <%= oneBarista.userName %>
-                      <% }else{ %>
-                        <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
-                      <% } %>                        
-                    </label>
-
-                    <!-- Popup box -->
+                    <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
+                      <label for="pick<%= oneBarista.userName %>" class="btn">
+                        <% if (!oneBarista.firstName) { %>
+                          <%= oneBarista.userName %>
+                        <% }else{ %>
+                          <%= `${oneBarista.firstName[0]}${oneBarista.lastName[0]}`%>
+                        <% } %>                        
+                      </label>
+                    </div>
+                    <!-- Popup box to display barista info -->
                     <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                     <div class="modal">
                       <div class="modal-box">
@@ -97,7 +98,7 @@
                         <div class="py-6">
                           <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
                           <% if (oneBarista.ig) { %>
-                            <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                            <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>" target="_blank"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
                           <% } %>
                           <% if (oneBarista.phone) { %>
                             <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
@@ -129,7 +130,7 @@
   <!-- Past/inactive shifts display area -->
   <section class="overflow-x-auto">
     <table class="table w-full">
-      <caption class="py-3 text-secondary text-xl font-bold">Past requests</caption>
+      <caption class="py-3 text-secondary text-2xl font-bold">Past requests</caption>
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -154,15 +155,17 @@
                 <% let availableBarista = barista.filter(person => inactiveShift[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
-                  <label for="pick<%= oneBarista.userName %>" class="btn">
-                    <% if (!oneBarista.firstName) { %>
-                      <%= oneBarista.userName %>
-                    <% }else{ %>
-                      <%= `${oneBarista.firstName} ${oneBarista.lastName[0]}`%>
-                    <% } %>                        
-                  </label>
+                  <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
+                    <label for="pick<%= oneBarista.userName %>" class="btn">
+                      <% if (!oneBarista.firstName) { %>
+                        <%= oneBarista.userName %>
+                      <% }else{ %>
+                        <%= `${oneBarista.firstName[0]}${oneBarista.lastName[0]}`%>
+                      <% } %>                        
+                    </label>
+                  </div>
 
-                  <!-- Popup box -->
+                  <!-- Popup box to display barista info -->
                   <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                   <div class="modal">
                     <div class="modal-box">
@@ -174,7 +177,7 @@
                       <p class="py-6">
                         <a class="btn px-2" href="mailto:<%= oneBarista.email %>"><i class="fa fa-regular fa-envelope fa-2xl"></i></a>
                         <% if (oneBarista.ig) { %>
-                          <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                          <a class="btn px-2" href="https://www.instagram.com/<%= oneBarista.ig %>" target="_blank"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
                         <% } %>
                         <% if (oneBarista.phone) { %>
                           <a class="btn px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
