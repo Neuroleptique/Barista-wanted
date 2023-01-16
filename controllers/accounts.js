@@ -57,24 +57,10 @@ module.exports = {
 
         // Determine who are available for shifts posted by individual cafe user and 
         // Retrieve available baristas' information for those shifts  
-        const activeShiftDataManipulation = activeShiftData.map(s => {
-          // Retrieve and set shift start_time as hh:mm format
-          const shiftDateAndTime = new Date(s.date)
-          s.start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
-          // return an array of all available baristas
-          return s.availability
-        })
-
-        const inactiveShiftDataManipulation = inactiveShiftData.map(s => {
-          // Retrieve and set shift start_time as hh:mm format
-          const shiftDateAndTime = new Date(s.date)
-          s.start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
-          // return an array of all available baristas
-          return s.availability
-        })
-
-        const availableBarista = activeShiftDataManipulation
-                                  .concat(inactiveShiftDataManipulation)
+        const activeShiftBarista = activeShiftData.map(s => s.availability)
+        const inactiveShiftBarista = inactiveShiftData.map(s => s.availability)
+        const availableBarista = activeShiftBarista
+                                  .concat(inactiveShiftBarista)
                                   .flat()
                                   .filter((n, idx, arr)=> arr.indexOf(n) == idx )
         
@@ -106,7 +92,7 @@ module.exports = {
     }
   },
   updateProfileBarista: async (req, res) => {
-    req.body.ig = req.body.ig.split('www.instagram.com/').slice(-1)
+    req.body.ig = req.body.ig.split('www.instagram.com/').slice(-1).toString()
     try {
       // const photo = await cloudinary.uploader.upload(req.file.path);
       await Barista.findOneAndUpdate(
@@ -131,8 +117,8 @@ module.exports = {
     }
   },
   updateProfileCafe: async (req, res) => {
-    req.body.ig = req.body.ig.split('instagram.com/').slice(-1)
-    req.body.mapLink = req.body.mapLink.split('goo.gl/maps/').slice(-1)
+    req.body.ig = req.body.ig.split('instagram.com/').slice(-1).toString()
+    req.body.mapLink = req.body.mapLink.split('goo.gl/maps/').slice(-1).toString()
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName },{
