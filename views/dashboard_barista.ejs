@@ -6,52 +6,51 @@
   <!-- Search area -->
 
   <!-- Active shifts display section -->
-  <section class="overflow-x-auto py-4">
-    <table class="table w-full">
-      <caption class="py-3 text-secondary text-2xl font-bold">Active needs</caption>
+  <h2 class="text-center text-secondary text-2xl font-bold pt-8 pb-3">Active needs</h2>
+  <section class="overflow-x-auto">
+    <table class="table table-compact w-full">
       <thead>
         <tr>
           <th scope="col">Date</th>
           <th scope="col">Location</th>
-          
           <th scope="col">time</th>
           <th scope="col">Wage</th>
           <th scope="col">action</th>
         </tr>
       </thead>
 
-      <% for(let i = 0; i < shift.length; i++) { %>
-
-        <% let shiftDateAndTime = new Date(shift[i].date) %>        
+      <% for(let i = 0; i < shift.length; i++) { %>       
 
           <tr data-id="<%= shift[i]._id %>">
-            <th scope="row">
-              <% let shiftDate = shiftDateAndTime.toDateString() %>
-              <%= shiftDate %>
+            <th scope="row" class="text-sm">
+              <%= new Date(shift[i].date).toDateString() %>
             </th>
-            <td>             
-              <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn"><%= shift[i].cafeName %></label>
-              
+
+            <!-- Show clickable cafe name -->
+            <td>
               <% let cafeInfo = cafe.filter(coffeeShop => coffeeShop.userName == shift[i].cafeUserName )[0] %>
+
+              <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift[i].cafeName %></label>
               
+              <!-- Popup box to display cafe info -->              
               <input type="checkbox" id="<%= `${i}-${shift[i].cafeUserName}` %>" class="modal-toggle" />
               <div class="modal">
                 <div class="modal-box">
-                  <h2 class="font-bold text-lg"><%= cafeInfo.cafeName %></h2>
+                  <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
                   <% if(cafeInfo.more){ %>
                     <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
                   <% } %>
-                  <p>
-                  <% if(shift[i].location) { %> 
-                    <a class="btn px-2" href="<%= shift[i].location %>" target="_blank">
+                  <div class="py-6">
+                  <% if(shift[i].location) { %>
+                    <a class="btn btn-secondary btn-outline px-2" href="<%= shift[i].location %>" target="_blank">
                       <i class="fa-regular fa-map fa-2xl"></i>
                     </a>
                   <% } %>
                   <% if (cafeInfo.ig) { %>
-                    <a class="btn px-2" href="https://www.instagram.com/<%= cafeInfo.ig %>" target="_blank">
+                    <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= cafeInfo.ig %>" target="_blank">
                       <i class="fa fa-brands fa-instagram fa-2xl"></i>
                     </a>
-                  </p>
+                  </div>
                   <% } %>
                   <div class="modal-action">
                     <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn">Close</label>
@@ -59,9 +58,7 @@
                 </div>
               </div>
             </td>
-            <% let hh = shiftDateAndTime.getHours().toString().padStart(2, '0'), mm = shiftDateAndTime.getMinutes().toString().padStart(2, '0') %>
-            <% let start_Time = `${hh}:${mm}` %> 
-            <td><%= `${start_Time} - ${shift[i].end_time}` %></td>
+            <td><%= `${shift[i].start_time} - ${shift[i].end_time}` %></td>
             <td><%= shift[i].wage %></td>
             <td>
               <% if (shift[i].availability.includes(user.userName)) { %>
