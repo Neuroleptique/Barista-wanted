@@ -1,4 +1,3 @@
-const cloudinary = require("../middleware/cloudinary");
 const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");
@@ -54,7 +53,6 @@ module.exports = {
           ]
         }).sort({ date: 1 });
         
-
         // Determine who are available for shifts posted by individual cafe user and 
         // Retrieve available baristas' information for those shifts  
         const activeShiftBarista = activeShiftData.map(s => s.availability)
@@ -92,17 +90,16 @@ module.exports = {
     }
   },
   updateProfileBarista: async (req, res) => {
-    req.body.ig = req.body.ig.split('www.instagram.com/').slice(-1).toString()
+    if(req.body.ig) {
+      req.body.ig = req.body.ig.split('instagram.com/').slice(-1).toString()
+    }
     try {
-      // const photo = await cloudinary.uploader.upload(req.file.path);
       await Barista.findOneAndUpdate(
-        { userName: req.user.userName },{
+        { userName: req.user.userName }, {
           _userID: req.user.id,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
-          // photo: photo.secure_url,
-          // cloudinaryId: photo.public_id,
           ig: req.body.ig,
           exp: req.body.exp,
           more: req.body.more,
@@ -117,11 +114,15 @@ module.exports = {
     }
   },
   updateProfileCafe: async (req, res) => {
-    req.body.ig = req.body.ig.split('instagram.com/').slice(-1).toString()
-    req.body.mapLink = req.body.mapLink.split('goo.gl/maps/').slice(-1).toString()
+    if(req.body.ig) {
+      req.body.ig = req.body.ig.split('instagram.com/').slice(-1).toString()
+    }
+    if(req.body.mapLink) { 
+      req.body.mapLink = req.body.mapLink.split('goo.gl/maps/').slice(-1).toString()
+    }
     try {
       await Cafe.findOneAndUpdate(
-        { userName: req.user.userName },{
+        { userName: req.user.userName }, {
           _userID: req.user.id,
           cafeName: req.body.cafeName,
           firstName: req.body.firstName,
