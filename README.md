@@ -33,4 +33,4 @@ bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flas
 Mongoose Schema, Date object manipulation, email sending from server, token generation and verification, TailwindCSS
 
 ## Optimization:
-Could use Google place API to give users the option of defining their own display data
+Could use Google place API to give users the option to define their own display data

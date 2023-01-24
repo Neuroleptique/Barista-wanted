@@ -26,7 +26,7 @@ module.exports = function (passport) {
             return done(null, false, { msg: "Invalid email or password." });
           }
           if (!user.isVerified) {
-            return done(null, false, { msg: 'Your account has not been verified.' });
+            return done(null, false, { msg: "Your account has not been verified." });
           }
           return done(null, user);
         });
