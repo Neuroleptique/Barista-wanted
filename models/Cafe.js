@@ -7,9 +7,13 @@ const CafeSchema= new mongoose.Schema({
   },
   email: String ,
   cafeName: String ,
-  address: [{
-    area: String,
-    mapLink: String
+  place: [{
+    geometry: {
+      lat: Number,
+      lng: Number
+    },
+    place_id: String,
+    formatted_address: String
   }],
   userName: String,
   firstName: String,

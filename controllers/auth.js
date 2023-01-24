@@ -42,11 +42,6 @@ exports.postLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("errors", info);
-      // if (req.user.userType == 'barista') {
-      //   return res.redirect("/login_barista");
-      // } else {
-      //   return res.redirect("/login_cafe");
-      // }
       return res.redirect("/login");
     }
     req.logIn(user, (err) => {
@@ -102,9 +97,7 @@ exports.postSignup = async (req, res, next) => {
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
   if (!validator.isLength(req.body.password, { min: 8 }))
-    validationErrors.push({
-      msg: "Password must be at least 8 characters long",
-    });
+    validationErrors.push({ msg: "Password must be at least 8 characters long" });
   if (!validator.equals(req.body.password, req.body.confirmPassword))
     validationErrors.push({ msg: "Passwords do not match" });
 
@@ -192,34 +185,33 @@ exports.postSignup = async (req, res, next) => {
   } catch(err) {
     console.log(err)
   }
-
 };
 
 exports.confirmEmail = (req, res) => {
-  console.log(req.params)
 
   if (!validator.isEmail(req.params.email)){
     req.flash("errors", { msg: "Email is not valid." })
     res.redirect('/login')
   };
     
-  Token.findOne({ token: req.params.token }, (err, token) => {
-
+  Token.findOneAndDelete({ token: req.params.token }, (err, token) => {
+    if (err) {
+      return next(err);
+    }
     if (!token){
-      req.flash('errors',{ msg: 'We were unable to find a valid token. Your token may have expired.' })
+      req.flash('errors', { msg: 'We were unable to find a valid token. Your token may have expired.' })
       res.redirect('/resend_email_confirmation')
     } else {
       User.findOne({ _id: token._userId, email: req.params.email }, (err, user) => {
 
         if (!user) {
-          req.flash('errors',{ msg: "No account with that email address exists." })
+          req.flash('errors', { msg: "No account with that email address exists." })
           return res.redirect('/login')
         }
         if (user.isVerified) {
           req.flash('info', { msg: 'Your account has already been verified. Please log in.' })
           return res.redirect('/login')
         }
-
         user.isVerified = true;
         user.save((err) => {
           if(err) {
@@ -232,7 +224,6 @@ exports.confirmEmail = (req, res) => {
         })
       })
     }
-
   })
 };
 

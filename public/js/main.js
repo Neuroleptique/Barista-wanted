@@ -4,7 +4,8 @@ const availableToWorkBtn = document.querySelectorAll('.available')
 const notAvailableBtn = document.querySelectorAll('.not-available')
 const shiftDateField = document.querySelectorAll('.date-input')
 
-// Cafe: Restrict shift starting date input to only accept value no earlier than the current date
+
+// Dashboard_cafe: Restrict shift starting date input to only accept value no earlier than the current date
 Array.from(shiftDateField).forEach(input => {
   input.addEventListener('focus', minDate)
 })
@@ -127,3 +128,26 @@ async function notAvailableToWork() {
   }
 }
 
+
+// Google Maps API
+let autocomplete
+function initAutocomplete() {
+  autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('autocomplete'), {
+      types: ['establishment'],
+      componentRestrictions: { 'country': ['CA'] },
+      fields: ['place_id', 'geometry', 'formatted_address']
+    });
+
+  autocomplete.addListener('place_changed', onPlaceChanged)
+}
+
+function onPlaceChanged() {
+  let place = autocomplete.getPlace()
+  console.log(place)
+  if (!place.geometry) {
+    document.getElementById('autocomplete').placeholder = 'Enter your coffee shop name'
+  } else {
+    document.getElementById('placeDetails').innerHTML = place.formatted_address
+  }
+}
