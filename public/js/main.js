@@ -131,6 +131,7 @@ async function notAvailableToWork() {
 
 // Google Maps API
 let autocomplete
+let addressInfo = new Object()
 function initAutocomplete() {
   autocomplete = new google.maps.places.Autocomplete(
     document.getElementById('autocomplete'), {
@@ -144,10 +145,76 @@ function initAutocomplete() {
 
 function onPlaceChanged() {
   let place = autocomplete.getPlace()
-  console.log(place)
+
   if (!place.geometry) {
     document.getElementById('autocomplete').placeholder = 'Enter your coffee shop name'
   } else {
+    addressInfo.geometry = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    }
+    addressInfo.place_id = place.place_id
+    addressInfo.formatted_address = place.formatted_address
+    console.log(addressInfo)
     document.getElementById('placeDetails').innerHTML = place.formatted_address
+  }
+}
+
+async function updateAddress() {
+  const address = addressInfo
+  try {
+    // Throw error message if user click save address button without selecting a location
+    if (!address.geometry){
+
+        const addressAlert = document.getElementById('addressAlert')
+        addressAlert.classList.add('alert-error')
+        addressAlert.innerHTML = 'You have not select a location'
+
+    } else {
+    
+      const response = await fetch('cafe/putAddressCafe', {
+        method: 'put',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          place: address
+        })
+      })
+      const data = await response.json()
+      console.log(data)
+      document.getElementById('address').value = address.formatted_address
+
+    }
+  } catch(err) {
+    console.log(err)
+  }
+  
+}
+
+async function updateProfileCafe() { 
+  try{
+    const cafeName = document.getElementById('cafeName').value
+    const firstName = document.getElementById('firstName').value
+    const lastName = document.getElementById('lastName').value
+    const phone = document.getElementById('phone').value
+    const address = addressInfo 
+    const ig = document.getElementById('ig').value
+    const more = document.getElementById('more').value
+
+    const response = await fetch('/profile_cafe', {
+      method: 'put',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        cafeName: cafeName,
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        address: address,
+        ig: ig,
+        more: more
+      })
+    })
+    
+  }catch(err){
+    console.log(err)
   }
 }

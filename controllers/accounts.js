@@ -118,26 +118,8 @@ module.exports = {
     if(req.body.ig) {
       req.body.ig = req.body.ig.split( 'instagram.com/' ).slice(-1).toString()
     }
-    if(req.body.mapLink) { 
-      req.body.mapLink = req.body.mapLink.split( 'goo.gl/maps/' ).slice(-1).toString()
-    }
-    try {
-      let formatted_address, place_id, geometry
-      // Fetch Google find place API to obtain place_id, geometry and formatted_address
-      if(req.body.address) {
-        req.body.address = req.body.address.replaceAll(',', '').replaceAll(' ', '+')
-        const fields = ['formatted_address', 'place_id', 'geometry'].join('%2C')
-        const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${req.body.address}&inputtype=textquery&fields=${fields}&key=${process.env.GOOGLE_MAP_API_KEY}`
-        
-        const res = await axios.get(url);
-        console.log(res.data)
-        let result = res.data.candidates[0]
-        formatted_address = result.formatted_address
-        place_id = result.place_id
-        geometry = result.geometry.location
-        console.log(geometry)
-      }
 
+    try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName }, {
           _userID: req.user.id,
@@ -145,11 +127,6 @@ module.exports = {
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
-          place: {
-            geometry: geometry,
-            place_id: place_id,
-            formatted_address: formatted_address
-          },
           ig: req.body.ig,
           more: req.body.more,
           
@@ -162,36 +139,20 @@ module.exports = {
     }
   },
   addAddressCafe: async (req, res) => {
-    try {
-      
-      // Fetch Google find place API to obtain place_id, geometry and formatted_address
-      // Or use place search api to look for multiple location???
-      // but how to add them all in array if length is not set?
-      let formatted_address, place_id, geometry
-      req.body.address = req.body.address.replaceAll(',', '').replaceAll(' ', '+')
-      const fields = ['formatted_address', 'place_id', 'geometry'].join('%2C')
-      const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${req.body.address}&inputtype=textquery&fields=${fields}&key=${process.env.GOOGLE_MAP_API_KEY}`
-      
-      const res = await axios.get(url);
-      console.log(res.data)
-      let result = res.data.candidates[0]
-      formatted_address = result.formatted_address
-      place_id = result.place_id
-      geometry = result.geometry.location
-
-      
-
-      await Cafe.findOneAndUpdate({ userName: req.user.userName }, 
-        { $push: {
-            place: {
-              // One or multiple???
-            }
-          }
-        })
-    }catch(err) {
+    try {  
+      await Cafe.findOneAndUpdate({ 
+        userName: req.user.userName, 
+        place: { $elemMatch: { 
+          place_id: {
+            $ne: req.body.place.place_id
+          } 
+        }}}, { 
+          $push: { place: req.body.place }
+        });
+      console.log('Address added')    
+      res.json("Address added")
+    } catch(err) {
       console.log(err)
     }
-    
-
   }
 };
