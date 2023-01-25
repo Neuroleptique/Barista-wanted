@@ -83,8 +83,10 @@ module.exports = {
       if (req.user.userType == 'barista') {
         res.render("profile_barista.ejs", { user: userData, barista: new Object(...baristaData) });
       } else if (req.user.userType == 'cafe') {
-        console.log(cafeData)
-        res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData) });
+        const CONFIG = {
+          apiKey: process.env.GOOGLE_MAP_API_KEY
+        }
+        res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData), GOOGLE_MAP_API_KEY: CONFIG.apiKey });
       }
     } catch(err) {
       console.log(err)
@@ -140,15 +142,18 @@ module.exports = {
   },
   addAddressCafe: async (req, res) => {
     try {  
-      await Cafe.findOneAndUpdate({ 
-        userName: req.user.userName, 
-        place: { $elemMatch: { 
-          place_id: {
-            $ne: req.body.place.place_id
-          } 
-        }}}, { 
-          $push: { place: req.body.place }
-        });
+      await Cafe.findOneAndUpdate({userName: req.user.userName},{
+         $addToSet: {place: req.body.place }
+      })
+      // await Cafe.findOneAndUpdate({ 
+      //   userName: req.user.userName, 
+      //   place: { $elemMatch: { 
+      //     place_id: {
+      //       $ne: req.body.place.place_id
+      //     } 
+      //   }}}, { 
+      //     $push: { place: req.body.place }
+      //   });
       console.log('Address added')    
       res.json("Address added")
     } catch(err) {
