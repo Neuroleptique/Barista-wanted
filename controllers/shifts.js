@@ -13,11 +13,13 @@ module.exports = {
       const start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
 
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
+      const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
+      console.log(locationData)
       await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
-        location: req.body.location,
+        location: locationData,
         wage: req.body.wage,
         date: req.body.date,
         start_time: start_time,
@@ -35,7 +37,7 @@ module.exports = {
 
         // Send notification email to baristas
         const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista at ${req.body.location} on ${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
+        const text = `${cafeData.cafeName} is looking for a barista at ${locationData.formatted_address} on ${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
         
         sendEmail( baristaEmails, subject, text )
       }

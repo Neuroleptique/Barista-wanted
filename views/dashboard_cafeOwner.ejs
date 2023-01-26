@@ -73,7 +73,7 @@
             <tr data-id="<%= activeShift[i]._id %>">
               
               <th scope="row"><%= new Date(activeShift[i].date).toDateString() %></th>
-              <td><%= activeShift[i].location %></td>
+              <td><%= activeShift[i].location.formatted_address.split(',')[0] %></td>
               <td><%= activeShift[i].wage %></td>     
               <td><%= `${activeShift[i].start_time} - ${activeShift[i].end_time}` %></td>
 
@@ -151,7 +151,7 @@
                       
             <tr data-id="<%= inactiveShift[i]._id %>">
               <th scope="row"><%= new Date(inactiveShift[i].date).toDateString() %></th>
-              <td><%= inactiveShift[i].location %></td>
+              <td><%= inactiveShift[i].location.formatted_address.split(',')[0] %></td>
               <td><%= inactiveShift[i].wage %></td>                               
               <td><%= `${inactiveShift[i].start_time} - ${inactiveShift[i].end_time}` %></td>
 

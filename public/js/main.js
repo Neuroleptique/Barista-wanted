@@ -187,40 +187,9 @@ async function updateAddress() {
         newAddressInput.classList.add("input", "input-bordered")
         newAddressInput.setAttribute('disabled', "")
       }
-      // document.getElementById('address').value = address.formatted_address
-
     }
   } catch(err) {
     console.log(err)
   }
   
-}
-
-async function updateProfileCafe() { 
-  try{
-    const cafeName = document.getElementById('cafeName').value
-    const firstName = document.getElementById('firstName').value
-    const lastName = document.getElementById('lastName').value
-    const phone = document.getElementById('phone').value
-    const address = addressInfo 
-    const ig = document.getElementById('ig').value
-    const more = document.getElementById('more').value
-
-    const response = await fetch('/profile_cafe', {
-      method: 'put',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({
-        cafeName: cafeName,
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        address: address,
-        ig: ig,
-        more: more
-      })
-    })
-    
-  }catch(err){
-    console.log(err)
-  }
 }
