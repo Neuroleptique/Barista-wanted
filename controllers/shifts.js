@@ -1,4 +1,3 @@
-const cloudinary = require("../middleware/cloudinary");
 const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");
@@ -9,15 +8,21 @@ const sendEmail = require("./email");
 module.exports = {
   postShift: async (req, res) => {
     try {
-      // create shift to database
+      const shiftDateAndTime = new Date(req.body.date)
+      // Retrieve shift start time from Date as hh:mm format
+      const start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
+
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
+      const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
+      console.log(locationData)
       await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
-        location: req.body.location,
+        location: locationData,
         wage: req.body.wage,
         date: req.body.date,
+        start_time: start_time,
         end_time: req.body.end_time,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
@@ -27,16 +32,12 @@ module.exports = {
       const baristas = await Barista.find({ notification: true })
 
       if(baristas) {
-        const baristaEmails = baristas.map(b => b.email)
-        // Retrive date and start time
-        const dateObj = new Date(req.body.date)
-        const shiftDate = dateObj.toDateString()
-        // Prevent time to be displayed as single digit
-        const shiftStartTime = `${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`
+        const baristaEmails = baristas.map(b => b.email)       
+        const shiftDate = shiftDateAndTime.toDateString()
 
         // Send notification email to baristas
         const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista at ${req.body.location} on ${shiftDate} from ${shiftStartTime} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
+        const text = `${cafeData.cafeName} is looking for a barista at ${locationData.formatted_address} on ${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
         
         sendEmail( baristaEmails, subject, text )
       }

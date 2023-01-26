@@ -5,16 +5,24 @@ const ShiftSchema= new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  cafeUserName: { type: String },
-  cafeName: { type: String },
-  location: { type: String },
-  wage: { type: Number },
+  cafeUserName: String,
+  cafeName: String,
+  location: {
+    geometry: {
+      lat: Number,
+      lng: Number
+    },
+    place_id: String,
+    formatted_address: String
+  },
+  wage: Number,
   // date type recorded as string for better data manipulation in the DOM
-  date: { type: String },
-  end_time: { type: String },
+  date: String,
+  start_time: String,
+  end_time: String,
   activeStatus: { type: Boolean, default: true }, 
-  more: { type: String },
-  availability: [{ type: String }]
+  more: String,
+  availability: [ { type: String } ]
 });
 
 module.exports = mongoose.model("Shift", ShiftSchema);

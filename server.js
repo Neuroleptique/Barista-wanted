@@ -5,7 +5,6 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const methodOverride = require("method-override");
-const nodemailer = require('nodemailer');
 const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");

@@ -14,7 +14,7 @@ This app will allows:
 **Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS
 
 ## Packages/Dependencies used 
-bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, multer, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
+bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
 `npm install` 
@@ -24,9 +24,6 @@ bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash,
   - PORT = 3000 
   - DB_STRING = `your MongoDB database URI`
   - BCRYPT_SALT = `Salt rounds value for password hashing`
-  - CLOUD_NAME = `your cloud_name from cloudinary`
-  - CLOUD_API_KEY = `your API_KEY from cloudinary`
-  - CLOUD_API_SECRET = `your API_SECRET from cloudinary`
   - MAIL_SERVICE = `gmail`
   - MAIL_USER = `your GMAIL account`
   - MAIL_PWD = `your GMAIL APP password`
@@ -36,4 +33,4 @@ bcrypt, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash,
 Mongoose Schema, Date object manipulation, email sending from server, token generation and verification, TailwindCSS
 
 ## Optimization:
-Could use Google place API to give users the option of defining their own display data
+Could use Google place API to give users the option to define their own display data

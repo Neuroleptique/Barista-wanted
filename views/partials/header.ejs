@@ -17,7 +17,7 @@
       ) {
         document.documentElement.setAttribute("data-theme", "night");
       } else {
-        document.documentElement.setAttribute("data-theme", "bumblebee");
+        document.documentElement.setAttribute("data-theme", "autumn");
       }
     </script>
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
@@ -25,7 +25,7 @@
   <body>
     <nav class="relative container mx-auto p-6">
       <div class="navbar bg-base-100">
-        <div class="navbar-start">
+        <div class="hidden navbar-start md:inline">
           <a href="/"><img class="h-12" src="/images/barista.png" alt="logo of barista pouring coffee"></a>
         </div>
 
@@ -65,7 +65,7 @@
             <ul class="menu menu-horizontal px-1">
               <% if (user) { %> 
                 <li>
-                  <a href="/profile_barista">Profile</a>
+                  <a href="/profile">Profile</a>
                 </li>
                 <li>
                   <a href="/logout">Logout</a>
