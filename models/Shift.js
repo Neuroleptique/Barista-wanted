@@ -7,7 +7,14 @@ const ShiftSchema= new mongoose.Schema({
   },
   cafeUserName: String,
   cafeName: String,
-  location: String,
+  location: {
+    geometry: {
+      lat: Number,
+      lng: Number
+    },
+    place_id: String,
+    formatted_address: String
+  },
   wage: Number,
   // date type recorded as string for better data manipulation in the DOM
   date: String,

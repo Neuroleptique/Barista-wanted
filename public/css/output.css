@@ -5370,6 +5370,39 @@ html {
   width: 2.5rem;
 }
 
+.w-2\/3 {
+  width: 66.666667%;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
+}
+
+.w-11 {
+  width: 2.75rem;
+}
+
+.w-10\/12 {
+  width: 83.333333%;
+}
+
+.w-screen {
+  width: 100vw;
+}
+
+.w-9\/12 {
+  width: 75%;
+}
+
+.w-9 {
+  width: 2.25rem;
+}
+
 .min-w-max {
   min-width: -moz-max-content;
   min-width: max-content;
@@ -5383,6 +5416,10 @@ html {
 .min-w-min {
   min-width: -moz-min-content;
   min-width: min-content;
+}
+
+.min-w-full {
+  min-width: 100%;
 }
 
 .max-w-none {
@@ -5419,6 +5456,10 @@ html {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-prose {
+  max-width: 65ch;
 }
 
 .flex-auto {
