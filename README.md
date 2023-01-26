@@ -31,9 +31,9 @@ bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flas
   - GOOGLE_MAP_API_KEY = `your Google Maps Places API key`
 
 - Create a `config.ejs` file in the `views/partials` folder and add the following line of code:
-  `<script
+  ```<script
     src="https://maps.googleapis.com/maps/api/js?key=<%- GOOGLE_MAP_API_KEY %> &libraries=places&callback=initAutocomplete" async defer>
-  </script>`
+  </script>```
   *This ONLY prevents your Google Maps API key from being pushed to repo and triggering security alert. Please still follow [API security best practices](https://developers.google.com/maps/api-security-best-practices) to protect your API key from miseusage. Also, by putting this script tag as a separated partials components, we can call `<%- include('partials/config') -%>` at the end of individual ejs file whenever we need to use google maps service*
 
 ## Lessons Learned:
