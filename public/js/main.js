@@ -4,7 +4,8 @@ const availableToWorkBtn = document.querySelectorAll('.available')
 const notAvailableBtn = document.querySelectorAll('.not-available')
 const shiftDateField = document.querySelectorAll('.date-input')
 
-// Cafe: Restrict shift starting date input to only accept value no earlier than the current date
+
+// Dashboard_cafe: Restrict shift starting date input to only accept value no earlier than the current date
 Array.from(shiftDateField).forEach(input => {
   input.addEventListener('focus', minDate)
 })
@@ -127,3 +128,68 @@ async function notAvailableToWork() {
   }
 }
 
+
+// Google Maps API
+let autocomplete
+let addressInfo = new Object()
+function initAutocomplete() {
+  autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('autocomplete'), {
+      types: ['establishment'],
+      componentRestrictions: { 'country': ['CA'] },
+      fields: ['place_id', 'geometry', 'formatted_address']
+    });
+
+  autocomplete.addListener('place_changed', onPlaceChanged)
+}
+
+function onPlaceChanged() {
+  let place = autocomplete.getPlace()
+
+  if (!place.geometry) {
+    document.getElementById('autocomplete').placeholder = 'Enter your coffee shop name'
+  } else {
+    addressInfo.geometry = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    }
+    addressInfo.place_id = place.place_id
+    addressInfo.formatted_address = place.formatted_address
+    console.log(addressInfo)
+    document.getElementById('placeDetails').innerHTML = place.formatted_address
+  }
+}
+
+async function updateAddress() {
+  const address = addressInfo
+  try {
+    // Throw error message if user click save address button without selecting a location
+    if (!address.geometry){
+
+        const addressAlert = document.getElementById('addressAlert')
+        addressAlert.classList.add('alert-error')
+        addressAlert.innerHTML = 'You have not select a location'
+
+    } else {
+    
+      const response = await fetch('cafe/putAddressCafe', {
+        method: 'put',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          place: address
+        })
+      })
+      const data = await response.json()
+      console.log(data)
+      if(data == 'Address added') {
+        const newAddressInput = document.getElementById('addressArea').appendChild(document.createElement('input'))
+        newAddressInput.value = address.formatted_address
+        newAddressInput.classList.add("input", "input-bordered")
+        newAddressInput.setAttribute('disabled', "")
+      }
+    }
+  } catch(err) {
+    console.log(err)
+  }
+  
+}
