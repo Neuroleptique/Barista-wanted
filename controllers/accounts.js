@@ -2,7 +2,6 @@ const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift");
-const axios = require("axios");
 
 module.exports = {
   getDashboard: async (req, res) => {

@@ -10,7 +10,7 @@
       This is <%= barista.firstName ? barista.firstName : user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile
     </h1>
   </div>
-  <form action="/profile_barista?_method=PUT" 
+  <form action="barista/profile_barista?_method=PUT" 
         method="POST">
     <div class="form-control">
         <label class="label" for="firstName">First Name</label>
