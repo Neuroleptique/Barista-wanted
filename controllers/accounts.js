@@ -124,14 +124,12 @@ module.exports = {
     try {
       await Cafe.findOneAndUpdate(
         { userName: req.user.userName }, {
-          _userID: req.user.id,
           cafeName: req.body.cafeName,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
           phone: req.body.phone,
           ig: req.body.ig,
           more: req.body.more,
-          
         }
       );
       console.log("profile updated!")
@@ -141,10 +139,21 @@ module.exports = {
     }
   },
   addAddressCafe: async (req, res) => {
-    try {  
-      await Cafe.findOneAndUpdate({userName: req.user.userName},{
-         $addToSet: {place: req.body.place }
-      })
+    try {
+      const cafeData = await Cafe.findOne({ _userID: req.user.id})
+      const existingAddress = cafeData.place.every(p => p.place_id !== req.body.place.place_id)
+      
+      if(existingAddress) {
+        await Cafe.findOneAndUpdate({userName: req.user.userName},{
+         $push: { place: req.body.place }
+        })
+        console.log('Address added')    
+        res.json("Address added")
+      } else {
+        console.log('Address already exists')    
+        res.json("Address already exists")
+      }
+      
       // await Cafe.findOneAndUpdate({ 
       //   userName: req.user.userName, 
       //   place: { $elemMatch: { 
@@ -154,8 +163,7 @@ module.exports = {
       //   }}}, { 
       //     $push: { place: req.body.place }
       //   });
-      console.log('Address added')    
-      res.json("Address added")
+
     } catch(err) {
       console.log(err)
     }

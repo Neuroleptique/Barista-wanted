@@ -181,7 +181,13 @@ async function updateAddress() {
       })
       const data = await response.json()
       console.log(data)
-      document.getElementById('address').value = address.formatted_address
+      if(data == 'Address added') {
+        const newAddressInput = document.getElementById('addressArea').appendChild(document.createElement('input'))
+        newAddressInput.value = address.formatted_address
+        newAddressInput.classList.add("input", "input-bordered")
+        newAddressInput.setAttribute('disabled', "")
+      }
+      // document.getElementById('address').value = address.formatted_address
 
     }
   } catch(err) {

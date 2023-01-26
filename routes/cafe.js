@@ -7,5 +7,6 @@ router.post("/postShift", shiftsController.postShift);
 router.put("/inactiveShift", shiftsController.inactiveShift);
 router.delete("/deleteShift", shiftsController.deleteShift);
 router.put("/putAddressCafe", accountsController.addAddressCafe);
+router.put("/profile_cafe", accountsController.updateProfileCafe);
 
 module.exports = router;
