@@ -42,7 +42,7 @@
                   <% } %>
                   <div class="py-6">
                   <% if(shift[i].location) { %>
-                    <a class="btn btn-secondary btn-outline px-2" href="<%= shift[i].location %>" target="_blank">
+                    <a class="btn btn-secondary btn-outline px-2" href="https://www.google.com/maps/place/?q=place_id:<%= shift[i].location.place_id %>" target="_blank">
                       <i class="fa-regular fa-map fa-2xl"></i>
                     </a>
                   <% } %>
