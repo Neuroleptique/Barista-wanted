@@ -112,29 +112,31 @@ exports.postSignup = async (req, res, next) => {
 
   try {
     // verify hCaptcha Token validity
-    const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
-    const hCaptchaToken = req.body["h-captcha-response"];
+    // const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
+    // const hCaptchaToken = req.body["h-captcha-response"];
 
-    let data = await verify(hCaptchaSecret, hCaptchaToken)
+    // let data = await verify(hCaptchaSecret, hCaptchaToken)
 
-    if (!data.success) {
-      console.log('verification failed');
-      req.flash("errors", {
-        msg: "Human verification failed",
-      });
-      if ( req.body.userType == 'barista' ) {
-        return res.redirect("/signup_barista");
-      } else if ( req.body.userType == 'cafe' ) {
-        return res.redirect("/signup_cafe");
-      }
-    }
+    // if (!data.success) {
+    //   console.log('verification failed');
+    //   req.flash("errors", {
+    //     msg: "Human verification failed",
+    //   });
+    //   if ( req.body.userType == 'barista' ) {
+    //     return res.redirect("/signup_barista");
+    //   } else if ( req.body.userType == 'cafe' ) {
+    //     return res.redirect("/signup_cafe");
+    //   }
+    // }
 
-    // Email sanitization
+    // Email and userName sanitization
     req.body.email = validator.normalizeEmail(req.body.email, {
       gmail_remove_dots: false,
       all_lowercase: true
     });
- 
+    
+    req.body.userName = req.body.userName.toLowerCase()
+
     // Verify if user name or email already exist
     const existingUser = await User.findOne(
       { $or: [{ email: req.body.email }, { userName: req.body.userName }] }
@@ -149,20 +151,18 @@ exports.postSignup = async (req, res, next) => {
       
     // Add new user to User collection
     const user = new User({
-      userName: req.body.userName.toLowerCase(),
+      userName: req.body.userName,
       email: req.body.email,
       password: req.body.password,
       userType: req.body.userType,
     });
-
+    await user.save();
     // Create document in barista/cafe collection according to userType
     if (req.body.userType == 'barista') {
       await Barista.create({ userName: req.body.userName, email: req.body.email })
     } else if (req.body.userType == 'cafe') {
       await Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
-    }
-    
-    await user.save();
+    }   
 
     // Generate email validation token and store in Token collection
     const token = new Token({
