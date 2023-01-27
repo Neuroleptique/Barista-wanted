@@ -8,7 +8,7 @@ This app allows:
 - barista users can put themself available for individual shift
 - shop owner will then see all available baristas for the shift(s) posted and their contact info
 
-**Link to project:** (work in progress)
+**Link to project:** https://baristawanted.cyclic.app/
 
 ## How It's Made:
 **Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS, Google Maps API
@@ -36,7 +36,7 @@ bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flas
     src="https://maps.googleapis.com/maps/api/js?key=<%- GOOGLE_MAP_API_KEY %> &libraries=places&callback=initAutocomplete" async defer>
   </script>
   ```
-  *This ONLY prevents your Google Maps API key from being pushed to repo and triggering security alert. Please still follow [API security best practices](https://developers.google.com/maps/api-security-best-practices) to protect your API key from miseusage. Also, by putting this script tag as a separated partials components, we can call `<%- include('partials/config') -%>` at the end of individual ejs file whenever we need to use google maps service*
+  *This ONLY prevents your Google Maps API key from being pushed to repo and triggering security alert. Please still follow [API security best practices](https://developers.google.com/maps/api-security-best-practices) on how to protect your API key from miseusage. Also, by putting this script tag as a separated partials components, we can call `<%- include('partials/config') -%>` at the end of individual ejs file whenever we need to use google maps service*
 
 ## Lessons Learned:
 Mongoose Schema, Date object manipulation, email sending from server, token generation and verification, TailwindCSS
