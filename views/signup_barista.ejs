@@ -36,7 +36,21 @@
               <label for="confirmPassword" class="label">Confirm Password</label>
               <input type="password" class="input input-bordered" id="confirmPassword" name="confirmPassword" required>
             </div>
-            
+            <div class="form-control">
+              <h3 class="label label-lg">Terms and Conditions</h3>
+              <div id="disclaimer" class="max-h-40 mb-2 p-2 w-full overflow-y-auto border-solid border-2 border-neutral-focus rounded-md md:text-sm">
+                Barista Wanted offers only a platform to enable cafes to post their vacant shift and baristas to put themself available. We do not assume any responsibility for the legitimacy of jobs posted or the qualifications of baristas. We will not take any monetary goods from our users. Hence, it is solely the users’ responsibility to verify the validity of other users, contact other users through available means, negotiate the salary and be paid according to your local labour law. In case of abuse or impersonation, we reserve the right to suspend or prohibit the user from using our site.
+                
+                <br />
+                Our site contains links to third-party websites or services that we do not own or control. We are not responsible for the content, policies or practices of any third-party website or service linked to our site.
+                </div>
+              
+              <label>
+                <input type="checkbox" name="disclaimer" class="radio radio-accent" required>
+                <span class="label-text">I ACCEPT the above terms and conditions</span>
+              </label>
+
+            </div>
             <!-- Set mandatory userType as barista -->
             <input type="text" id="userType" name="userType" value="barista" hidden>
             <!-- hCaptcha Widget -->
