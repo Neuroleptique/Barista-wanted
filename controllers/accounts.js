@@ -38,7 +38,7 @@ module.exports = {
         if (!cafeData.place.length) {
           console.log('Cafe location is empty')
           req.flash("info", {
-            msg: "Please update cafe profile and add location",
+            msg: "Please update your cafe's profile and add location",
           });
           return res.redirect('/profile')
         }
@@ -148,13 +148,12 @@ module.exports = {
   },
   addAddressCafe: async (req, res) => {
     try {
-      const cafeData = await Cafe.findOne({ _userID: req.user.id})
-      const existingAddress = cafeData.place.every(p => p.place_id !== req.body.place.place_id)
-      
-      if(existingAddress) {
+      const cafeData = await Cafe.findOne({ userName: req.user.userName})
+      // Check if there is any location info or the address already exists 
+      if (!cafeData.place.length || cafeData.place.every(p => p.place_id !== req.body.place.place_id) ){
         await Cafe.findOneAndUpdate({userName: req.user.userName},{
-         $push: { place: req.body.place }
-        })
+              $push: { place: req.body.place }
+              })
         console.log('Address added')    
         res.json("Address added")
       } else {
@@ -162,6 +161,7 @@ module.exports = {
         res.json("Address already exists")
       }
       
+      // --> Attempted to minimize db request by utilizing query condition, but it doesn't work :(
       // await Cafe.findOneAndUpdate({ 
       //   userName: req.user.userName, 
       //   place: { $elemMatch: { 
