@@ -4978,6 +4978,11 @@ html {
   flex-direction: column;
 }
 
+.checkbox-sm {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
 .input-md {
   height: 3rem;
   padding-left: 1rem;
@@ -6178,6 +6183,10 @@ html {
   padding-bottom: 0.5rem;
 }
 
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -6194,12 +6203,28 @@ html {
   vertical-align: baseline;
 }
 
+.align-top {
+  vertical-align: top;
+}
+
 .align-middle {
   vertical-align: middle;
 }
 
+.align-text-top {
+  vertical-align: text-top;
+}
+
 .align-text-bottom {
   vertical-align: text-bottom;
+}
+
+.align-sub {
+  vertical-align: sub;
+}
+
+.align-super {
+  vertical-align: super;
 }
 
 .font-mono {

@@ -112,22 +112,22 @@ exports.postSignup = async (req, res, next) => {
 
   try {
     // verify hCaptcha Token validity
-    // const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
-    // const hCaptchaToken = req.body["h-captcha-response"];
+    const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
+    const hCaptchaToken = req.body["h-captcha-response"];
 
-    // let data = await verify(hCaptchaSecret, hCaptchaToken)
+    let data = await verify(hCaptchaSecret, hCaptchaToken)
 
-    // if (!data.success) {
-    //   console.log('verification failed');
-    //   req.flash("errors", {
-    //     msg: "Human verification failed",
-    //   });
-    //   if ( req.body.userType == 'barista' ) {
-    //     return res.redirect("/signup_barista");
-    //   } else if ( req.body.userType == 'cafe' ) {
-    //     return res.redirect("/signup_cafe");
-    //   }
-    // }
+    if (!data.success) {
+      console.log('verification failed');
+      req.flash("errors", {
+        msg: "Human verification failed",
+      });
+      if ( req.body.userType == 'barista' ) {
+        return res.redirect("/signup_barista");
+      } else if ( req.body.userType == 'cafe' ) {
+        return res.redirect("/signup_cafe");
+      }
+    }
 
     // Email and userName sanitization
     req.body.email = validator.normalizeEmail(req.body.email, {
@@ -135,54 +135,57 @@ exports.postSignup = async (req, res, next) => {
       all_lowercase: true
     });
     
-    req.body.userName
+    req.body.userName = req.body.userName.toLowerCase()
 
-    // Verify if user name or email already exist
+    // Verify if username or email already exist
     const existingUser = await User.findOne(
       { $or: [{ email: req.body.email }, { userName: req.body.userName }] }
     );
 
     if (existingUser) {
+
       req.flash("errors", {
         msg: "Account with that email address or username already exists.",
       });
       return res.redirect("../login");
-    }
+
+    } else {
+
+      // Add new user to User collection
+      const user = new User({
+        userName: req.body.userName,
+        email: req.body.email,
+        password: req.body.password,
+        userType: req.body.userType,
+      });
+
+      await user.save();
+
+      // Create document in barista/cafe collection according to userType
+      if (req.body.userType == 'barista') {
+        await Barista.create({ userName: req.body.userName, email: req.body.email })
+      } else if (req.body.userType == 'cafe') {
+        await Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
+      }    
+
+      // Generate email validation token and store in Token collection
+      const token = new Token({
+        _userId: user._id, 
+        token: crypto.randomBytes(16).toString('hex'),
+      })
       
-    // Add new user to User collection
-    const user = new User({
-      userName: req.body.userName,
-      email: req.body.email,
-      password: req.body.password,
-      userType: req.body.userType,
-    });
-    await user.save();
-    // Create document in barista/cafe collection according to userType
-    if (req.body.userType == 'barista') {
-      await Barista.create({ userName: req.body.userName, email: req.body.email })
-    } else if (req.body.userType == 'cafe') {
-      await Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
-    }
-    
-   
+      await token.save()
 
-    // Generate email validation token and store in Token collection
-    const token = new Token({
-      _userId: user._id, 
-      token: crypto.randomBytes(16).toString('hex'),
-    })
-    
-    await token.save()
-
-    // Send account verification email to user
-    const subject = 'Barista Wanted account Verification'
-    const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
-    sendEmail( req.body.email, subject, text )
-    
-    req.flash('success', {
-      msg: 'Please check your email and verify your account.'
-    });
-    res.redirect('/login')  
+      // Send account verification email to user
+      const subject = 'Barista Wanted account Verification'
+      const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
+      sendEmail( req.body.email, subject, text )
+      
+      req.flash('success', {
+        msg: 'Please check your email and verify your account.'
+      });
+      res.redirect('/login')  
+    }    
 
   } catch(err) {
     console.log(err)

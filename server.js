@@ -18,8 +18,6 @@ require("dotenv").config({ path: "./config/config.env" });
 // Passport config
 require("./config/passport")(passport);
 
-
-
 // Using EJS for views
 app.set("view engine", "ejs");
 
