@@ -8,7 +8,21 @@
       <%= cafe.cafeName ? cafe.cafeName : user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile
     </h1>
   </div>
-
+  <div class="py-2">
+    <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+        <div class="alert alert-error"><%= el.msg %></div>
+      <% }) %>
+    <% } else if (locals.messages.info) { %>
+      <% messages.info.forEach( el => { %>
+        <div class="alert alert-info"><%= el.msg %></div>
+      <% }) %>
+    <% } else if (locals.messages.success) { %>
+      <% messages.success.forEach( el => { %>
+        <div class="alert alert-success"><%= el.msg %></div>
+      <% }) %>
+    <% } %>
+  </div>
   <!-- form submission through main.js -->
   <form action="cafe/profile_cafe?_method=PUT" 
         method="POST">

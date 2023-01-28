@@ -24,6 +24,6 @@ router.get("/password-reset/:userId/:token", authController.getPasswordResetActu
 router.post("/password-reset/:userId/:token", authController.postPasswordResetActual)
 
 // Profile from dashboard
-router.get("/profile", accountsController.getProfile);
+router.get("/profile", ensureAuth, accountsController.getProfile);
 
 module.exports = router;

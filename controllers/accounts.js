@@ -32,7 +32,17 @@ module.exports = {
         
       } else if (req.user.userType == 'cafe' ) {
 
-        const cafeData = await Cafe.find({ userName: req.user.userName });
+        const cafeData = await Cafe.findOne({ userName: req.user.userName });
+
+        // Force cafe user to add their shop location prior posting shift
+        if (!cafeData.place.length) {
+          console.log('Cafe location is empty')
+          req.flash("info", {
+            msg: "Please update cafe profile and add location",
+          });
+          return res.redirect('/profile')
+        }
+
         // Active shift = activeStatus == true && date >= today
         const activeShiftData = await Shift.find({ 
           $and: [
