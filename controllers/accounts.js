@@ -77,7 +77,7 @@ module.exports = {
             $in: availableBarista
           }
         })
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: new Object(...cafeData), activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
       }
     } catch (err) {
       console.log(err);
