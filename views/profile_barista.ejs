@@ -25,11 +25,9 @@
       <input class="input input-bordered" type="tel" id="phone" name="phone" value="<%= barista.phone || null %>">
     </div>
     <div class="form-control">
-      <label class="label" for="ig">
-        <span class="label-text">Your Instagram</span>
-      </label>
+      <label class="label" for="ig">Your Instagram</label>
       <label class="input-group">
-        <span>https://www.instagram.com/</span>
+        <span class="label-text">instagram.com/</span>
         <input class="input input-bordered" type="text" id="ig" name="ig" value="<%= barista.ig || null %>">
       </label>
     </div>
@@ -57,7 +55,7 @@
 
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
-        <input class="checkbox checkbox-accent" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
+        <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
       <%= 'checked' %> 
       <% } %> >
         <span class="label pl-3">E-mail me for new availabilities</span>
