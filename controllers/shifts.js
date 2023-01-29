@@ -37,7 +37,7 @@ module.exports = {
 
         // Send notification email to baristas
         const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista at ${locationData.formatted_address} \n on ${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
+        const text = `${cafeData.cafeName} is looking for a barista \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
         
         sendEmail( baristaEmails, subject, text )
       }

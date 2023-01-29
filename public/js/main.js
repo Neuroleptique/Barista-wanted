@@ -162,11 +162,10 @@ function onPlaceChanged() {
 
 async function updateAddress() {
   const address = addressInfo
+  const addressAlert = document.getElementById('addressAlert')
   try {
     // Throw error message if user click save address button without selecting a location
-    if (!address.geometry){
-
-        const addressAlert = document.getElementById('addressAlert')
+    if (!address.geometry){        
         addressAlert.classList.add('alert-error')
         addressAlert.innerHTML = 'You have not select a location'
 
@@ -179,13 +178,21 @@ async function updateAddress() {
           place: address
         })
       })
+      
       const data = await response.json()
       console.log(data)
       if(data == 'Address added') {
+        // Temporarily show the new address at address area as page reload is not needed
         const newAddressInput = document.getElementById('addressArea').appendChild(document.createElement('input'))
         newAddressInput.value = address.formatted_address
         newAddressInput.classList.add("input", "input-bordered")
         newAddressInput.setAttribute('disabled', "")
+
+        addressAlert.classList.add('alert-success')
+        addressAlert.innerHTML = data
+      }else if (data == 'Address already exists') {
+        addressAlert.classList.add('alert-error')
+        addressAlert.innerHTML = data
       }
     }
   } catch(err) {
