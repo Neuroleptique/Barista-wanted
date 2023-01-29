@@ -8,19 +8,22 @@ module.exports = {
     try {
       const today = new Date().toJSON()
       
-      if (req.user.userType == 'barista') {  
+      if (req.user.userType == 'barista') {
+
+        // Force user to fill their profile before preceeding to check dashboard
+        const baristaData = await Barista.findOne({ userName: req.user.userName });
+        if (!baristaData.firstName || !baristaData.lastName) {
+          console.log('First or Last Name is empty')
+          req.flash("info", {
+            msg: "Please update your profile and add your First and Last names",
+          });
+          return res.redirect('/profile')
+        }
 
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
         }).sort({ date: 1 });
-        
-        const availableBarista = shiftData.map( s => s.availability ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )        
-        const baristaData = await Barista.find({ 
-          userName: {
-            $in: availableBarista
-          }
-        })
 
         const shiftPoster = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
         const cafeData = await Cafe.find({
