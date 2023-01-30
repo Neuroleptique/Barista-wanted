@@ -9,7 +9,7 @@ module.exports = {
       const today = new Date().toISOString()
       if (req.user.userType == 'barista') {
 
-        // Force user to fill their profile before preceeding to check dashboard
+        // Force barista users to fill their profile before preceeding to check dashboard
         const baristaData = await Barista.findOne({ userName: req.user.userName });
         if (!baristaData.firstName || !baristaData.lastName) {
           console.log('First or Last Name is empty')
@@ -19,6 +19,7 @@ module.exports = {
           return res.redirect('/profile')
         }
 
+        // Find all active shifts that have a starting date and time greater or equal than today 
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
@@ -66,7 +67,7 @@ module.exports = {
         }).sort({ date: 1 });
         
         // Determine who are available for shifts posted by individual cafe user and 
-        // Retrieve available baristas' information for those shifts  
+        // Retrieve all available baristas' information for those shifts  
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
         const availableBarista = activeShiftBarista
