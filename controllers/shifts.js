@@ -9,12 +9,15 @@ module.exports = {
   postShift: async (req, res) => {
     try {
       const shiftDateAndTime = new Date(req.body.date)
+
       // Retrieve shift start time from Date as hh:mm format
       const start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
 
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
+
+      // Grab the individual place data (place_id, geometry, formatted_address) from cafe data
       const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
-      console.log(locationData)
+
       await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
@@ -28,7 +31,7 @@ module.exports = {
         more: req.body.more,
       })
 
-      // Sent email to baristas who opt in for email notification
+      // Sent email to baristas who opt-in for email notification
       const baristas = await Barista.find({ notification: true })
 
       if(baristas) {
@@ -37,7 +40,7 @@ module.exports = {
 
         // Send notification email to baristas
         const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
+        const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your profile for more info by clicking the link: \nhttp:\/\/`+ req.headers.host
         
         sendEmail( baristaEmails, subject, text )
       }
