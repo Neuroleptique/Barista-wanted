@@ -6,7 +6,7 @@ const Shift = require("../models/Shift");
 module.exports = {
   getDashboard: async (req, res) => {
     try {
-      const today = new Date().toJSON()
+      const today = new Date().toISOString()
       
       if (req.user.userType == 'barista') {  
 
