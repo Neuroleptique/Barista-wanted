@@ -16,6 +16,7 @@ const ShiftSchema= new mongoose.Schema({
     formatted_address: String
   },
   wage: Number,
+  tips: Boolean,
   date: Date,
   start_time: String,
   end_time: String,
