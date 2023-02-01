@@ -8,19 +8,21 @@ module.exports = {
     try {
       const today = new Date().toISOString()
       
-      if (req.user.userType == 'barista') {  
+      if (req.user.userType == 'barista') {
+
+        const baristaData = await Barista.findOne({ userName: req.user.userName });
+        if (!baristaData.firstName || !baristaData.lastName) {
+          console.log('First or Last Name is empty')
+          req.flash("info", {
+            msg: "Please update your profile and add your First and Last names",
+          });
+          return res.redirect('/profile')
+        }
 
         const shiftData = await Shift.find({ 
           activeStatus: true,
           date: { $gte: today }
         }).sort({ date: 1 });
-        
-        const availableBarista = shiftData.map( s => s.availability ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )        
-        const baristaData = await Barista.find({ 
-          userName: {
-            $in: availableBarista
-          }
-        })
 
         const shiftPoster = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
         const cafeData = await Cafe.find({
@@ -28,13 +30,12 @@ module.exports = {
             $in: shiftPoster
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
+        res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData });
         
       } else if (req.user.userType == 'cafe' ) {
 
         const cafeData = await Cafe.findOne({ userName: req.user.userName });
 
-        // Force cafe user to add their shop location prior posting shift
         if (!cafeData.place.length) {
           console.log('Cafe location is empty')
           req.flash("info", {
@@ -63,8 +64,6 @@ module.exports = {
           ]
         }).sort({ date: 1 });
         
-        // Determine who are available for shifts posted by individual cafe user and 
-        // Retrieve available baristas' information for those shifts  
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
         const availableBarista = activeShiftBarista
@@ -160,17 +159,6 @@ module.exports = {
         console.log('Address already exists')    
         res.json("Address already exists")
       }
-      
-      // --> Attempted to minimize db request by utilizing query condition, but it doesn't work :(
-      // await Cafe.findOneAndUpdate({ 
-      //   userName: req.user.userName, 
-      //   place: { $elemMatch: { 
-      //     place_id: {
-      //       $ne: req.body.place.place_id
-      //     } 
-      //   }}}, { 
-      //     $push: { place: req.body.place }
-      //   });
 
     } catch(err) {
       console.log(err)
