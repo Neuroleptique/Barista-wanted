@@ -4983,6 +4983,11 @@ html {
   width: 1.25rem;
 }
 
+.checkbox-lg {
+  height: 2rem;
+  width: 2rem;
+}
+
 .input-md {
   height: 3rem;
   padding-left: 1rem;
@@ -5565,10 +5570,6 @@ html {
 
 .h-40 {
   height: 10rem;
-}
-
-.h-1\/6 {
-  height: 16.666667%;
 }
 
 .max-h-24 {
@@ -6574,6 +6575,11 @@ footer {
     width: 3rem;
     border-radius: 9999px;
     padding: 0px;
+  }
+
+  .md\:checkbox-lg {
+    height: 2rem;
+    width: 2rem;
   }
 }
 

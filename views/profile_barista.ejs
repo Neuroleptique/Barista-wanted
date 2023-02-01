@@ -10,6 +10,21 @@
       This is <%= barista.firstName ? barista.firstName : user.userName.replace( /\w/, c => c.toUpperCase() ) %>'s profile
     </h1>
   </div>
+  <div class="py-2">
+    <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+        <div class="alert alert-error"><%= el.msg %></div>
+      <% }) %>
+    <% } else if (locals.messages.info) { %>
+      <% messages.info.forEach( el => { %>
+        <div class="alert alert-info"><%= el.msg %></div>
+      <% }) %>
+    <% } else if (locals.messages.success) { %>
+      <% messages.success.forEach( el => { %>
+        <div class="alert alert-success"><%= el.msg %></div>
+      <% }) %>
+    <% } %>
+  </div>
   <form action="barista/profile_barista?_method=PUT" 
         method="POST">
     <div class="form-control">
@@ -25,11 +40,9 @@
       <input class="input input-bordered" type="tel" id="phone" name="phone" value="<%= barista.phone || null %>">
     </div>
     <div class="form-control">
-      <label class="label" for="ig">
-        <span class="label-text">Your Instagram</span>
-      </label>
+      <label class="label" for="ig">Your Instagram</label>
       <label class="input-group">
-        <span>https://www.instagram.com/</span>
+        <span class="label-text">instagram.com/</span>
         <input class="input input-bordered" type="text" id="ig" name="ig" value="<%= barista.ig || null %>">
       </label>
     </div>
@@ -57,7 +70,7 @@
 
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
-        <input class="checkbox checkbox-accent" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
+        <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
       <%= 'checked' %> 
       <% } %> >
         <span class="label pl-3">E-mail me for new availabilities</span>
