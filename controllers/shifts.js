@@ -21,6 +21,7 @@ module.exports = {
         cafeName: cafeData.cafeName,
         location: locationData,
         wage: req.body.wage,
+        tips: req.body.tips,
         date: req.body.date,
         start_time: start_time,
         end_time: req.body.end_time,
