@@ -14,8 +14,7 @@
         <div class="form-control">  
           <label class="input-group" for="location">
             <span>Location</span>
-            <select class="select select-bordered" name="location" id="location">
-              <option selected>Choose cafe location</option>
+            <select class="select select-bordered" name="location" id="location" required="required">
               <% for( const location of cafe.place ){ %>
                 <option value="<%= location.place_id %>"><%= location.formatted_address.split(' ')[1] %></option>
               <% } %>
