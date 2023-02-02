@@ -82,7 +82,7 @@
               
               <th scope="row"><%= new Date(activeShift[i].date).toDateString() %></th>
               <td><%= activeShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= activeShift[i].wage %>(<%= activeShift[i].tips ? '+tips' : 'No Tips' %>)</td>     
+              <td><%= activeShift[i].wage %> <%= activeShift[i].tips ? '+tips' : `(no tips)` %></td>     
               <td><%= `${activeShift[i].start_time} - ${activeShift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
@@ -159,7 +159,7 @@
             <tr data-id="<%= inactiveShift[i]._id %>">
               <th scope="row"><%= new Date(inactiveShift[i].date).toDateString() %></th>
               <td><%= inactiveShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= inactiveShift[i].wage %>(<%= activeShift[i].tips ? '+tips' : 'No Tips' %>)</td>                               
+              <td><%= inactiveShift[i].wage %> <%= inactiveShift[i].tips ? '+tips' : `(no tips)` %></td>                               
               <td><%= `${inactiveShift[i].start_time} - ${inactiveShift[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
