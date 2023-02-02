@@ -59,7 +59,7 @@
               </div>
             </td>
             <td><%= `${shift[i].start_time} - ${shift[i].end_time}` %></td>
-            <td><%= shift[i].wage %></td>
+            <td><%= shift[i].wage %>$/h <%= shift[i].tips ? '+tips' : `(no tips)` %></td>
             <td>
               <% if (shift[i].availability.includes(user.userName)) { %>
                   <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
