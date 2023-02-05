@@ -47,7 +47,7 @@
       </label>
     </div>
     <div class="form-control">
-      <label class="label" for="exp" >Barista experience</label>
+      <label class="label" for="exp" >Barista Experience</label>
       <select class="select select-bordered w-full" id="exp" id="exp" name="exp">
         <option value="" <% if(!barista.exp) { %> 
           <%= 'selected' %> 
@@ -64,7 +64,7 @@
       </select>
     </div>
     <div>
-      <label class="label" for="more">Anything else to add</label>
+      <label class="label" for="more">About Me</label>
       <input class="input input-bordered" type="text" id="more" name="more" value="<%= barista.more || null %>"></input>
     </div>
 
