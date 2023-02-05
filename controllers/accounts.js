@@ -25,6 +25,8 @@ module.exports = {
           date: { $gte: today }
         }).sort({ date: 1 });
 
+        shiftData.map(s => s.length = ( new Date("1970-1-1 " + s.end_time) - new Date("1970-1-1 " + s.start_time ) ) / 1000 / 60 / 60 )
+
         const shiftPoster = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
         const cafeData = await Cafe.find({
           userName: {
