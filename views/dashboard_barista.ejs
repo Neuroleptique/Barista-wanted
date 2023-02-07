@@ -58,7 +58,7 @@
                 </div>
               </div>
             </td>
-            <td><%= `${shift[i].start_time} - ${shift[i].end_time} (${shift[i].length}h)` %></td>
+            <td><%= `${shift[i].start_time} - ${shift[i].end_time} ( ${shift[i].length}h )` %></td>
             <td><%= shift[i].wage %>$/h <%= shift[i].tips ? '+tips' : `(no tips)` %></td>
             <td>
               <% if (shift[i].availability.includes(user.userName)) { %>
