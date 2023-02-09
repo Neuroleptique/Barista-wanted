@@ -26,7 +26,8 @@
     <% } %>
   </div>
   <form action="barista/profile_barista?_method=PUT" 
-        method="POST">
+        method="POST"
+        enctype="multipart/form-data">
     <div class="form-control">
         <label class="label" for="firstName">First Name</label>
         <input class="input input-bordered" type="text" id="firstName" name="firstName" value="<%= barista.firstName %>">
@@ -67,7 +68,10 @@
       <label class="label" for="more">About Me</label>
       <input class="input input-bordered" type="text" id="more" name="more" value="<%= barista.more || null %>"></input>
     </div>
-
+    <div class="form-control">
+      <label for="photo" class="label">My Photo</label>
+      <input type="file" class="file-input file-input-bordered w-full" id="photo" name="file">
+    </div>
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
         <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
