@@ -93,6 +93,11 @@ module.exports = {
       const baristaData = await Barista.findOne({ userName: req.user.userName });
       const cafeData = await Cafe.findOne({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
+
+        baristaData.photo = cloudinary.image(`${baristaData.photo.split('/').pop()}`, { transformation: [
+          { dpr: "auto", responsive: true, width: 150, height: 150, crop: "thumb", gravity: "faces" }, 
+          { effect: "art:fes", radius: "max" }
+        ]})
         res.render("profile_barista.ejs", { user: userData, barista: baristaData });
       } else if (req.user.userType == 'cafe') {
         const CONFIG = {
