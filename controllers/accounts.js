@@ -3,6 +3,9 @@ const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift");
 const cloudinary = require("../middleware/cloudinary");
+const signature = require("../middleware/signuploadform")
+const cloudName = cloudinary.config().cloud_name;
+const apiKey = cloudinary.config().api_key;
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -188,5 +191,14 @@ module.exports = {
     } catch(err) {
       console.log(err)
     }
+  },
+  getSignature: (req, res, next) => {
+    const sig = signature.signuploadform()
+    res.json({
+      signature: sig.signature,
+      timestamp: sig.timestamp,
+      cloudname: cloudName,
+      apikey: apiKey
+    })
   }
 };

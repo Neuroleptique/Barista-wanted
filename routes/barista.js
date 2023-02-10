@@ -7,5 +7,6 @@ const accountsController = require("../controllers/accounts");
 router.put("/putAvailable", shiftsController.putAvailable);
 router.put("/removeAvailable", shiftsController.removeAvailable);
 router.put("/profile_barista", upload.single("file"), accountsController.updateProfileBarista);
+router.get("/signuploadform", accountsController.getSignature);
 
 module.exports = router;
