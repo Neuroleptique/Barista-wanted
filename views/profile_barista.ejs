@@ -25,6 +25,39 @@
       <% }) %>
     <% } %>
   </div>
+  <div class="collapse" >
+    <input type="checkbox" onclick="fetchSignature()"/> 
+    <div class="collapse-title text-xl font-medium" >
+      Click me to add your photo
+    </div>
+    <div class="collapse-content">
+      <form enctype="multipart/form-data" id="uploadPhoto">
+        <div class="form-control">
+
+          <label for="photo" class="label">My Photo</label>
+          <input type="file" name="photo" accept="image/*">
+          
+        </div>
+  
+        <input type="submit" value="Upload Files" name="submit" class="submit">
+      </form>
+      <div><img id="uploaded_form" /></div>
+
+      <h3>Upload response:</h3>
+      <pre class="data" id="formdata">
+      
+      </pre>  
+    </div>
+
+  </div>
+  <!-- <form method="post" enctype="multipart/form-data">
+    <label for="photo" class="label">My Photo</label>
+    <input type="file" name="photo" accept="image/*">
+    <input type="submit" value="Upload Files" name="submit" class="submit">
+  </form> -->
+
+
+
   <form action="barista/profile_barista?_method=PUT" 
         method="POST"
         enctype="multipart/form-data">
@@ -68,11 +101,11 @@
       <label class="label" for="more">About Me</label>
       <input class="input input-bordered" type="text" id="more" name="more" value="<%= barista.more || null %>"></input>
     </div>
-    <div class="form-control">
+    <!-- <div class="form-control">
       <label for="photo" class="label">My Photo</label>
       <div class="max-w-sm py-4"><%- barista.photo %></div>
       <input type="file" class="file-input file-input-bordered w-full" id="photo" name="file">
-    </div>
+    </div> -->
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
         <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
