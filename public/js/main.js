@@ -206,6 +206,7 @@ let signData = new Object()
 let cloudinary_url = new String()
 let photo_public_id = new String()
 let photo_secure_url = new String()
+
 async function fetchSignature() {
   const signResponse = await fetch('/barista/signuploadform', {
     method: "get"
@@ -218,36 +219,36 @@ async function fetchSignature() {
 
 async function uploadProfilePhoto(){
   
-      const files = document.getElementById("uploadPhoto").files;
-      const formData = new FormData();
-  
-      // Append parameters to the form data. The parameters that are signed using 
-      // the signing function (signuploadform) need to match these.
-      for (let i = 0; i < files.length; i++) {
-          let file = files[i];
-          formData.append("file", file);
-          formData.append("api_key", signData.apikey);
-          formData.append("timestamp", signData.timestamp);
-          formData.append("signature", signData.signature);
-          formData.append("eager", "c_thumb,h_150,w_150,g_face,r_max");
-          formData.append("folder", "profile_photos");
-      }
-      
-          await fetch(cloudinary_url, {
-              method: "POST",
-              body: formData
-          })          
-          .then((response) => {
-              return response.text();
-          })
-          .then((data) => {
-            const photoData = JSON.parse(data)
-            console.log(photoData.eager[0].secure_url)
-            photo_public_id = photoData.photo_public_id
-            photo_secure_url = photoData.secure_url
+  const files = document.getElementById("uploadPhoto").files;
+  const formData = new FormData();
 
-       
-          });
+  // Append parameters to the form data. The parameters that are signed using 
+  // the signing function (signuploadform) need to match these.
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    formData.append("file", file);
+    formData.append("api_key", signData.apikey);
+    formData.append("timestamp", signData.timestamp);
+    formData.append("signature", signData.signature);
+    formData.append("eager", "c_thumb,h_150,w_150,g_face,r_max");
+    formData.append("folder", "profile_photos");
+  }
+  
+  await fetch(cloudinary_url, {
+    method: "POST",
+    body: formData
+  })          
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    const photoData = JSON.parse(data)
+    console.log(photoData.eager[0].secure_url)
+    photo_public_id = photoData.photo_public_id
+    photo_secure_url = photoData.secure_url
+
+
+  });
      
 
 
