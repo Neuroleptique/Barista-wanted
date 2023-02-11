@@ -246,11 +246,28 @@ async function uploadProfilePhoto(){
     
     photo_public_id = photoData.photo_public_id
     photo_secure_url = photoData.secure_url
-      
+    savePhotoInfoToDB()
   } catch (err) {
     console.error('error:' + err)
   }
 
 
 
+}
+
+async function savePhotoInfoToDB() {
+  try{
+    const response = await fetch('/barista/putPhotoInfo', {
+      method: 'put',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        secure_url: photo_secure_url,
+        public_id: photo_public_id
+      })
+    })
+    const data = await response.json()
+    console.log(data)
+  }catch(err){
+    console.error(err)
+  }
 }

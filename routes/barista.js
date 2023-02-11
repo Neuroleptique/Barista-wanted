@@ -8,5 +8,6 @@ router.put("/putAvailable", shiftsController.putAvailable);
 router.put("/removeAvailable", shiftsController.removeAvailable);
 router.put("/profile_barista", upload.single("file"), accountsController.updateProfileBarista);
 router.get("/signuploadform", accountsController.getSignature);
+router.put("/putPhotoInfo", accountsController.putPhotoInfo);
 
 module.exports = router;

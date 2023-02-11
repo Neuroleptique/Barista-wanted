@@ -112,6 +112,18 @@ module.exports = {
       console.log(err)
     }
   },
+  putPhotoInfo: async (req, res) => {
+    try{
+      await Barista.findOneAndUpdate({ userName: req.user.userName}, {
+        photo: req.body.secure_url,
+        cloudinaryId: req.body.public_id
+      })
+      console.log('Profile photo info updated')
+      res.json('Profile photo info updated')
+    }catch(err) {
+      console.error(err)
+    }
+  },
   updateProfileBarista: async (req, res) => {
     if(req.body.ig) {
       req.body.ig = req.body.ig.split( 'instagram.com/' ).slice(-1).toString()
