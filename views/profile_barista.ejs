@@ -31,15 +31,15 @@
       Click me to add your photo
     </div>
     <div class="collapse-content">
-      <form enctype="multipart/form-data" id="uploadPhoto">
+      <form enctype="multipart/form-data">
         <div class="form-control">
 
           <label for="photo" class="label">My Photo</label>
-          <input type="file" name="photo" accept="image/*">
+          <input type="file" name="photo" id="uploadPhoto" accept="image/*">
           
         </div>
   
-        <input type="submit" value="Upload Files" name="submit" class="submit">
+        <button type="button" value="uploadPhoto" onclick="uploadProfilePhoto()">Save Photo</button>
       </form>
       <div><img id="uploaded_form" /></div>
 
