@@ -25,26 +25,30 @@
       <% }) %>
     <% } %>
   </div>
+  <label for="photo" class="label">My Photo</label>
+  <div class="max-w-sm py-4" id="photoView">
+    <% if(barista.photo) { %>
+    <%- barista.photo %>
+    <% } %>
+  </div>
+  <div class="max-w-sm py-4" id="photoUploadResult" hidden></div>
   <div class="collapse" >
     <input type="checkbox" onclick="fetchSignature()"/> 
-    <div class="collapse-title text-xl font-medium" >
-      Click me to add your photo
+    <div class="collapse-title btn btn-secondary text-xl font-medium capitalize" >
+      Click to upload your photo
     </div>
     <div class="collapse-content">
       <form enctype="multipart/form-data">
         <div class="form-control">
 
           <label for="photo" class="label">My Photo</label>
-          <input type="file" name="photo" id="uploadPhoto" accept="image/*">
+          <input class="file-input file-input-bordered" type="file" name="photo" id="uploadPhoto" accept="image/*">
           
         </div>
   
-        <button type="button" value="uploadPhoto" onclick="uploadProfilePhoto()">Save Photo</button>
-      </form>
-      <div><img id="uploaded_form" /></div>
+        <button class="btn btn-primary max-w-sm" type="button" value="uploadPhoto" onclick="uploadProfilePhoto()">Save Photo</button>
+      </form>      
 
-      <h3>Upload response:</h3>
-      <div class="max-w-sm py-4" id="photoUploadResult"></div>
     </div>
 
   </div>

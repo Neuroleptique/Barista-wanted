@@ -6391,6 +6391,10 @@ html {
   text-transform: lowercase;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .normal-case {
   text-transform: none;
 }
