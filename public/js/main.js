@@ -241,8 +241,12 @@ async function uploadProfilePhoto(){
     const photoData = await photoDataResponse.json()
     console.log(photoData)
 
-    const result = document.getElementById('photoUploadResult').appendChild(document.createElement('img'))
-    result.setAttribute('src', photoData.eager[0].secure_url)
+    // const deletePrevPhoto = await fetch()
+
+    const uploadResult = document.getElementById('photoUploadResult').appendChild(document.createElement('img'))
+    uploadResult.setAttribute('src', photoData.eager[0].secure_url)
+    const prevPhoto = document.getElementById('photoView')
+    prevPhoto.replaceChildren(uploadResult)
     
     photo_public_id = photoData.photo_public_id
     photo_secure_url = photoData.secure_url
