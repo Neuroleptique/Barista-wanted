@@ -87,7 +87,7 @@ module.exports = {
 
         baristaData.map(b => {
           return b.photo = cloudinary.image(`${b.photo.split('/').slice(-2).join("/")}`, { transformation: [
-          { width: 150, height: 150, crop: "thumb", gravity: "face", radius: "max", background: "#ffffff00" }
+          { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }          
           ]})
         })
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
