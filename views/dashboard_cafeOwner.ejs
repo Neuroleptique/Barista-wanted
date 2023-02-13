@@ -103,6 +103,7 @@
                     <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                     <div class="modal">
                       <div class="modal-box">
+                        <%- oneBarista.photo %>
                         <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></h3>
                         <span class="block py-1">Level of experience: <%= oneBarista.exp ? oneBarista.exp : 'unknown' %></span>
                         <% if(oneBarista.more){ %>
