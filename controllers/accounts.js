@@ -135,8 +135,6 @@ module.exports = {
       req.body.ig = req.body.ig.split( 'instagram.com/' ).slice(-1).toString()
     }
     try {
-      const photoUploadResult = await cloudinary.uploader.upload(req.file.path);
-
       await Barista.findOneAndUpdate(
         { userName: req.user.userName }, {
           _userID: req.user.id,
@@ -144,12 +142,9 @@ module.exports = {
           lastName: req.body.lastName,
           phone: req.body.phone,
           ig: req.body.ig,
-          photo: photoUploadResult.secure_url,
-          cloudinaryId: photoUploadResult.public_id,
           exp: req.body.exp,
           more: req.body.more,
           notification: req.body.notification,
-          
         }
       );
       console.log("profile updated!")

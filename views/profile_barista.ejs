@@ -48,21 +48,11 @@
   
         <button class="btn btn-primary max-w-sm" type="button" value="uploadPhoto" onclick="uploadProfilePhoto()">Save Photo</button>
       </form>      
-
     </div>
-
   </div>
-  <!-- <form method="post" enctype="multipart/form-data">
-    <label for="photo" class="label">My Photo</label>
-    <input type="file" name="photo" accept="image/*">
-    <input type="submit" value="Upload Files" name="submit" class="submit">
-  </form> -->
-
-
 
   <form action="barista/profile_barista?_method=PUT" 
-        method="POST"
-        enctype="multipart/form-data">
+        method="POST">
     <div class="form-control">
         <label class="label" for="firstName">First Name</label>
         <input class="input input-bordered" type="text" id="firstName" name="firstName" value="<%= barista.firstName %>">
@@ -103,11 +93,6 @@
       <label class="label" for="more">About Me</label>
       <input class="input input-bordered" type="text" id="more" name="more" value="<%= barista.more || null %>"></input>
     </div>
-    <!-- <div class="form-control">
-      <label for="photo" class="label">My Photo</label>
-      <div class="max-w-sm py-4"><%- barista.photo %></div>
-      <input type="file" class="file-input file-input-bordered w-full" id="photo" name="file">
-    </div> -->
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
         <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 

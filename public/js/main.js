@@ -204,8 +204,6 @@ async function updateAddress() {
 // Upload Photo from barista profile to Cloudinary 
 let signData = new Object()
 let cloudinary_url = new String()
-let photo_public_id = new String()
-let photo_secure_url = new String()
 
 async function fetchSignature() {
   const signResponse = await fetch('/barista/signuploadform', {
@@ -245,26 +243,29 @@ async function uploadProfilePhoto(){
     uploadResult.setAttribute('src', photoData.eager[0].secure_url)
     const prevPhoto = document.getElementById('photoView')
     prevPhoto.replaceChildren(uploadResult)
+
+    deleteCloudPhoto()
     
-    photo_public_id = photoData.photo_public_id
-    photo_secure_url = photoData.secure_url
-    savePhotoInfoToDB()
+    const photo_public_id = photoData.public_id
+    const photo_secure_url = photoData.secure_url
+
+    savePhotoInfoToDB(photo_public_id, photo_secure_url)
+
   } catch (err) {
     console.error('error:' + err)
   }
-
-
-
 }
 
-async function savePhotoInfoToDB() {
+
+
+async function savePhotoInfoToDB(public_id, secure_url) {
   try{
     const response = await fetch('/barista/putPhotoInfo', {
       method: 'put',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
-        secure_url: photo_secure_url,
-        public_id: photo_public_id
+        public_id: public_id,
+        secure_url: secure_url
       })
     })
     const data = await response.json()
