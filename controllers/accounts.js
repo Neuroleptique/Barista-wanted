@@ -98,7 +98,7 @@ module.exports = {
       if (req.user.userType == 'barista') {
 
         baristaData.photo = cloudinary.image(`${baristaData.photo.split('/').slice(-2).join("/")}`, { transformation: [
-          { width: 150, height: 150, crop: "thumb", gravity: "face", radius: "max" }
+          { width: 150, height: 150, crop: "thumb", gravity: "face", radius: "max", background: "#00000000" }
         ]})
 
         res.render("profile_barista.ejs", { user: userData, barista: baristaData });
