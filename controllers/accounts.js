@@ -212,5 +212,15 @@ module.exports = {
       cloudname: cloudName,
       apikey: apiKey
     })
+  },
+  deleteCloudPhoto: async (req, res, next) => {
+    try {
+      const baristaData = await Barista.findOne({ userName: req.user.userName })
+      await cloudinary.uploader.destroy(baristaData.cloudinaryId)
+      console.log('Old photo deleted')    
+      res.json("Old photo deleted")
+    } catch (error) {
+      console.error(error)
+    }
   }
 };

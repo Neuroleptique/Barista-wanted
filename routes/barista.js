@@ -9,5 +9,6 @@ router.put("/removeAvailable", shiftsController.removeAvailable);
 router.put("/profile_barista", upload.single("file"), accountsController.updateProfileBarista);
 router.get("/signuploadform", accountsController.getSignature);
 router.put("/putPhotoInfo", accountsController.putPhotoInfo);
+router.delete("/deleteCloudPhoto", accountsController.deleteCloudPhoto)
 
 module.exports = router;
