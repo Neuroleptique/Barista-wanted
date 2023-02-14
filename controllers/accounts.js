@@ -24,21 +24,37 @@ module.exports = {
           return res.redirect('/profile')
         }
 
-        const shiftData = await Shift.find({
+        const activeShiftData = await Shift.find({
           activeStatus: true,
           start_at: { $gte: today }
         }).sort({ start_at: 1 });
 
-        addTimeRange(shiftData)
 
-        const shiftPosters = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
+
+        const pastShiftData = await Shift.find({
+          $and: [
+            { availability: { $in: [ req.user.userName ]}},
+            { $or: [
+              { start_at: { $lt: today }},
+              { activeStatus: false }
+            ]}
+          ]
+        })
+        addTimeRange(activeShiftData)
+        addTimeRange(pastShiftData)
+
+        const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
+        const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
+        const allShiftPosters = activeShiftPoster.concat(pastShiftPoster)
+                                .flat()
+                                .filter( (n, idx, arr) => arr.indexOf(n) == idx )
+
         const cafeData = await Cafe.find({
           userName: {
-            $in: shiftPosters
+            $in: allShiftPosters
           }
         })
-
-        res.render("dashboard_barista.ejs", { user: req.user, shifts: shiftData, cafes: cafeData, barista: baristaData });
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData });
 
       } else if (req.user.userType == 'cafe' ) {
 
