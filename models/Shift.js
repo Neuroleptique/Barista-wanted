@@ -22,7 +22,8 @@ const ShiftSchema= new mongoose.Schema({
   end_time: String,
   activeStatus: { type: Boolean, default: true }, 
   more: String,
-  availability: [ { type: String } ]
+  availability: [ { type: String } ],
+  ownerDisplay: { type: Boolean, default: true }
 });
 
 module.exports = mongoose.model("Shift", ShiftSchema);
