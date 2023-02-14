@@ -98,9 +98,13 @@ module.exports = {
   },
   removeAvailable: async(req, res) => {
     try {
-      await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
+      const shiftData = await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
         $pull: { availability: req.user.userName }
-      })
+      }, { new: true })
+      console.log(shiftData.availability.length +"/"+ shiftData.ownerDisplay)
+      if (shiftData.availability.length == 0 && shiftData.ownerDisplay == false) {
+        module.exports.deleteShift(req)
+      }
       console.log(`${req.user.userName} is no longer available for the shift`)
       res.json('Candidate removed')
     }catch(err){
