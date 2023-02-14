@@ -59,6 +59,7 @@ module.exports = {
         const inactiveShiftData = await Shift.find({ 
           $and: [
             { _userID: req.user.id },
+            { ownerDisplay: true },
             { $or: [
               { activeStatus: false },
               { date: { $lt: today }}

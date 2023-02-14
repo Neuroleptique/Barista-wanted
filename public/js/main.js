@@ -1,5 +1,6 @@
 const changeStatusBtn = document.querySelectorAll('.inactiveShift')
 const deleteShiftBtn = document.querySelectorAll('.deleteShift')
+const removeShiftBtn = document.querySelectorAll('.removeShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
 const notAvailableBtn = document.querySelectorAll('.not-available')
 const shiftDateField = document.querySelectorAll('.date-input')
@@ -79,6 +80,29 @@ async function deleteShift() {
     location.reload()
   } catch (err) {
     console.log(err)
+  }
+}
+
+// Cafe: remove shift from being displayed on cafe dashboard
+Array.from(removeShiftBtn).forEach(btn => {
+  btn.addEventListener('click', removeShiftDisplay )
+})
+
+async function removeShiftDisplay() {
+  const shiftID = this.parentNode.parentNode.dataset.id
+  try {
+    const response = await fetch('cafe/putCafeDisplayFalse', {
+      method: 'put',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        shiftID: shiftID
+      })
+    })
+    const data = await response.json()
+    console.log(data)
+    location.reload()
+  } catch (error) {
+    console.error(error)    
   }
 }
 

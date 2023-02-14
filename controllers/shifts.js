@@ -60,13 +60,29 @@ module.exports = {
       console.log(err)
     }
   },
+
+  // If availability.length == 0 && ownerDisplay == false
   deleteShift: async (req, res) => {
     try {
       await Shift.findOneAndDelete({ _id: req.body.shiftID })
       console.log('Shift deleted')
-      res.json('Shift deleted')
+
     } catch(err) {
     console.log(err)
+    }
+  },
+  putCafeDisplayFalse: async (req, res) => {
+    try {
+      const shiftData = await Shift.findOneAndUpdate( {_id: req.body.shiftID }, {
+        ownerDisplay: false
+      }, { new: true })
+      if( shiftData.availability.length == 0 ) {
+        module.exports.deleteShift(req)
+      }
+      console.log('Shift removed from cafe dashboard')
+      res.json('Shift removed from cafe dashboard')
+    } catch (error) {
+      console.error(error) 
     }
   },
   putAvailable: async(req, res) => {
