@@ -61,7 +61,7 @@ module.exports = {
     }
   },
 
-  // If availability.length == 0 && ownerDisplay == false
+  // Triggering condition: only if availability.length == 0 && ownerDisplay == false
   deleteShift: async (req, res) => {
     try {
       await Shift.findOneAndDelete({ _id: req.body.shiftID })
