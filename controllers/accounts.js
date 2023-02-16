@@ -85,11 +85,7 @@ module.exports = {
           }
         })
 
-        baristaData.map(b => {
-          return b.photo = cloudinary.image(`${b.photo.split('/').slice(-2).join("/")}`, { transformation: [
-          { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }          
-          ]})
-        })
+        getCloudImgTag(baristaData)
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
       }
     } catch (err) {
@@ -102,10 +98,7 @@ module.exports = {
       const baristaData = await Barista.findOne({ userName: req.user.userName });
       const cafeData = await Cafe.findOne({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
-
-        baristaData.photo = cloudinary.image(`${baristaData.photo.split('/').slice(-2).join("/")}`, { transformation: [
-          { width: 150, height: 150, crop: "thumb", gravity: "face", radius: "max", background: "#ffffff00" }
-        ]})
+        getCloudImgTag(new Array(baristaData))
 
         res.render("profile_barista.ejs", { user: userData, barista: baristaData });
       } else if (req.user.userType == 'cafe') {
@@ -225,3 +218,13 @@ module.exports = {
     }
   }
 };
+
+function getCloudImgTag(cloudinaryPhotoData){
+  return cloudinaryPhotoData.forEach(baristaInfo => {
+    if(baristaInfo.photo){
+      return baristaInfo.photo = cloudinary.image(baristaInfo.photo.split('/').slice(-2).join("/"), { transformation: [
+      { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }          
+      ]})
+    }
+  })
+}

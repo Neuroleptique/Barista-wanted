@@ -203,7 +203,7 @@ async function updateAddress() {
 
 // Upload Photo from barista profile to Cloudinary 
 let signData = new Object()
-let cloudinary_url = new String()
+let cloudinaryURL = new String()
 
 async function fetchSignature() {
   const signResponse = await fetch('/barista/signuploadform', {
@@ -211,8 +211,7 @@ async function fetchSignature() {
   });
   signData = await signResponse.json();
 
-  cloudinary_url = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
-    console.log(signData)
+  cloudinaryURL = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
 }
 
 async function uploadProfilePhoto(){
@@ -226,18 +225,17 @@ async function uploadProfilePhoto(){
       formData.append("api_key", signData.apikey);
       formData.append("timestamp", signData.timestamp);
       formData.append("signature", signData.signature);
+      formData.append("resource_type", "image");
+      formData.append("allowed_formats", "jpg,jpeg,png,bmp,gif");
       formData.append("eager", "c_thumb,h_150,w_150,g_face");
       formData.append("folder", "profile_photos");
     }
     
-    const photoDataResponse = await fetch(cloudinary_url, {
+    const photoDataResponse = await fetch(cloudinaryURL, {
       method: "POST",
       body: formData
     })
     const photoData = await photoDataResponse.json()
-    console.log(photoData)
-
-    // const deletePrevPhoto = await fetch()
 
     const uploadResult = document.getElementById('photoUploadResult').appendChild(document.createElement('img'))
     uploadResult.setAttribute('src', photoData.eager[0].secure_url)

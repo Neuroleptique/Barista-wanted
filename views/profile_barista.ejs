@@ -33,7 +33,7 @@
   </div>
   <div class="max-w-sm py-4" id="photoUploadResult" hidden></div>
   <div class="collapse" >
-    <input type="checkbox" onclick="fetchSignature()"/> 
+    <input type="checkbox" /> 
     <div class="collapse-title btn btn-secondary text-xl font-medium capitalize" >
       Click to upload your photo
     </div>
@@ -42,7 +42,7 @@
         <div class="form-control">
 
           <label for="photo" class="label">My Photo</label>
-          <input class="file-input file-input-bordered" type="file" name="photo" id="uploadPhoto" accept="image/*">
+          <input class="file-input file-input-bordered" type="file" name="photo" id="uploadPhoto" accept="image/*" onclick="fetchSignature()">
           
         </div>
   

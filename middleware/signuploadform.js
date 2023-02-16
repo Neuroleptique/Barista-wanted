@@ -9,7 +9,9 @@ const signuploadform = () => {
   const signature = cloudinary.utils.api_sign_request({
     timestamp: timestamp,
     eager: 'c_thumb,h_150,w_150,g_face',
-    folder: 'profile_photos'}, apiSecret);
+    folder: 'profile_photos',
+    allowed_formats: 'jpg,jpeg,png,bmp,gif'
+    }, apiSecret);
 
   return { timestamp, signature }
 }
