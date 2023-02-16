@@ -101,7 +101,7 @@ module.exports = {
       const shiftData = await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
         $pull: { availability: req.user.userName }
       }, { new: true })
-      console.log(shiftData.availability.length +"/"+ shiftData.ownerDisplay)
+
       if (shiftData.availability.length == 0 && shiftData.ownerDisplay == false) {
         module.exports.deleteShift(req)
       }

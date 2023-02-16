@@ -39,7 +39,6 @@ module.exports = {
         const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
         const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
         const shiftPoster = activeShiftPoster.concat(pastShiftPoster)
-                                .flat()
                                 .filter( (n, idx, arr) => arr.indexOf(n) == idx )
 
         const cafeData = await Cafe.find({
