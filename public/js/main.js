@@ -1,5 +1,4 @@
 const changeStatusBtn = document.querySelectorAll('.inactiveShift')
-// const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 const removeShiftBtn = document.querySelectorAll('.removeShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
 const notAvailableBtn = document.querySelectorAll('.not-available')
@@ -59,29 +58,6 @@ async function changeStatusFalse() {
     console.log(err)
   }
 }
-
-// Cafe: Delete shift
-// Array.from(deleteShiftBtn).forEach(btn => {
-//   btn.addEventListener('click', deleteShift)
-// })
-
-// async function deleteShift() {
-//   const shiftID = this.parentNode.parentNode.dataset.id
-//   try {
-//     const response = await fetch('cafe/deleteShift', {
-//       method: 'delete',
-//       headers: { 'Content-type': 'application/json' },
-//       body: JSON.stringify({
-//         shiftID: shiftID
-//       }),
-//     })
-//     const data = await response.json()
-//     console.log(data)
-//     location.reload()
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
 
 // Cafe: remove shift from being displayed on cafe dashboard
 Array.from(removeShiftBtn).forEach(btn => {
