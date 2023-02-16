@@ -202,20 +202,15 @@ async function updateAddress() {
 }
 
 // Upload Photo from barista profile to Cloudinary 
-let signData = new Object()
-let cloudinaryURL = new String()
-
-async function fetchSignature() {
-  const signResponse = await fetch('/barista/signuploadform', {
-    method: "get"
-  });
-  signData = await signResponse.json();
-
-  cloudinaryURL = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
-}
 
 async function uploadProfilePhoto(){
   try{
+    const signResponse = await fetch('/barista/signuploadform', {
+      method: "get"
+    });
+    const signData = await signResponse.json();
+    const cloudinaryURL = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
+
     const files = document.getElementById("uploadPhoto").files;
     const formData = new FormData();
 
