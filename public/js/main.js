@@ -211,20 +211,17 @@ async function uploadProfilePhoto(){
     const signData = await signResponse.json();
     const cloudinaryURL = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
 
-    const files = document.getElementById("uploadPhoto").files;
+    const file = document.getElementById("uploadPhoto").files[0];
     const formData = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
-      let file = files[i];
-      formData.append("file", file);
-      formData.append("api_key", signData.apikey);
-      formData.append("timestamp", signData.timestamp);
-      formData.append("signature", signData.signature);
-      formData.append("resource_type", "image");
-      formData.append("allowed_formats", "jpg,jpeg,png,bmp,gif");
-      formData.append("eager", "c_thumb,h_150,w_150,g_face");
-      formData.append("folder", "profile_photos");
-    }
+    formData.append("file", file);
+    formData.append("api_key", signData.apikey);
+    formData.append("timestamp", signData.timestamp);
+    formData.append("signature", signData.signature);
+    formData.append("resource_type", "image");
+    formData.append("allowed_formats", "jpg,jpeg,png,bmp,gif");
+    formData.append("eager", "c_thumb,h_150,w_150,g_face");
+    formData.append("folder", "profile_photos");
     
     const photoDataResponse = await fetch(cloudinaryURL, {
       method: "POST",
@@ -232,11 +229,11 @@ async function uploadProfilePhoto(){
     })
     const photoData = await photoDataResponse.json()
 
-    const uploadResult = document.getElementById('photoUploadResult').appendChild(document.createElement('img'))
-    uploadResult.setAttribute('src', photoData.eager[0].secure_url)
-    const prevPhoto = document.getElementById('photoView')
-    prevPhoto.replaceChildren(uploadResult)
-
+    const imgNode = document.createElement('img')
+    imgNode.setAttribute('src', photoData.eager[0].secure_url)
+    const uploadResult = document.getElementById('photoUploadResult').appendChild(imgNode)
+    const photoDisplay = document.getElementById('photoView')
+    photoDisplay.replaceChildren(uploadResult)
     
     const photo_public_id = photoData.public_id
     const photo_secure_url = photoData.secure_url
