@@ -237,7 +237,6 @@ async function uploadProfilePhoto(){
     const prevPhoto = document.getElementById('photoView')
     prevPhoto.replaceChildren(uploadResult)
 
-    deleteCloudPhoto()
     
     const photo_public_id = photoData.public_id
     const photo_secure_url = photoData.secure_url
@@ -260,19 +259,6 @@ async function savePhotoInfoToDB(public_id, secure_url) {
         public_id: public_id,
         secure_url: secure_url
       })
-    })
-    const data = await response.json()
-    console.log(data)
-  }catch(err){
-    console.error(err)
-  }
-}
-
-async function deleteCloudPhoto() {
-  try{
-    const response = await fetch('/barista/deleteCloudPhoto',{
-      method: 'delete',
-      headers: { 'content-type': 'application/json' },
     })
     const data = await response.json()
     console.log(data)

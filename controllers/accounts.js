@@ -113,11 +113,16 @@ module.exports = {
   },
   putPhotoInfo: async (req, res) => {
     try{
-      await Barista.findOneAndUpdate({ userName: req.user.userName}, {
+      const baristaPhotoData = await Barista.findOneAndUpdate({ userName: req.user.userName}, {
         photo: req.body.secure_url,
         cloudinaryId: req.body.public_id
       })
       console.log('Profile photo info updated')
+      // Without {new: true} param included, the findOneAndUpdate() will return unupdated document
+      if(baristaPhotoData.cloudinaryId){
+        await cloudinary.uploader.destroy(baristaPhotoData.cloudinaryId)
+        console.log('Previous photo deleted on Cloudinary')
+      }
       res.json('Profile photo info updated')
     }catch(err) {
       console.error(err)
