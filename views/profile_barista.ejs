@@ -25,6 +25,32 @@
       <% }) %>
     <% } %>
   </div>
+  <label for="photo" class="label">My Photo</label>
+  <div class="max-w-sm py-4" id="photoView">
+    <% if(barista.photo) { %>
+    <%- barista.photo %>
+    <% } %>
+  </div>
+  <div class="max-w-sm py-4" id="photoUploadResult" hidden></div>
+  <div class="collapse" >
+    <input type="checkbox" /> 
+    <div class="collapse-title btn btn-secondary text-xl font-medium capitalize" >
+      Click to upload your photo
+    </div>
+    <div class="collapse-content">
+      <form enctype="multipart/form-data">
+        <div class="form-control">
+
+          <label for="photo" class="label">My Photo</label>
+          <input class="file-input file-input-bordered" type="file" name="photo" id="uploadPhoto" accept="image/*">
+          
+        </div>
+  
+        <button class="btn btn-primary max-w-sm" type="button" value="uploadPhoto" onclick="uploadProfilePhoto()">Save Photo</button>
+      </form>      
+    </div>
+  </div>
+
   <form action="barista/profile_barista?_method=PUT" 
         method="POST">
     <div class="form-control">
@@ -67,7 +93,6 @@
       <label class="label" for="more">About Me</label>
       <input class="input input-bordered" type="text" id="more" name="more" value="<%= barista.more || null %>"></input>
     </div>
-
     <div class="form-control w-fit">
       <label class="label cursor-pointer" for="notification">
         <input class="checkbox checkbox-accent md:checkbox-lg" type="checkbox" id="notification" name="notification" value="yes" <% if(barista.notification == true) { %> 
