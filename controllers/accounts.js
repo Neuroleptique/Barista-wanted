@@ -91,15 +91,15 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const userData = await User.findById( req.user.id );
-      const baristaData = await Barista.find({ userName: req.user.userName });
-      const cafeData = await Cafe.find({ userName: req.user.userName });
+      const baristaData = await Barista.findOne({ userName: req.user.userName });
+      const cafeData = await Cafe.findOne({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
-        res.render("profile_barista.ejs", { user: userData, barista: new Object(...baristaData) });
+        res.render("profile_barista.ejs", { user: userData, barista: baristaData });
       } else if (req.user.userType == 'cafe') {
         const CONFIG = {
           apiKey: process.env.GOOGLE_MAP_API_KEY
         }
-        res.render("profile_cafe.ejs", { user: userData, cafe: new Object(...cafeData), GOOGLE_MAP_API_KEY: CONFIG.apiKey });
+        res.render("profile_cafe.ejs", { user: userData, cafe: cafeData, GOOGLE_MAP_API_KEY: CONFIG.apiKey });
       }
     } catch(err) {
       console.log(err)
