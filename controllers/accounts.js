@@ -2,6 +2,10 @@ const Barista = require("../models/Barista");
 const Cafe = require("../models/Cafe");
 const User = require("../models/User");
 const Shift = require("../models/Shift");
+const cloudinary = require("../middleware/cloudinary");
+const signature = require("../middleware/signuploadform")
+const cloudName = cloudinary.config().cloud_name;
+const apiKey = cloudinary.config().api_key;
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -86,6 +90,8 @@ module.exports = {
             $in: availableBarista
           }
         })
+
+        getCloudImgTag(baristaData)
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
       }
     } catch (err) {
@@ -98,6 +104,8 @@ module.exports = {
       const baristaData = await Barista.findOne({ userName: req.user.userName });
       const cafeData = await Cafe.findOne({ userName: req.user.userName });
       if (req.user.userType == 'barista') {
+        getCloudImgTag(new Array(baristaData))
+
         res.render("profile_barista.ejs", { user: userData, barista: baristaData });
       } else if (req.user.userType == 'cafe') {
         const CONFIG = {
@@ -107,6 +115,23 @@ module.exports = {
       }
     } catch(err) {
       console.log(err)
+    }
+  },
+  putPhotoInfo: async (req, res) => {
+    try{
+      const baristaPhotoData = await Barista.findOneAndUpdate({ userName: req.user.userName}, {
+        photo: req.body.secure_url,
+        cloudinaryId: req.body.public_id
+      })
+      console.log('Profile photo info updated')
+      // Without {new: true} param included, the findOneAndUpdate() will return unupdated document
+      if(baristaPhotoData.cloudinaryId){
+        await cloudinary.uploader.destroy(baristaPhotoData.cloudinaryId)
+        console.log('Previous photo deleted on Cloudinary')
+      }
+      res.json('Profile photo info updated')
+    }catch(err) {
+      console.error(err)
     }
   },
   updateProfileBarista: async (req, res) => {
@@ -124,7 +149,6 @@ module.exports = {
           exp: req.body.exp,
           more: req.body.more,
           notification: req.body.notification,
-          
         }
       );
       console.log("profile updated!")
@@ -184,5 +208,34 @@ module.exports = {
     } catch(err) {
       console.log(err)
     }
+  },
+  getSignature: (req, res, next) => {
+    const sig = signature.signuploadform()
+    res.json({
+      signature: sig.signature,
+      timestamp: sig.timestamp,
+      cloudname: cloudName,
+      apikey: apiKey
+    })
+  },
+  deleteCloudPhoto: async (req, res, next) => {
+    try {
+      const baristaData = await Barista.findOne({ userName: req.user.userName })
+      await cloudinary.uploader.destroy(baristaData.cloudinaryId)
+      console.log('Old photo deleted')    
+      res.json("Old photo deleted")
+    } catch (error) {
+      console.error(error)
+    }
   }
 };
+
+function getCloudImgTag(cloudinaryPhotoData){
+  return cloudinaryPhotoData.forEach(baristaInfo => {
+    if(baristaInfo.photo){
+      return baristaInfo.photo = cloudinary.image(baristaInfo.photo.split('/').slice(-2).join("/"), { transformation: [
+      { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }          
+      ]})
+    }
+  })
+}
