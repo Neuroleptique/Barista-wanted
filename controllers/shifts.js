@@ -8,13 +8,11 @@ const sendEmail = require("./email");
 module.exports = {
   postShift: async (req, res) => {
     try {
-      const shiftDateAndTime = new Date(req.body.date)
-      // Retrieve shift start time from Date as hh:mm format
-      const start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
+
 
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
-      console.log(locationData)
+
       await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
@@ -33,16 +31,16 @@ module.exports = {
       const baristas = await Barista.find({ notification: true })
 
       if(baristas) {
-        const baristaEmails = baristas.map(b => b.email)       
+        const baristaEmails = baristas.map(b => b.email)
         const shiftDate = shiftDateAndTime.toDateString()
 
         // Send notification email to baristas
         const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
         const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
-        
+
         sendEmail( baristaEmails, subject, text )
       }
-      
+
       console.log('Shift created!')
       res.redirect('/dashboard')
     } catch (err) {
@@ -91,4 +89,4 @@ module.exports = {
       console.log(err)
     }
   }
-} 
+}
