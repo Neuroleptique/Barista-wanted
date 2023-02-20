@@ -17,12 +17,19 @@ const ShiftSchema= new mongoose.Schema({
   },
   wage: Number,
   tips: Boolean,
-  date: Date,
-  start_time: String,
-  end_time: String,
-  activeStatus: { type: Boolean, default: true }, 
+  start_at: Date,
+  end_at: Date,
+  duration: Number,
+  activeStatus: { type: Boolean, default: true },
   more: String,
   availability: [ { type: String } ]
 });
+
+ShiftSchema.pre('save', function save(next) {
+  const shift = this
+  const oneHour = 1000 * 60 * 60
+  this.duration = (new Date(shift.end_at) - new Date(shift.start_at)) / oneHour
+  next()
+})
 
 module.exports = mongoose.model("Shift", ShiftSchema);

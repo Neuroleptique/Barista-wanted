@@ -22,9 +22,9 @@ module.exports = {
         location: locationData,
         wage: req.body.wage,
         tips: req.body.tips,
-        date: req.body.date,
-        start_time: start_time,
-        end_time: req.body.end_time,
+        start_at: req.body.start_at,
+        end_at: req.body.end_at,
+
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
