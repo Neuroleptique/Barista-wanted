@@ -33,12 +33,12 @@ module.exports = {
               { activeStatus: false }
             ]}
           ]
-          
+
         })
 
-        const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
-        const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
-        const allShiftPosters = activeShiftPoster.concat(pastShiftPoster)
+        const activeShiftPosters = activeShiftData.map( s => s.cafeUserName )
+        const pastShiftPosters = pastShiftData.map( s => s.cafeUserName)
+        const allShiftPosters = activeShiftPosters.concat(pastShiftPosters)
                                 .flat()
                                 .filter( (n, idx, arr) => arr.indexOf(n) == idx )
 
@@ -47,8 +47,8 @@ module.exports = {
             $in: allShiftPosters
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, activeShift: activeShiftData, pastShift: pastShiftData, cafe: cafeData, barista: baristaData });
-        
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData });
+
       } else if (req.user.userType == 'cafe' ) {
 
         const cafeData = await Cafe.findOne({ userName: req.user.userName });
