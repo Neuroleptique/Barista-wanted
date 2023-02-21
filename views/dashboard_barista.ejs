@@ -19,11 +19,11 @@
         </tr>
       </thead>
 
-      <% for(let i = 0; i < shift.length; i++) { %>       
+      <% for(let i = 0; i < shift.length; i++) { %>
 
           <tr data-id="<%= shift[i]._id %>">
             <th scope="row" class="text-sm">
-              <%= new Date(shift[i].date).toDateString() %>
+              <%= new Date(shift[i].start_at).toDateString() %>
             </th>
 
             <!-- Show clickable cafe name -->
@@ -31,8 +31,8 @@
               <% let cafeInfo = cafe.filter(coffeeShop => coffeeShop.userName == shift[i].cafeUserName )[0] %>
 
               <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift[i].cafeName %></label>
-              
-              <!-- Popup box to display cafe info -->              
+
+              <!-- Popup box to display cafe info -->
               <input type="checkbox" id="<%= `${i}-${shift[i].cafeUserName}` %>" class="modal-toggle" />
               <div class="modal">
                 <div class="modal-box">
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </td>
-            <td><%= `${shift[i].start_time} - ${shift[i].end_time} ( ${shift[i].length}h )` %></td>
+            <td><%= `${shift[i].start_time} - ${shift[i].end_time} ( ${shift[i].duration}h )` %></td>
             <td><%= shift[i].wage %>$/h <%= shift[i].tips ? '+tips' : `(no tips)` %></td>
             <td>
               <% if (shift[i].availability.includes(user.userName)) { %>
@@ -77,8 +77,8 @@
       <% if (shift.length == 0 ) { %>
           <tr>
             <th colspan="5" class="text-center">There is no active shift</th>
-          </tr>        
-      <% } %>           
+          </tr>
+      <% } %>
     </table>
   </section>
 </div>
