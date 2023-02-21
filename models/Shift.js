@@ -28,8 +28,12 @@ const ShiftSchema= new mongoose.Schema({
 ShiftSchema.pre('save', function save(next) {
   const shift = this
   const oneHour = 1000 * 60 * 60
-  this.duration = (new Date(shift.end_at) - new Date(shift.start_at)) / oneHour
+  this.duration = secDecimal((new Date(shift.end_at) - new Date(shift.start_at)) / oneHour )
   next()
 })
+
+function secDecimal(num){
+  return Math.round( (num * 100) )/ 100
+}
 
 module.exports = mongoose.model("Shift", ShiftSchema);
