@@ -9,7 +9,6 @@ module.exports = {
   postShift: async (req, res) => {
     try {
 
-
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
 
@@ -22,7 +21,6 @@ module.exports = {
         tips: req.body.tips,
         start_at: req.body.start_at,
         end_at: req.body.end_at,
-
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
@@ -32,11 +30,13 @@ module.exports = {
 
       if(baristas) {
         const baristaEmails = baristas.map(b => b.email)
-        const shiftDate = shiftDateAndTime.toDateString()
+        const shiftDate = new Date(req.body.start_at)
+        const startTime = getTime(shiftDate)
+        const endTime = getTime( new Date(req.body.end_at) )
 
         // Send notification email to baristas
-        const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
+        const subject = `${cafeData.cafeName} is looking for barista`
+        const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate.toDateString()} from ${startTime} to ${endTime}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
 
         sendEmail( baristaEmails, subject, text )
       }
@@ -89,4 +89,10 @@ module.exports = {
       console.log(err)
     }
   }
+}
+
+function getTime(date) {
+  const hour = String( date.getHours() ).padStart(2, '0')
+  const minutes = String( date.getMinutes() ).padEnd(2, '0')
+  return hour + ":" + minutes
 }
