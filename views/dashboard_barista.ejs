@@ -8,78 +8,13 @@
   <!-- Active shifts display section -->
   <h2 class="text-center text-secondary text-2xl font-bold pt-8 pb-3">Active needs</h2>
   <section class="overflow-x-auto">
-    <table class="table table-compact w-full">
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Location</th>
-          <th scope="col">time / duration</th>
-          <th scope="col">Wage</th>
-          <th scope="col">action</th>
-        </tr>
-      </thead>
+    <%- include('partials/barista_shifts_table', {shifts: activeShifts}) %>
+  </section>
 
-      <% for(let i = 0; i < shifts.length; i++) { %>
-
-          <tr data-id="<%= shifts[i]._id %>">
-            <th scope="row" class="text-sm">
-              <%= new Date(shifts[i].date).toDateString() %>
-            </th>
-
-            <!-- Show clickable cafe name -->
-            <td>
-              <% let cafeInfo = cafes.filter(coffeeShop => coffeeShop.userName == shifts[i].cafeUserName )[0] %>
-
-              <label for="<%= `${i}-${shifts[i].cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shifts[i].cafeName %></label>
-
-              <!-- Popup box to display cafe info -->
-              <input type="checkbox" id="<%= `${i}-${shifts[i].cafeUserName}` %>" class="modal-toggle" />
-              <div class="modal">
-                <div class="modal-box">
-                  <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
-                  <% if(cafeInfo.more){ %>
-                    <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
-                  <% } %>
-                  <div class="py-6">
-                  <% if(shifts[i].location) { %>
-                    <a class="btn btn-secondary btn-outline px-2" href="https://www.google.com/maps/place/?q=place_id:<%= shifts[i].location.place_id %>" target="_blank">
-                      <i class="fa-regular fa-map fa-2xl"></i>
-                    </a>
-                  <% } %>
-                  <% if (cafeInfo.ig) { %>
-                    <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= cafeInfo.ig %>" target="_blank">
-                      <i class="fa fa-brands fa-instagram fa-2xl"></i>
-                    </a>
-                  </div>
-                  <% } %>
-                  <div class="modal-action">
-                    <label for="<%= `${i}-${shifts[i].cafeUserName}` %>" class="btn">Close</label>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td><%= `${shifts[i].start_time} - ${shifts[i].end_time}` %></td>
-            <td><%= shifts[i].wage %>$/h <%= shifts[i].tips ? '+tips' : `(no tips)` %></td>
-            <td>
-              <% if (shifts[i].availability.includes(user.userName)) { %>
-                  <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
-                    <i class="fa-regular fa-circle-xmark"></i>
-                  </button>
-              <% } else { %>
-                  <button type="button" class="available btn btn-info tooltip" data-tip="I'm available">
-                    <i class="fa-solid fa-thumbs-up fa-bounce"></i>
-                  </button>
-              <% } %>
-            </td>
-          </tr>
-        <% } %>
-
-      <% if (shifts.length == 0 ) { %>
-          <tr>
-            <th colspan="5" class="text-center">There is no active shift</th>
-          </tr>
-      <% } %>
-    </table>
+  <!-- Past shifts display section -->
+  <h2 class="text-center text-secondary text-2xl font-bold pt-8 pb-3">Fulfilled or Past shifts</h2>
+  <section class="overflow-x-auto">
+    <%- include('partials/barista_shifts_table', {shifts: pastShifts}) %>
   </section>
 </div>
 <%- include('partials/footer') -%>
