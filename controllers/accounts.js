@@ -6,15 +6,15 @@ const cloudinary = require("../middleware/cloudinary");
 const signature = require("../middleware/signuploadform")
 const cloudName = cloudinary.config().cloud_name;
 const apiKey = cloudinary.config().api_key;
+const getTime = require("../middleware/getTime")
 
 module.exports = {
   getDashboard: async (req, res) => {
     try {
       const today = new Date().toISOString()
-      
+
       if (req.user.userType == 'barista') {
 
-        // Force user to fill their profile before preceeding to check dashboard
         const baristaData = await Barista.findOne({ userName: req.user.userName });
         if (!baristaData.firstName || !baristaData.lastName) {
           console.log('First or Last Name is empty')
@@ -42,12 +42,11 @@ module.exports = {
           }
         })
         res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
-        
+
       } else if (req.user.userType == 'cafe' ) {
 
         const cafeData = await Cafe.findOne({ userName: req.user.userName });
 
-        // Force cafe user to add their shop location prior posting shift
         if (!cafeData.place.length) {
           console.log('Cafe location is empty')
           req.flash("info", {
@@ -57,35 +56,35 @@ module.exports = {
         }
 
         // Active shift = activeStatus == true && date >= today
-        const activeShiftData = await Shift.find({ 
+        const activeShiftData = await Shift.find({
           $and: [
             { _userID: req.user.id },
             { activeStatus: true },
-            { date: { $gte: today }}
+            { start_at: { $gte: today }}
           ]
-        }).sort({ date: 1 });
+        }).sort({ start_at: 1 });
 
         // InActive shift = active status == false || date < today
-        const inactiveShiftData = await Shift.find({ 
+        const inactiveShiftData = await Shift.find({
           $and: [
             { _userID: req.user.id },
             { $or: [
               { activeStatus: false },
-              { date: { $lt: today }}
+              { start_at: { $lt: today }}
             ]}
           ]
-        }).sort({ date: 1 });
-        
-        // Determine who are available for shifts posted by individual cafe user and 
-        // Retrieve available baristas' information for those shifts  
+        }).sort({ start_at: 1 });
+        addTimeRange(activeShiftData)
+        addTimeRange(inactiveShiftData)
+
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
         const availableBarista = activeShiftBarista
                                   .concat(inactiveShiftBarista)
                                   .flat()
                                   .filter( (n, idx, arr)=> arr.indexOf(n) == idx )
-        
-        const baristaData = await Barista.find({ 
+
+        const baristaData = await Barista.find({
           userName: {
             $in: availableBarista
           }
@@ -182,26 +181,26 @@ module.exports = {
   addAddressCafe: async (req, res) => {
     try {
       const cafeData = await Cafe.findOne({ userName: req.user.userName})
-      // Check if there is any location info or the address already exists 
+      // Check if there is any location info or the address already exists
       if (!cafeData.place.length || cafeData.place.every(p => p.place_id !== req.body.place.place_id) ){
         await Cafe.findOneAndUpdate({userName: req.user.userName},{
               $push: { place: req.body.place }
               })
-        console.log('Address added')    
+        console.log('Address added')
         res.json("Address added")
       } else {
-        console.log('Address already exists')    
+        console.log('Address already exists')
         res.json("Address already exists")
       }
-      
+
       // --> Attempted to minimize db request by utilizing query condition, but it doesn't work :(
-      // await Cafe.findOneAndUpdate({ 
-      //   userName: req.user.userName, 
-      //   place: { $elemMatch: { 
+      // await Cafe.findOneAndUpdate({
+      //   userName: req.user.userName,
+      //   place: { $elemMatch: {
       //     place_id: {
       //       $ne: req.body.place.place_id
-      //     } 
-      //   }}}, { 
+      //     }
+      //   }}}, {
       //     $push: { place: req.body.place }
       //   });
 
@@ -222,7 +221,7 @@ module.exports = {
     try {
       const baristaData = await Barista.findOne({ userName: req.user.userName })
       await cloudinary.uploader.destroy(baristaData.cloudinaryId)
-      console.log('Old photo deleted')    
+      console.log('Old photo deleted')
       res.json("Old photo deleted")
     } catch (error) {
       console.error(error)
