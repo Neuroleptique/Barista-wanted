@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Shift = require("../models/Shift")
 const nodemailer = require('nodemailer');
 const sendEmail = require("./email");
+const getTime = require("../middleware/getTime")
 
 module.exports = {
   postShift: async (req, res) => {
@@ -30,13 +31,12 @@ module.exports = {
 
       if(baristas) {
         const baristaEmails = baristas.map(b => b.email)
-        const shiftDate = new Date(req.body.start_at)
-        const startTime = getTime(shiftDate)
-        const endTime = getTime( new Date(req.body.end_at) )
+        const startTime = getTime(req.body.start_at)
+        const endTime = getTime(req.body.end_at)
 
         // Send notification email to baristas
         const subject = `${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate.toDateString()} from ${startTime} to ${endTime}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
+        const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(req.body.start_at).toDateString()} from ${startTime} to ${endTime}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
 
         sendEmail( baristaEmails, subject, text )
       }
@@ -88,11 +88,5 @@ module.exports = {
     }catch(err){
       console.log(err)
     }
-  }
-}
-
-function getTime(date) {
-  const hour = String( date.getHours() ).padStart(2, '0')
-  const minutes = String( date.getMinutes() ).padEnd(2, '0')
-  return hour + ":" + minutes
+  },
 }
