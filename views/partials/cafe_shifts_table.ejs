@@ -1,0 +1,77 @@
+<table class="table table-compact w-full">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Location</th>
+      <th scope="col">Wage</th>
+      <th scope="col">time</th>
+      <th scope="col">Available baristas</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <% if (shifts.length == 0 ) { %>
+    <tr>
+      <th colspan="6" class="text-center">There is no shift to display</th>
+    </tr>
+  <% } else { %>
+    <% shifts.forEach(shift => { %>
+      <tr data-id="<%= shift._id %>">
+        <th scope="row"><%= new Date(shift.start_at).toDateString() %></th>
+        <td><%= shift.location.formatted_address.split(' ')[1] %></td>
+        <td><%= shift.wage %> <%= shift.tips ? '+tips' : `(no tips)` %></td>
+        <td><%= `${shift.start_time} - ${shift.end_time}` %></td>
+
+        <!-- Show all available baristas per shift-->
+        <td>
+          <% let availableBarista = baristas.filter(person => shift.availability.includes(person.userName) ) %>
+
+          <% availableBarista.map(oneBarista => { %>
+              <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
+                <label for="pick<%= oneBarista.userName %>" class="btn btn-sm btn-outline btn-secondary">
+                  <% if (!oneBarista.firstName) { %>
+                    <%= oneBarista.userName %>
+                  <% }else{ %>
+                    <%= `${oneBarista.firstName[0]}${oneBarista.lastName[0]}`%>
+                  <% } %>
+                </label>
+              </div>
+              <!-- Popup box to display barista info -->
+              <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box">
+                  <div class="flex flex-row justify-between gap-2 flex-wrap-reverse">
+                    <div class="pt-6">
+                      <h3 class="md:text-3xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></h3>
+                      <span class="block py-1 md:text-lg">Level of experience: <%= oneBarista.exp ? oneBarista.exp : 'unknown' %></span>
+                      <% if(oneBarista.more){ %>
+                        <span class="block md:text-lg">About me: <%= oneBarista.more %></span>
+                      <% } %>
+                    </div>
+                    <div><%- oneBarista.photo %></div>
+                  </div>
+                  <div class="py-6">
+                    <% if (oneBarista.ig) { %>
+                      <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= oneBarista.ig %>" target="_blank"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
+                    <% } %>
+                    <% if (oneBarista.phone) { %>
+                      <a class="btn btn-secondary btn-outline px-2" href="tel:+1<%= oneBarista.phone %>"><i class="fa-solid fa-phone fa-2xl"></i></a>
+                    <% } %>
+                  </div>
+                  <div class="modal-action">
+                    <label for="pick<%= oneBarista.userName %>" class="btn">Close</label>
+                  </div>
+                </div>
+              </div>
+          <% }) %>
+        </td>
+        <td>
+          <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>
+          <button type="button" class="deleteShift btn btn-secondary tooltip" data-tip="Delete"><i class="fa-regular fa-trash-can"></i></button>
+        </td>
+      </tr>
+    <% }) %>
+
+
+  <% } %>
+
+</table>
