@@ -19,21 +19,21 @@
         </tr>
       </thead>
 
-      <% for(let i = 0; i < shift.length; i++) { %>
+      <% for(let i = 0; i < shifts.length; i++) { %>
 
-          <tr data-id="<%= shift[i]._id %>">
+          <tr data-id="<%= shifts[i]._id %>">
             <th scope="row" class="text-sm">
-              <%= new Date(shift[i].start_at).toDateString() %>
+              <%= new Date(shifts[i].date).toDateString() %>
             </th>
 
             <!-- Show clickable cafe name -->
             <td>
-              <% let cafeInfo = cafe.filter(coffeeShop => coffeeShop.userName == shift[i].cafeUserName )[0] %>
+              <% let cafeInfo = cafes.filter(coffeeShop => coffeeShop.userName == shifts[i].cafeUserName )[0] %>
 
-              <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift[i].cafeName %></label>
+              <label for="<%= `${i}-${shifts[i].cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shifts[i].cafeName %></label>
 
               <!-- Popup box to display cafe info -->
-              <input type="checkbox" id="<%= `${i}-${shift[i].cafeUserName}` %>" class="modal-toggle" />
+              <input type="checkbox" id="<%= `${i}-${shifts[i].cafeUserName}` %>" class="modal-toggle" />
               <div class="modal">
                 <div class="modal-box">
                   <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
@@ -41,8 +41,8 @@
                     <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
                   <% } %>
                   <div class="py-6">
-                  <% if(shift[i].location) { %>
-                    <a class="btn btn-secondary btn-outline px-2" href="https://www.google.com/maps/place/?q=place_id:<%= shift[i].location.place_id %>" target="_blank">
+                  <% if(shifts[i].location) { %>
+                    <a class="btn btn-secondary btn-outline px-2" href="https://www.google.com/maps/place/?q=place_id:<%= shifts[i].location.place_id %>" target="_blank">
                       <i class="fa-regular fa-map fa-2xl"></i>
                     </a>
                   <% } %>
@@ -53,15 +53,15 @@
                   </div>
                   <% } %>
                   <div class="modal-action">
-                    <label for="<%= `${i}-${shift[i].cafeUserName}` %>" class="btn">Close</label>
+                    <label for="<%= `${i}-${shifts[i].cafeUserName}` %>" class="btn">Close</label>
                   </div>
                 </div>
               </div>
             </td>
-            <td><%= `${shift[i].start_time} - ${shift[i].end_time} ( ${shift[i].duration}h )` %></td>
-            <td><%= shift[i].wage %>$/h <%= shift[i].tips ? '+tips' : `(no tips)` %></td>
+            <td><%= `${shifts[i].start_time} - ${shifts[i].end_time}` %></td>
+            <td><%= shifts[i].wage %>$/h <%= shifts[i].tips ? '+tips' : `(no tips)` %></td>
             <td>
-              <% if (shift[i].availability.includes(user.userName)) { %>
+              <% if (shifts[i].availability.includes(user.userName)) { %>
                   <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
                     <i class="fa-regular fa-circle-xmark"></i>
                   </button>
@@ -74,7 +74,7 @@
           </tr>
         <% } %>
 
-      <% if (shift.length == 0 ) { %>
+      <% if (shifts.length == 0 ) { %>
           <tr>
             <th colspan="5" class="text-center">There is no active shift</th>
           </tr>

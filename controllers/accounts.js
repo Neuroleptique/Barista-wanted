@@ -31,13 +31,14 @@ module.exports = {
 
         addTimeRange(shiftData)
 
-        const shiftPoster = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
+        const shiftPosters = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
         const cafeData = await Cafe.find({
           userName: {
-            $in: shiftPoster
+            $in: shiftPosters
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, shift: shiftData, cafe: cafeData, barista: baristaData });
+
+        res.render("dashboard_barista.ejs", { user: req.user, shifts: shiftData, cafes: cafeData, barista: baristaData });
 
       } else if (req.user.userType == 'cafe' ) {
 
@@ -75,19 +76,19 @@ module.exports = {
 
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
-        const availableBarista = activeShiftBarista
+        const allAvailableBaristas = activeShiftBarista
                                   .concat(inactiveShiftBarista)
                                   .flat()
                                   .filter( (n, idx, arr)=> arr.indexOf(n) == idx )
 
         const baristaData = await Barista.find({
           userName: {
-            $in: availableBarista
+            $in: allAvailableBaristas
           }
         })
 
         getCloudImgTag(baristaData)
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShift: activeShiftData, inactiveShift: inactiveShiftData, barista: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData });
       }
     } catch (err) {
       console.log(err);

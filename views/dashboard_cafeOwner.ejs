@@ -6,6 +6,7 @@
   <!-- New shift posting section -->
   <section class="collapse text-center pt-6">
     <input type="checkbox" />
+    <input type="checkbox" />
     <button class="btn btn-outline btn-primary collapse-title md:text-xl font-medium">
       Click me to add a new shift
     </button>
@@ -76,18 +77,18 @@
         </tr>
       </thead>
 
-        <% for(let i = 0; i < activeShift.length; i++) { %>
+        <% for(let i = 0; i < activeShifts.length; i++) { %>
 
-            <tr data-id="<%= activeShift[i]._id %>">
+            <tr data-id="<%= activeShifts[i]._id %>">
 
-              <th scope="row"><%= new Date(activeShift[i].start_at).toDateString() %></th>
-              <td><%= activeShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= activeShift[i].wage %> <%= activeShift[i].tips ? '+tips' : `(no tips)` %></td>
-              <td><%= `${activeShift[i].start_time} - ${activeShift[i].end_time}` %></td>
+              <th scope="row"><%= new Date(activeShifts[i].start_at).toDateString() %></th>
+              <td><%= activeShifts[i].location.formatted_address.split(' ')[1] %></td>
+              <td><%= activeShifts[i].wage %> <%= activeShifts[i].tips ? '+tips' : `(no tips)` %></td>
+              <td><%= `${activeShifts[i].start_time} - ${activeShifts[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
-                <% let availableBarista = barista.filter(person => activeShift[i].availability.includes(person.userName) ) %>
+                <% let availableBarista = baristas.filter(person => activeShifts[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
                     <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
@@ -136,7 +137,7 @@
             </tr>
           <% } %>
 
-        <% if (activeShift.length == 0){ %>
+        <% if (activeShifts.length == 0){ %>
         <tr>
           <th colspan="6" class="text-center"><%= cafe.cafeName %> has no active shift to display</th>
         </tr>
@@ -159,17 +160,17 @@
         </tr>
       </thead>
 
-        <% for(let i = 0; i < inactiveShift.length; i++) { %>
+        <% for(let i = 0; i < inactiveShifts.length; i++) { %>
 
-            <tr data-id="<%= inactiveShift[i]._id %>">
-              <th scope="row"><%= new Date(inactiveShift[i].start_at).toDateString() %></th>
-              <td><%= inactiveShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= inactiveShift[i].wage %> <%= inactiveShift[i].tips ? '+tips' : `(no tips)` %></td>
-              <td><%= `${inactiveShift[i].start_time} - ${inactiveShift[i].end_time}` %></td>
+            <tr data-id="<%= inactiveShifts[i]._id %>">
+              <th scope="row"><%= new Date(inactiveShifts[i].start_at).toDateString() %></th>
+              <td><%= inactiveShifts[i].location.formatted_address.split(' ')[1] %></td>
+              <td><%= inactiveShifts[i].wage %> <%= inactiveShifts[i].tips ? '+tips' : `(no tips)` %></td>
+              <td><%= `${inactiveShifts[i].start_time} - ${inactiveShifts[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
-                <% let availableBarista = barista.filter(person => inactiveShift[i].availability.includes(person.userName) ) %>
+                <% let availableBarista = baristas.filter(person => inactiveShifts[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
                   <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
@@ -215,7 +216,7 @@
             </tr>
           <% } %>
 
-        <% if (inactiveShift.length == 0){ %>
+        <% if (inactiveShifts.length == 0){ %>
         <tr>
           <th colspan="6" class="text-center"><%= cafe.cafeName %> has no past shift to display</th>
         </tr>
