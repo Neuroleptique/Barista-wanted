@@ -6,7 +6,6 @@ const notAvailableBtn = document.querySelectorAll('.not-available')
 
 
 // Dashboard_cafe: Restrict shift starting date input to only accept value no earlier than the current date
-
 function minStartDate() {
   let today = new Date()
   let dd = today.getDate()
@@ -28,12 +27,10 @@ function minStartDate() {
     min = '0' + min
   }
   today = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min
-  console.log(today)
   document.getElementById('start_at').setAttribute('min', today)
 }
 function minEndDate() {
   const startDate = document.getElementById('start_at').value
-  console.log(startDate)
   document.getElementById('end_at').setAttribute('min', startDate)
 }
 
