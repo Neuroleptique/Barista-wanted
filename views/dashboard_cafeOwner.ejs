@@ -5,13 +5,13 @@
 
   <!-- New shift posting section -->
   <section class="collapse text-center pt-6">
-    <input type="checkbox" /> 
+    <input type="checkbox" />
     <button class="btn btn-outline btn-primary collapse-title md:text-xl font-medium">
       Click me to add a new shift
     </button>
     <div class="collapse-content">
       <form action="/cafe/postShift" method="POST">
-        <div class="form-control">  
+        <div class="form-control">
           <label class="input-group" for="location">
             <span>Location</span>
             <select class="select select-bordered" name="location" id="location" required="required">
@@ -21,13 +21,13 @@
             </select>
           </label>
         </div>
-        <div class="form-control"> 
+        <div class="form-control">
           <label class="input-group" for="wage" >
             <span>Wage</span>
             <input class="input input-bordered" type="number" name="wage" id="wege" placeholder="Please enter a number equal to or greater than the minimal wage" min="15.5" step="0.1" required="required">
           </label>
         </div>
-        <div class="form-control"> 
+        <div class="form-control">
           <label class="input-group" for="tips">
             <span>Tips</span>
             <select class="select select-bordered" name="tips" id="tips">
@@ -36,19 +36,19 @@
             </select>
           </label>
         </div>
-        <div class="form-control">   
+        <div class="form-control">
           <label class="input-group" for="date">
             <span>Date + start time</span>
             <input class="date-input input input-bordered" type="datetime-local" name="date" id="datefield" required="required">
           </label>
         </div>
-        <div class="form-control">   
+        <div class="form-control">
           <label class="input-group" for="end_time">
             <span>End time</span>
             <input class="input input-bordered" type="time" name="end_time" id="end_time" required="required">
           </label>
         </div>
-        <div class="form-control">   
+        <div class="form-control">
           <label class="input-group" for="more">
             <span>More Info</span>
             <input class="input input-bordered" type="text" name="more" id="more" placeholder="Anything else you would like to add about the job?">
@@ -75,19 +75,19 @@
           <th scope="col">Status</th>
         </tr>
       </thead>
-         
-        <% for(let i = 0; i < activeShift.length; i++) { %>
 
-            <tr data-id="<%= activeShift[i]._id %>">
-              
-              <th scope="row"><%= new Date(activeShift[i].date).toDateString() %></th>
-              <td><%= activeShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= activeShift[i].wage %> <%= activeShift[i].tips ? '+tips' : `(no tips)` %></td>     
-              <td><%= `${activeShift[i].start_time} - ${activeShift[i].end_time}` %></td>
+        <% for(let i = 0; i < activeShifts.length; i++) { %>
+
+            <tr data-id="<%= activeShifts[i]._id %>">
+
+              <th scope="row"><%= new Date(activeShifts[i].date).toDateString() %></th>
+              <td><%= activeShifts[i].location.formatted_address.split(' ')[1] %></td>
+              <td><%= activeShifts[i].wage %> <%= activeShifts[i].tips ? '+tips' : `(no tips)` %></td>
+              <td><%= `${activeShifts[i].start_time} - ${activeShifts[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
-                <% let availableBarista = barista.filter(person => activeShift[i].availability.includes(person.userName) ) %>
+                <% let availableBarista = barista.filter(person => activeShifts[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
                     <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
@@ -96,18 +96,23 @@
                           <%= oneBarista.userName %>
                         <% }else{ %>
                           <%= `${oneBarista.firstName[0]}${oneBarista.lastName[0]}`%>
-                        <% } %>                        
+                        <% } %>
                       </label>
                     </div>
                     <!-- Popup box to display barista info -->
                     <input type="checkbox" id="pick<%= oneBarista.userName %>" class="modal-toggle" />
                     <div class="modal">
                       <div class="modal-box">
-                        <h3 class="text-xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></h3>
-                        <span class="block py-1">Level of experience: <%= oneBarista.exp ? oneBarista.exp : 'unknown' %></span>
-                        <% if(oneBarista.more){ %>
-                          <span class="block">About me: <%= oneBarista.more %></span>
-                        <% } %> 
+                        <div class="flex flex-row justify-between gap-2 flex-wrap-reverse">
+                          <div class="pt-6">
+                            <h3 class="md:text-3xl font-bold"><%= `${oneBarista.firstName} ${oneBarista.lastName}` %></h3>
+                            <span class="block py-1 md:text-lg">Level of experience: <%= oneBarista.exp ? oneBarista.exp : 'unknown' %></span>
+                            <% if(oneBarista.more){ %>
+                              <span class="block md:text-lg">About me: <%= oneBarista.more %></span>
+                            <% } %>
+                          </div>
+                          <div><%- oneBarista.photo %></div>
+                        </div>
                         <div class="py-6">
                           <% if (oneBarista.ig) { %>
                             <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= oneBarista.ig %>" target="_blank"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
@@ -129,12 +134,12 @@
               </td>
             </tr>
           <% } %>
-     
-        <% if (activeShift.length == 0){ %>
+
+        <% if (activeShifts.length == 0){ %>
         <tr>
           <th colspan="6" class="text-center"><%= cafe.cafeName %> has no active shift to display</th>
         </tr>
-      <% }  %> 
+      <% }  %>
     </table>
   </section>
 
@@ -152,18 +157,18 @@
           <th scope="col">Status</th>
         </tr>
       </thead>
-      
-        <% for(let i = 0; i < inactiveShift.length; i++) { %>
-                      
-            <tr data-id="<%= inactiveShift[i]._id %>">
-              <th scope="row"><%= new Date(inactiveShift[i].date).toDateString() %></th>
-              <td><%= inactiveShift[i].location.formatted_address.split(' ')[1] %></td>
-              <td><%= inactiveShift[i].wage %> <%= inactiveShift[i].tips ? '+tips' : `(no tips)` %></td>                               
-              <td><%= `${inactiveShift[i].start_time} - ${inactiveShift[i].end_time}` %></td>
+
+        <% for(let i = 0; i < inactiveShifts.length; i++) { %>
+
+            <tr data-id="<%= inactiveShifts[i]._id %>">
+              <th scope="row"><%= new Date(inactiveShifts[i].date).toDateString() %></th>
+              <td><%= inactiveShifts[i].location.formatted_address.split(' ')[1] %></td>
+              <td><%= inactiveShifts[i].wage %> <%= inactiveShifts[i].tips ? '+tips' : `(no tips)` %></td>
+              <td><%= `${inactiveShifts[i].start_time} - ${inactiveShifts[i].end_time}` %></td>
 
               <!-- Show all available baristas per shift-->
               <td>
-                <% let availableBarista = barista.filter(person => inactiveShift[i].availability.includes(person.userName) ) %>
+                <% let availableBarista = barista.filter(person => inactiveShifts[i].availability.includes(person.userName) ) %>
 
                 <% availableBarista.map(oneBarista => { %>
                   <div class="tooltip" data-tip="<%= `${oneBarista.firstName} ${oneBarista.lastName[0]}` %>">
@@ -172,7 +177,7 @@
                         <%= oneBarista.userName %>
                       <% }else{ %>
                         <%= `${oneBarista.firstName[0]}${oneBarista.lastName[0]}`%>
-                      <% } %>                        
+                      <% } %>
                     </label>
                   </div>
 
@@ -184,8 +189,8 @@
                       <span class="block py-1">Level of experience: <%= oneBarista.exp ? oneBarista.exp : 'unknown' %></span>
                       <% if(oneBarista.more){ %>
                         <span class="block">About me: <%= oneBarista.more %></span>
-                      <% } %> 
-                      <p class="py-6">                        
+                      <% } %>
+                      <p class="py-6">
                         <% if (oneBarista.ig) { %>
                           <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= oneBarista.ig %>" target="_blank"><i class="fa fa-brands fa-instagram fa-2xl"></i></a>
                         <% } %>
@@ -198,26 +203,26 @@
                         <label for="pick<%= oneBarista.userName %>" class="btn">Close</label>
                       </div>
                     </div>
-                  </div>                  
+                  </div>
                 <% }) %>
               </td>
               <td>
-           
+
                 <button type="button" class="removeShift tooltip btn btn-secondary" data-tip="Remove"><i class="fa-regular fa-trash-can"></i></button>
-                                
+
               </td>
             </tr>
           <% } %>
-        
-        <% if (inactiveShift.length == 0){ %>
+
+        <% if (inactiveShifts.length == 0){ %>
         <tr>
           <th colspan="6" class="text-center"><%= cafe.cafeName %> has no past shift to display</th>
         </tr>
 
-      <% } %> 
+      <% } %>
     </table>
   </section>
-  
+
 
 </div>
 <%- include('partials/footer') -%>

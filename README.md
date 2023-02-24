@@ -29,6 +29,9 @@ bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flas
   - MAIL_PWD = `your GMAIL APP password`
   - HCAPTCHA_SECRET = `your hCaptcha secret`
   - GOOGLE_MAP_API_KEY = `your Google Maps Places API key`
+  - CLOUD_NAME = `your cloudinary cloud name`
+  - CLOUD_API_KEY =  `your cloudinary API key`
+  - CLOUD_API_SECRET = `your cloudinary API secret`
 
 - Create a `config.ejs` file in the `views/partials` folder and add the following line of code:
   ```

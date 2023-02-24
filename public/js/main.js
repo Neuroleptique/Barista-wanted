@@ -200,3 +200,66 @@ async function updateAddress() {
   }
   
 }
+
+// Upload Photo from barista profile to Cloudinary 
+
+async function uploadProfilePhoto(){
+  try{
+    const signResponse = await fetch('/barista/signuploadform', {
+      method: "get"
+    });
+    const signData = await signResponse.json();
+    const cloudinaryURL = "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
+
+    const file = document.getElementById("uploadPhoto").files[0];
+    const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("api_key", signData.apikey);
+    formData.append("timestamp", signData.timestamp);
+    formData.append("signature", signData.signature);
+    formData.append("resource_type", "image");
+    formData.append("allowed_formats", "jpg,jpeg,png,bmp,gif");
+    formData.append("eager", "c_thumb,h_150,w_150,g_face");
+    formData.append("folder", "profile_photos");
+    
+    const photoDataResponse = await fetch(cloudinaryURL, {
+      method: "POST",
+      body: formData
+    })
+    const photoData = await photoDataResponse.json()
+
+    const imgNode = document.createElement('img')
+    imgNode.setAttribute('src', photoData.eager[0].secure_url)
+    const uploadResult = document.getElementById('photoUploadResult').appendChild(imgNode)
+    const photoDisplay = document.getElementById('photoView')
+    photoDisplay.replaceChildren(uploadResult)
+    
+    const photo_public_id = photoData.public_id
+    const photo_secure_url = photoData.secure_url
+
+    savePhotoInfoToDB(photo_public_id, photo_secure_url)
+
+  } catch (err) {
+    console.error('error:' + err)
+  }
+}
+
+
+
+async function savePhotoInfoToDB(public_id, secure_url) {
+  try{
+    const response = await fetch('/barista/putPhotoInfo', {
+      method: 'put',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        public_id: public_id,
+        secure_url: secure_url
+      })
+    })
+    const data = await response.json()
+    console.log(data)
+  }catch(err){
+    console.error(err)
+  }
+}

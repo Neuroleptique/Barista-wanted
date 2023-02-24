@@ -1,10 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  purge: [
+    "./views/*.ejs",
+    "./views/partials/*.ejs",
+    "./js/main.js"
+  ],
   content: [
-  "./public/css/*.{html,js,css}",
-  "./views/*.ejs",
-  "./views/layouts/*.ejs",
-  "./views/partials/*.ejs"
+    "./public/css/*.{html,js,css}",
+    "./views/*.ejs",
+    "./views/partials/*.ejs"
   ],
   theme: {
     screens: {
