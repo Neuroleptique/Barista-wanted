@@ -80,7 +80,7 @@ module.exports = {
       console.log('Shift removed from cafe dashboard')
       res.json('Shift removed from cafe dashboard')
     } catch (error) {
-      console.error(error) 
+      console.error(error)
     }
   },
   putAvailable: async(req, res) => {
