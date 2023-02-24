@@ -65,8 +65,11 @@
           <% }) %>
         </td>
         <td>
-          <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>
-          <button type="button" class="deleteShift btn btn-secondary tooltip" data-tip="Delete"><i class="fa-regular fa-trash-can"></i></button>
+          <% if (shift.activeStatus) { %>
+            <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>
+          <% } else { %>
+            <button type="button" class="deleteShift btn btn-secondary tooltip" data-tip="Delete"><i class="fa-regular fa-trash-can"></i></button>
+          <% } %>
         </td>
       </tr>
     <% }) %>
