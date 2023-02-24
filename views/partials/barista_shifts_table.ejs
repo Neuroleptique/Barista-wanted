@@ -1,0 +1,73 @@
+<table class="table table-compact w-full">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Location</th>
+      <th scope="col">time</th>
+      <th scope="col">Wage</th>
+      <th scope="col">action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if (shifts.length == 0 ) { %>
+      <tr>
+        <th colspan="5" class="text-center">There is no shift to display</th>
+      </tr>
+    <% } else { %>
+      <% shifts.forEach((shift, i) => { %>
+        <tr data-id="<%= shift._id %>">
+          <th scope="row" class="text-sm">
+            <%= new Date(shift.start_at).toDateString() %>
+          </th>
+
+          <!-- Show clickable cafe name -->
+          <td>
+            <% let cafeInfo = cafes.filter(coffeeShop => coffeeShop.userName == shift.cafeUserName )[0] %>
+
+            <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift.cafeName %></label>
+
+            <!-- Popup box to display cafe info -->
+            <input type="checkbox" id="<%= `${i}-${shift.cafeUserName}` %>" class="modal-toggle" />
+            <div class="modal">
+              <div class="modal-box">
+                <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
+                <% if(cafeInfo.more){ %>
+                  <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
+                <% } %>
+                <div class="py-6">
+                <% if(shift.location) { %>
+                  <a class="btn btn-secondary btn-outline px-2" href="https://www.google.com/maps/place/?q=place_id:<%= shift.location.place_id %>" target="_blank">
+                    <i class="fa-regular fa-map fa-2xl"></i>
+                  </a>
+                <% } %>
+                <% if (cafeInfo.ig) { %>
+                  <a class="btn btn-secondary btn-outline px-2" href="https://www.instagram.com/<%= cafeInfo.ig %>" target="_blank">
+                    <i class="fa fa-brands fa-instagram fa-2xl"></i>
+                  </a>
+                </div>
+                <% } %>
+                <div class="modal-action">
+                  <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn">Close</label>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td><%= `${shift.start_time} - ${shift.end_time} (${shift.duration}h)` %></td>
+          <td><%= shift.wage %>$/h <%= shift.tips ? '+tips' : `(no tips)` %></td>
+          <td>
+            <% if (shift.availability.includes(user.userName)) { %>
+                <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
+                  <i class="fa-regular fa-circle-xmark"></i>
+                </button>
+            <% } else { %>
+                <button type="button" class="available btn btn-info tooltip" data-tip="I'm available">
+                  <i class="fa-solid fa-thumbs-up fa-bounce"></i>
+                </button>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
