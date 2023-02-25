@@ -6,7 +6,6 @@ const cloudinary = require("../middleware/cloudinary");
 const signature = require("../middleware/signuploadform")
 const cloudName = cloudinary.config().cloud_name;
 const apiKey = cloudinary.config().api_key;
-const getTime = require("../middleware/getTime")
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -40,8 +39,6 @@ module.exports = {
             ]}
           ]
         })
-        addTimeRange(activeShiftData)
-        addTimeRange(pastShiftData)
 
         const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
         const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
@@ -87,8 +84,6 @@ module.exports = {
             ]}
           ]
         }).sort({ start_at: 1 });
-        addTimeRange(activeShiftData)
-        addTimeRange(inactiveShiftData)
 
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
@@ -249,12 +244,5 @@ function getCloudImgTag(cloudinaryPhotoData){
       { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }
       ]})
     }
-  })
-}
-
-function addTimeRange(shiftData){
-  return shiftData.forEach(shift => {
-    shift.start_time = getTime(shift.start_at)
-    shift.end_time = getTime(shift.end_at)
   })
 }

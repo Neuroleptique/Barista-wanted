@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Shift = require("../models/Shift")
 const nodemailer = require('nodemailer');
 const sendEmail = require("./email");
-const getTime = require("../middleware/getTime")
+const date = require('date-and-time')
 
 module.exports = {
   postShift: async (req, res) => {
@@ -13,7 +13,7 @@ module.exports = {
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
 
-      await Shift.create({
+      const shift = await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
@@ -26,17 +26,12 @@ module.exports = {
         more: req.body.more,
       })
 
-      // Sent email to baristas who opt in for email notification
       const baristas = await Barista.find({ notification: true })
 
       if(baristas) {
         const baristaEmails = baristas.map(b => b.email)
-        const startTime = getTime(req.body.start_at)
-        const endTime = getTime(req.body.end_at)
-
-        // Send notification email to baristas
         const subject = `${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(req.body.start_at).toDateString()} from ${startTime} to ${endTime}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
+        const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(shift.start_at).toDateString()} from ${shift.start_time} to ${shift.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
 
         sendEmail( baristaEmails, subject, text )
       }
