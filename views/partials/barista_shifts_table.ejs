@@ -12,7 +12,7 @@
   <tbody>
     <% if (shifts.length == 0 ) { %>
       <tr>
-        <th colspan="5" class="text-center">There is no shift to display</th>
+        <th colspan="5" class="text-center">There is no <%= noDataLabel %> shift to display</th>
       </tr>
     <% } else { %>
       <% shifts.forEach((shift, i) => { %>

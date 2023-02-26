@@ -8,13 +8,13 @@
   <!-- Active shifts display section -->
   <h2 class="text-center text-secondary text-2xl font-bold pt-8 pb-3">Active needs</h2>
   <section class="overflow-x-auto">
-    <%- include('partials/barista_shifts_table', {shifts: activeShifts}) %>
+    <%- include('partials/barista_shifts_table', { shifts: activeShifts, noDataLabel: 'active' }) %>
   </section>
 
   <!-- Past shifts display section -->
   <h2 class="text-center text-secondary text-2xl font-bold pt-8 pb-3">Fulfilled or Past shifts</h2>
   <section class="overflow-x-auto">
-    <%- include('partials/barista_shifts_table', {shifts: pastShifts}) %>
+    <%- include('partials/barista_shifts_table', { shifts: pastShifts, noDataLabel: 'past' }) %>
   </section>
 </div>
 <%- include('partials/footer') -%>
