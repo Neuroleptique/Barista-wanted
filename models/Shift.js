@@ -25,20 +25,4 @@ const ShiftSchema= new mongoose.Schema({
   availability: [ { type: String } ]
 });
 
-ShiftSchema.virtual('duration').
- get(function() {
-  const shiftLength = date.subtract(new Date(this.end_at), new Date(this.start_at)).toHours()
-  return Math.round( shiftLength * 100 ) / 100
-})
-
-ShiftSchema.virtual('start_time').
- get(function() {
-  return date.format(this.start_at, 'hh:mm')
-})
-
-ShiftSchema.virtual('end_time').
- get(function() {
-  return date.format(this.end_at, 'hh:mm')
-})
-
 module.exports = mongoose.model("Shift", ShiftSchema);

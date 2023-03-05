@@ -53,7 +53,7 @@
               </div>
             </div>
           </td>
-          <td><%= `${shift.start_time} - ${shift.end_time} (${shift.duration}h)` %></td>
+          <td><%= `${ date.format(shift.start_at, 'HH:mm') } - ${ date.format(shift.end_at, 'HH:mm') } (${ Math.round(date.subtract(shift.end_at, shift.start_at).toHours() * 100) / 100 }h)` %></td>
           <td><%= shift.wage %>$/h <%= shift.tips ? '+tips' : `(no tips)` %></td>
           <td>
             <% if (shift.availability.includes(user.userName)) { %>

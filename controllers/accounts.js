@@ -6,6 +6,7 @@ const cloudinary = require("../middleware/cloudinary");
 const signature = require("../middleware/signuploadform")
 const cloudName = cloudinary.config().cloud_name;
 const apiKey = cloudinary.config().api_key;
+const date = require("date-and-time")
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -51,7 +52,7 @@ module.exports = {
             $in: allShiftPosters
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData });
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData, date: date });
 
       } else if (req.user.userType == 'cafe' ) {
 
@@ -99,7 +100,7 @@ module.exports = {
         })
 
         getCloudImgTag(baristaData)
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData, date: date });
       }
     } catch (err) {
       console.log(err);
