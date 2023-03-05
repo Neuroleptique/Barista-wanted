@@ -4,45 +4,38 @@ const User = require("../models/User");
 const Shift = require("../models/Shift")
 const nodemailer = require('nodemailer');
 const sendEmail = require("./email");
+const date = require('date-and-time')
 
 module.exports = {
   postShift: async (req, res) => {
     try {
-      const shiftDateAndTime = new Date(req.body.date)
-      // Retrieve shift start time from Date as hh:mm format
-      const start_time = `${shiftDateAndTime.getHours().toString().padStart(2, '0')}:${shiftDateAndTime.getMinutes().toString().padStart(2, '0')}`
 
       const cafeData = await Cafe.findOne({ userName: req.user.userName })
       const locationData = cafeData.place.filter(p => p.place_id == req.body.location)[0]
-      console.log(locationData)
-      await Shift.create({
+
+      const shift = await Shift.create({
         _userID: req.user.id,
         cafeUserName: req.user.userName,
         cafeName: cafeData.cafeName,
         location: locationData,
         wage: req.body.wage,
         tips: req.body.tips,
-        date: req.body.date,
-        start_time: start_time,
-        end_time: req.body.end_time,
+        start_at: req.body.start_at,
+        end_at: req.body.end_at,
         activeStatus: req.body.activeStatus,
         more: req.body.more,
       })
 
-      // Sent email to baristas who opt in for email notification
       const baristas = await Barista.find({ notification: true })
 
       if(baristas) {
-        const baristaEmails = baristas.map(b => b.email)       
-        const shiftDate = shiftDateAndTime.toDateString()
+        const baristaEmails = baristas.map(b => b.email)
+        const subject = `${cafeData.cafeName} is looking for barista`
+        const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(shift.start_at).toDateString()} from ${shift.start_time} to ${shift.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
 
-        // Send notification email to baristas
-        const subject = `Barista Wanted: ${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista on \n${shiftDate} from ${start_time} to ${req.body.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
-        
         sendEmail( baristaEmails, subject, text )
       }
-      
+
       console.log('Shift created!')
       res.redirect('/dashboard')
     } catch (err) {
@@ -90,5 +83,5 @@ module.exports = {
     }catch(err){
       console.log(err)
     }
-  }
-} 
+  },
+}

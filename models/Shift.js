@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const date = require('date-and-time')
 
 const ShiftSchema= new mongoose.Schema({
   _userID: {
@@ -17,10 +18,9 @@ const ShiftSchema= new mongoose.Schema({
   },
   wage: Number,
   tips: Boolean,
-  date: Date,
-  start_time: String,
-  end_time: String,
-  activeStatus: { type: Boolean, default: true }, 
+  start_at: Date,
+  end_at: Date,
+  activeStatus: { type: Boolean, default: true },
   more: String,
   availability: [ { type: String } ]
 });

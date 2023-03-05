@@ -6,6 +6,7 @@ const cloudinary = require("../middleware/cloudinary");
 const signature = require("../middleware/signuploadform")
 const cloudName = cloudinary.config().cloud_name;
 const apiKey = cloudinary.config().api_key;
+const date = require("date-and-time")
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -14,7 +15,6 @@ module.exports = {
 
       if (req.user.userType == 'barista') {
 
-        // Force user to fill their profile before preceeding to check dashboard
         const baristaData = await Barista.findOne({ userName: req.user.userName });
         if (!baristaData.firstName || !baristaData.lastName) {
           console.log('First or Last Name is empty')
@@ -24,24 +24,40 @@ module.exports = {
           return res.redirect('/profile')
         }
 
-        const shiftData = await Shift.find({
+        const activeShiftData = await Shift.find({
           activeStatus: true,
-          date: { $gte: today }
-        }).sort({ date: 1 });
+          start_at: { $gte: today }
+        }).sort({ start_at: 1 });
 
-        const shiftPosters = shiftData.map( s => s.cafeUserName ).flat().filter( (n, idx, arr)=> arr.indexOf(n) == idx )
+
+
+        const pastShiftData = await Shift.find({
+          $and: [
+            { availability: { $in: [ req.user.userName ]}},
+            { $or: [
+              { start_at: { $lt: today }},
+              { activeStatus: false }
+            ]}
+          ]
+        })
+
+        const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
+        const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
+        const allShiftPosters = activeShiftPoster.concat(pastShiftPoster)
+                                .flat()
+                                .filter( (n, idx, arr) => arr.indexOf(n) == idx )
+
         const cafeData = await Cafe.find({
           userName: {
-            $in: shiftPosters
+            $in: allShiftPosters
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, shifts: shiftData, cafes: cafeData, barista: baristaData });
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData, date: date });
 
       } else if (req.user.userType == 'cafe' ) {
 
         const cafeData = await Cafe.findOne({ userName: req.user.userName });
 
-        // Force cafe user to add their shop location prior posting shift
         if (!cafeData.place.length) {
           console.log('Cafe location is empty')
           req.flash("info", {
@@ -55,9 +71,9 @@ module.exports = {
           $and: [
             { _userID: req.user.id },
             { activeStatus: true },
-            { date: { $gte: today }}
+            { start_at: { $gte: today }}
           ]
-        }).sort({ date: 1 });
+        }).sort({ start_at: 1 });
 
         // InActive shift = active status == false || date < today
         const inactiveShiftData = await Shift.find({
@@ -65,28 +81,26 @@ module.exports = {
             { _userID: req.user.id },
             { $or: [
               { activeStatus: false },
-              { date: { $lt: today }}
+              { start_at: { $lt: today }}
             ]}
           ]
-        }).sort({ date: 1 });
+        }).sort({ start_at: 1 });
 
-        // Determine who are available for shifts posted by individual cafe user and
-        // Retrieve available baristas' information for those shifts
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
-        const availableBarista = activeShiftBarista
+        const allAvailableBaristas = activeShiftBarista
                                   .concat(inactiveShiftBarista)
                                   .flat()
                                   .filter( (n, idx, arr)=> arr.indexOf(n) == idx )
 
         const baristaData = await Barista.find({
           userName: {
-            $in: availableBarista
+            $in: allAvailableBaristas
           }
         })
 
         getCloudImgTag(baristaData)
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafes: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData, date: date });
       }
     } catch (err) {
       console.log(err);

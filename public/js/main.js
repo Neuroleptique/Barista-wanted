@@ -2,15 +2,11 @@ const changeStatusBtn = document.querySelectorAll('.inactiveShift')
 const deleteShiftBtn = document.querySelectorAll('.deleteShift')
 const availableToWorkBtn = document.querySelectorAll('.available')
 const notAvailableBtn = document.querySelectorAll('.not-available')
-const shiftDateField = document.querySelectorAll('.date-input')
+
 
 
 // Dashboard_cafe: Restrict shift starting date input to only accept value no earlier than the current date
-Array.from(shiftDateField).forEach(input => {
-  input.addEventListener('focus', minDate)
-})
-
-function minDate() {
+function minStartDate() {
   let today = new Date()
   let dd = today.getDate()
   let mm = today.getMonth() + 1
@@ -31,8 +27,11 @@ function minDate() {
     min = '0' + min
   }
   today = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min
-  console.log(today)
-  document.getElementById('datefield').setAttribute('min', today)
+  document.getElementById('start_at').setAttribute('min', today)
+}
+function minEndDate() {
+  const startDate = document.getElementById('start_at').value
+  document.getElementById('end_at').setAttribute('min', startDate)
 }
 
 // Cafe: Make shift inavtive
@@ -165,12 +164,12 @@ async function updateAddress() {
   const addressAlert = document.getElementById('addressAlert')
   try {
     // Throw error message if user click save address button without selecting a location
-    if (!address.geometry){        
+    if (!address.geometry){
         addressAlert.classList.add('alert-error')
         addressAlert.innerHTML = 'You have not select a location'
 
     } else {
-    
+
       const response = await fetch('cafe/putAddressCafe', {
         method: 'put',
         headers: { 'Content-type': 'application/json' },
@@ -178,7 +177,7 @@ async function updateAddress() {
           place: address
         })
       })
-      
+
       const data = await response.json()
       console.log(data)
       if(data == 'Address added') {
@@ -198,10 +197,10 @@ async function updateAddress() {
   } catch(err) {
     console.log(err)
   }
-  
+
 }
 
-// Upload Photo from barista profile to Cloudinary 
+// Upload Photo from barista profile to Cloudinary
 
 async function uploadProfilePhoto(){
   try{
@@ -222,7 +221,7 @@ async function uploadProfilePhoto(){
     formData.append("allowed_formats", "jpg,jpeg,png,bmp,gif");
     formData.append("eager", "c_thumb,h_150,w_150,g_face");
     formData.append("folder", "profile_photos");
-    
+
     const photoDataResponse = await fetch(cloudinaryURL, {
       method: "POST",
       body: formData
@@ -234,7 +233,7 @@ async function uploadProfilePhoto(){
     const uploadResult = document.getElementById('photoUploadResult').appendChild(imgNode)
     const photoDisplay = document.getElementById('photoView')
     photoDisplay.replaceChildren(uploadResult)
-    
+
     const photo_public_id = photoData.public_id
     const photo_secure_url = photoData.secure_url
 
