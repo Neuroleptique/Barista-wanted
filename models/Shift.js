@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const date = require('date-and-time')
 
 const ShiftSchema= new mongoose.Schema({
   _userID: {
@@ -19,22 +20,10 @@ const ShiftSchema= new mongoose.Schema({
   tips: Boolean,
   start_at: Date,
   end_at: Date,
-  duration: Number,
   activeStatus: { type: Boolean, default: true },
   more: String,
   availability: [ { type: String } ],
   ownerDisplay: { type: Boolean, default: true }
 });
-
-ShiftSchema.pre('save', function save(next) {
-  const shift = this
-  const oneHour = 1000 * 60 * 60
-  this.duration = secDecimal((new Date(shift.end_at) - new Date(shift.start_at)) / oneHour )
-  next()
-})
-
-function secDecimal(num){
-  return Math.round( (num * 100) )/ 100
-}
 
 module.exports = mongoose.model("Shift", ShiftSchema);

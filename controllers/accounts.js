@@ -6,7 +6,7 @@ const cloudinary = require("../middleware/cloudinary");
 const signature = require("../middleware/signuploadform")
 const cloudName = cloudinary.config().cloud_name;
 const apiKey = cloudinary.config().api_key;
-const getTime = require("../middleware/getTime")
+const date = require("date-and-time")
 
 module.exports = {
   getDashboard: async (req, res) => {
@@ -40,8 +40,6 @@ module.exports = {
             ]}
           ]
         })
-        addTimeRange(activeShiftData)
-        addTimeRange(pastShiftData)
 
         const activeShiftPoster = activeShiftData.map( s => s.cafeUserName )
         const pastShiftPoster = pastShiftData.map( s => s.cafeUserName)
@@ -54,7 +52,7 @@ module.exports = {
             $in: allShiftPosters
           }
         })
-        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData });
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: cafeData, barista: baristaData, date: date });
 
       } else if (req.user.userType == 'cafe' ) {
 
@@ -88,8 +86,6 @@ module.exports = {
             ]}
           ]
         }).sort({ start_at: 1 });
-        addTimeRange(activeShiftData)
-        addTimeRange(inactiveShiftData)
 
         const activeShiftBarista = activeShiftData.map( s => s.availability )
         const inactiveShiftBarista = inactiveShiftData.map( s => s.availability )
@@ -105,7 +101,7 @@ module.exports = {
         })
 
         getCloudImgTag(baristaData)
-        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData });
+        res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData, date: date });
       }
     } catch (err) {
       console.log(err);
@@ -250,12 +246,5 @@ function getCloudImgTag(cloudinaryPhotoData){
       { background: "grey", width: 150, height: 150, crop: "thumb", gravity: "face" }
       ]})
     }
-  })
-}
-
-function addTimeRange(shiftData){
-  return shiftData.forEach(shift => {
-    shift.start_time = getTime(shift.start_at)
-    shift.end_time = getTime(shift.end_at)
   })
 }
