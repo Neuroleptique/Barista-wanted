@@ -22,7 +22,16 @@ const ShiftSchema= new mongoose.Schema({
   end_at: Date,
   activeStatus: { type: Boolean, default: true },
   more: String,
-  availability: [ { type: String } ]
+  availability: [ { type: String } ],
+  ownerDisplay: { type: Boolean, default: true }
 });
+
+ShiftSchema.post('findOneAndUpdate', async function(shift){
+  if (!shift.ownerDisplay && shift.availability.length == 0){
+    await shift.remove()
+    console.log('shift deleted')
+  }
+
+})
 
 module.exports = mongoose.model("Shift", ShiftSchema);

@@ -1,7 +1,7 @@
-const changeStatusBtn = document.querySelectorAll('.inactiveShift')
-const deleteShiftBtn = document.querySelectorAll('.deleteShift')
-const availableToWorkBtn = document.querySelectorAll('.available')
-const notAvailableBtn = document.querySelectorAll('.not-available')
+const changeStatusBtns = document.querySelectorAll('.inactiveShift')
+const removeShiftBtns = document.querySelectorAll('.removeShift')
+const availableToWorkBtns = document.querySelectorAll('.available')
+const notAvailableBtns = document.querySelectorAll('.not-available')
 
 
 
@@ -35,7 +35,7 @@ function minEndDate() {
 }
 
 // Cafe: Make shift inavtive
-Array.from(changeStatusBtn).forEach(btn => {
+Array.from(changeStatusBtns).forEach(btn => {
   btn.addEventListener('click', changeStatusFalse)
 })
 
@@ -58,31 +58,31 @@ async function changeStatusFalse() {
   }
 }
 
-// Cafe: Delete shift
-Array.from(deleteShiftBtn).forEach(btn => {
-  btn.addEventListener('click', deleteShift)
+// Cafe: remove shift from being displayed on cafe dashboard
+Array.from(removeShiftBtns).forEach(btn => {
+  btn.addEventListener('click', removeShiftDisplay )
 })
 
-async function deleteShift() {
+async function removeShiftDisplay() {
   const shiftID = this.parentNode.parentNode.dataset.id
   try {
-    const response = await fetch('cafe/deleteShift', {
-      method: 'delete',
-      headers: { 'Content-type': 'application/json' },
+    const response = await fetch('cafe/putCafeDisplayFalse', {
+      method: 'put',
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         shiftID: shiftID
-      }),
+      })
     })
     const data = await response.json()
     console.log(data)
     location.reload()
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    console.error(error)
   }
 }
 
 // Barista: Put themself (barista) available for the shift
-Array.from(availableToWorkBtn).forEach(btn => {
+Array.from(availableToWorkBtns).forEach(btn => {
   btn.addEventListener('click', availableToWork)
 })
 
@@ -105,7 +105,7 @@ async function availableToWork() {
 }
 
 // Barista: Remove themself from being available for the shift
-Array.from(notAvailableBtn).forEach(btn => {
+Array.from(notAvailableBtns).forEach(btn => {
   btn.addEventListener('click', notAvailableToWork)
 })
 

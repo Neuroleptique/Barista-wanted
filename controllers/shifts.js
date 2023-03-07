@@ -53,13 +53,17 @@ module.exports = {
       console.log(err)
     }
   },
-  deleteShift: async (req, res) => {
+
+  putCafeDisplayFalse: async (req, res) => {
     try {
-      await Shift.findOneAndDelete({ _id: req.body.shiftID })
-      console.log('Shift deleted')
-      res.json('Shift deleted')
-    } catch(err) {
-    console.log(err)
+      await Shift.findOneAndUpdate( {_id: req.body.shiftID }, {
+        ownerDisplay: false
+      }, { new: true })
+
+      console.log('Shift removed from cafe dashboard')
+      res.json('Shift removed from cafe dashboard')
+    } catch (error) {
+      console.error(error)
     }
   },
   putAvailable: async(req, res) => {
@@ -77,7 +81,8 @@ module.exports = {
     try {
       await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
         $pull: { availability: req.user.userName }
-      })
+      }, { new: true })
+
       console.log(`${req.user.userName} is no longer available for the shift`)
       res.json('Candidate removed')
     }catch(err){
