@@ -54,24 +54,12 @@ module.exports = {
     }
   },
 
-  // Triggering condition: only if availability.length == 0 && ownerDisplay == false
-  deleteShift: async (req, res) => {
-    try {
-      await Shift.findOneAndDelete({ _id: req.body.shiftID })
-      console.log('Shift deleted')
-
-    } catch(err) {
-    console.log(err)
-    }
-  },
   putCafeDisplayFalse: async (req, res) => {
     try {
-      const shiftData = await Shift.findOneAndUpdate( {_id: req.body.shiftID }, {
+      await Shift.findOneAndUpdate( {_id: req.body.shiftID }, {
         ownerDisplay: false
       }, { new: true })
-      if( shiftData.availability.length == 0 ) {
-        module.exports.deleteShift(req)
-      }
+
       console.log('Shift removed from cafe dashboard')
       res.json('Shift removed from cafe dashboard')
     } catch (error) {
@@ -91,13 +79,10 @@ module.exports = {
   },
   removeAvailable: async(req, res) => {
     try {
-      const shiftData = await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
+      await Shift.findOneAndUpdate({ _id: req.body.shiftID }, {
         $pull: { availability: req.user.userName }
       }, { new: true })
 
-      if (shiftData.availability.length == 0 && shiftData.ownerDisplay == false) {
-        module.exports.deleteShift(req)
-      }
       console.log(`${req.user.userName} is no longer available for the shift`)
       res.json('Candidate removed')
     }catch(err){
