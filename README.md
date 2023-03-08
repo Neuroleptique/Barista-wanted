@@ -7,14 +7,15 @@ This app allows:
 - barista users will get notified through email if they opt-in for notification service
 - barista users can put themself available for individual shift
 - shop owner will then see all available baristas for the shift(s) posted and their contact info
+- users can add and edit their personal information at profile page
 
 **Link to project:** https://baristawanted.cyclic.app/
 
 ## How It's Made:
-**Tech used:** HTML, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS, Google Maps API
+**Tech used:** EJS, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS, Google Maps API, Cloudinary
 
 ## Packages/Dependencies used 
-bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
+bcrypt, concurrently, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
 `npm install` 
@@ -33,16 +34,8 @@ bcrypt, concurrently, connect-mongo, daisyui, dotenv, ejs, express, express-flas
   - CLOUD_API_KEY =  `your cloudinary API key`
   - CLOUD_API_SECRET = `your cloudinary API secret`
 
-- Create a `config.ejs` file in the `views/partials` folder and add the following line of code:
-  ```
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=<%- GOOGLE_MAP_API_KEY %> &libraries=places&callback=initAutocomplete" async defer>
-  </script>
-  ```
-  *This ONLY prevents your Google Maps API key from being pushed to repo and triggering security alert. Please still follow [API security best practices](https://developers.google.com/maps/api-security-best-practices) on how to protect your API key from miseusage. Also, by putting this script tag as a separated partials components, we can call `<%- include('partials/config') -%>` at the end of individual ejs file whenever we need to use google maps service*
-
 ## Lessons Learned:
-Mongoose Schema, Date object manipulation, email sending from server, token generation and verification, TailwindCSS
+Mongoose, Date object manipulation, email sending from the server, token generation and verification, TailwindCSS, Cloudinary upload and image cropping
 
 ## Optimization:
 - Could use Google place API to give users the option to define their own display data (in progress)
