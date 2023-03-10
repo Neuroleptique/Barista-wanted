@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
-  password: { type: String },  
+  password: { type: String },
   userType: { type: String },
+  isTesting: Boolean,
   isVerified: { type: Boolean, default: false },
   createdAt: {
     type: Date,

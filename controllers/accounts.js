@@ -13,7 +13,7 @@ module.exports = {
     try {
       const today = new Date().toISOString()
 
-      if (req.user.userType == 'barista') {
+      if (req.user.userType == 'barista' && !req.user.isTesting) {
 
         const baristaData = await Barista.findOne({ userName: req.user.userName });
         if (!baristaData.firstName || !baristaData.lastName) {
@@ -25,8 +25,12 @@ module.exports = {
         }
 
         const activeShiftData = await Shift.find({
-          activeStatus: true,
-          start_at: { $gte: today }
+          $and: [
+            { activeStatus: true },
+            { start_at: { $gte: today } },
+            { cafeUserName: { $ne: 'cafe' } }
+          ]
+
         }).sort({ start_at: 1 });
 
 
@@ -102,6 +106,36 @@ module.exports = {
 
         getCloudImgTag(baristaData)
         res.render("dashboard_cafeOwner.ejs", { user: req.user, cafe: cafeData, activeShifts: activeShiftData, inactiveShifts: inactiveShiftData, baristas: baristaData, date: date });
+
+
+      } else if (req.user.userType == 'barista' && req.user.isTesting ) {
+        console.log('barista testing')
+
+        const activeShiftData = await Shift.find({
+          $and: [
+            { cafeUserName: 'cafe' },
+            { activeStatus: true },
+            { start_at: { $gte: today }}
+          ]
+
+        }).sort({ start_at: 1 });
+
+
+
+        const pastShiftData = await Shift.find({
+          $and: [
+            { cafeUserName: 'cafe' },
+            { availability: { $in: [ req.user.userName ]}},
+            { $or: [
+              { start_at: { $lt: today }},
+              { activeStatus: false }
+            ]}
+          ]
+        })
+
+        const cafeData = await Cafe.findOne({ userName: 'cafe' })
+        res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: new Array(cafeData), date: date });
+
       }
     } catch (err) {
       console.log(err);
