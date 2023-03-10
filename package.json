@@ -1,7 +1,7 @@
 {
   "name": "baristawanted",
   "version": "1.0.0",
-  "description": "Barista wanted is an full-stack app that helps local coffee shops to find baristas for casual shifts",
+  "description": "A web application that connects coffee shops with baristas in need of emergency work.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
