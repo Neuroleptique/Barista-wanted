@@ -28,6 +28,7 @@ module.exports = {
           $and: [
             { activeStatus: true },
             { start_at: { $gte: today } },
+            // testing user's userName is hardcoded as 'cafe'
             { cafeUserName: { $ne: 'cafe' } }
           ]
 
@@ -132,7 +133,7 @@ module.exports = {
             ]}
           ]
         })
-
+        // testing user's userName is hardcoded as 'cafe'
         const cafeData = await Cafe.findOne({ userName: 'cafe' })
         res.render("dashboard_barista.ejs", { user: req.user, activeShifts: activeShiftData, pastShifts: pastShiftData, cafes: new Array(cafeData), date: date });
 
