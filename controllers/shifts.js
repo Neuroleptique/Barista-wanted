@@ -26,15 +26,19 @@ module.exports = {
         more: req.body.more,
       })
 
-      const baristas = await Barista.find({ notification: true })
+      if(!req.user.isTesting){
 
-      if(baristas) {
-        const baristaEmails = baristas.map(b => b.email)
-        const subject = `${cafeData.cafeName} is looking for barista`
-        const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(shift.start_at).toDateString()} from ${shift.start_time} to ${shift.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
+        const baristas = await Barista.find({ notification: true })
 
-        sendEmail( baristaEmails, subject, text )
+        if(baristas) {
+          const baristaEmails = baristas.map(b => b.email)
+          const subject = `${cafeData.cafeName} is looking for barista`
+          const text = `${cafeData.cafeName} is looking for a barista on \n${new Date(shift.start_at).toDateString()} from ${shift.start_time} to ${shift.end_time}.\nPlease login to your account for more info by clicking the link: \nhttp:\/\/`+ req.headers.host + "\/dashboard"
+
+          sendEmail( baristaEmails, subject, text )
+        }
       }
+
 
       console.log('Shift created!')
       res.redirect('/dashboard')
