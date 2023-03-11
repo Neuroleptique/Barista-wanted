@@ -29,7 +29,7 @@ exports.postLogin = (req, res, next) => {
     validationErrors.push({ msg: "Password cannot be blank." });
 
   if (validationErrors.length) {
-    req.flash("errors", validationErrors);     
+    req.flash("errors", validationErrors);
     return res.redirect("/login");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
@@ -48,7 +48,7 @@ exports.postLogin = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", { msg: "Success! You are logged in. Please update your user profile." });
+      req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(req.session.returnTo || "/dashboard");
     });
   })(req, res, next);
@@ -70,7 +70,7 @@ exports.getSignupBarista = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
-  
+
   res.render("signup_barista", {
     title: "Create Account",
     user: req.user
@@ -81,7 +81,7 @@ exports.getSignupCafe = (req, res) => {
   if (req.user) {
     return res.redirect("/dashboard");
   }
-  
+
   res.render("signup_cafe", {
     title: "Create Account",
     user: req.user
@@ -89,7 +89,7 @@ exports.getSignupCafe = (req, res) => {
 };
 
 exports.postSignup = async (req, res, next) => {
-  
+
   // Input Validation
   const validationErrors = [];
   if (!validator.isLength(req.body.userName, {min:3, max:25 }))
@@ -134,7 +134,7 @@ exports.postSignup = async (req, res, next) => {
       gmail_remove_dots: false,
       all_lowercase: true
     });
-    
+
     req.body.userName = req.body.userName.toLowerCase()
 
     // Verify if username or email already exist
@@ -166,26 +166,26 @@ exports.postSignup = async (req, res, next) => {
         await Barista.create({ userName: req.body.userName, email: req.body.email })
       } else if (req.body.userType == 'cafe') {
         await Cafe.create({ userName: req.body.userName, email: req.body.email, cafeName: req.body.cafeName })
-      }    
+      }
 
       // Generate email validation token and store in Token collection
       const token = new Token({
-        _userId: user._id, 
+        _userId: user._id,
         token: crypto.randomBytes(16).toString('hex'),
       })
-      
+
       await token.save()
 
       // Send account verification email to user
       const subject = 'Barista Wanted account Verification'
       const text = 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/'+ req.body.email + '\/' + token.token + '\n\nThank You!\n'
       sendEmail( req.body.email, subject, text )
-      
+
       req.flash('success', {
         msg: 'Please check your email and verify your account.'
       });
-      res.redirect('/login')  
-    }    
+      res.redirect('/login')
+    }
 
   } catch(err) {
     console.log(err)
@@ -198,7 +198,7 @@ exports.confirmEmail = (req, res) => {
     req.flash("errors", { msg: "Email is not valid." })
     res.redirect('/login')
   };
-    
+
   Token.findOneAndDelete({ token: req.params.token }, (err, token) => {
     if (err) {
       return next(err);
@@ -236,7 +236,7 @@ exports.getResendEmailconfirmation = (req, res) => {
   res.render("resend_email.ejs", { user: req.user });
 };
 
-exports.postResendEmailconfirmation = (req, res, next) => { 
+exports.postResendEmailconfirmation = (req, res, next) => {
   if (!validator.isEmail(req.body.email)) {
     req.flash("errors", { msg: "Please enter a valid email address." })
     res.redirect('/login')
@@ -256,7 +256,7 @@ exports.postResendEmailconfirmation = (req, res, next) => {
       return res.redirect('/login')
     }
     const token = new Token({
-      _userId: user._id, 
+      _userId: user._id,
       token: crypto.randomBytes(16).toString('hex'),
     })
 
@@ -296,10 +296,10 @@ exports.postPasswordResetRequest = async (req, res) => {
     }
 
     const token = new Token({
-      _userId: user._id, 
+      _userId: user._id,
       token: crypto.randomBytes(20).toString('hex'),
     })
-    
+
     token.save(err => {
       if(err) {
         return next(err)
