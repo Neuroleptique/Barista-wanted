@@ -369,14 +369,18 @@ exports.postPasswordResetActual = async (req, res) => {
     if(passwordResetToken) await passwordResetToken.deleteOne()
     const hashedPassword = await bcrypt.hash( req.body.password, Number(bcryptSalt) )
     await User.findByIdAndUpdate( req.params.userId, {
-      password: hashedPassword 
+      password: hashedPassword
     }, { runValidators: true } )
     req.flash('success', {
       msg: "You have successfully reset your password. Please login to your account."
     });
-    
+
     res.redirect('/login')
   }catch(err){
     console.log(err)
   }
 }
+
+exports.getDemo = (req, res) => {
+  res.render("demo.ejs", { user: req.user })
+};
