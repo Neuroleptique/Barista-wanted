@@ -262,3 +262,35 @@ async function savePhotoInfoToDB(public_id, secure_url) {
     console.error(err)
   }
 }
+
+
+async function tryBarista(){
+  try{
+    const response = await fetch('/tryBarista', {
+      method: 'post',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        email: 'barista@testing.com',
+        password: '12345678'
+      })
+    })
+    location.reload()
+  }catch(err){
+    console.error(err)
+  }
+}
+async function tryCafe(){
+  try{
+    const response = await fetch('/tryBarista', {
+      method: 'post',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        email: 'cafe@testing.com',
+        password: '12345678'
+      })
+    })
+    location.reload()
+  }catch(err){
+    console.error(err)
+  }
+}
