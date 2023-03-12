@@ -1,13 +1,11 @@
 <%- include('partials/header') -%>
 <section>
-    <main class="container flex flex-col items-center px-6 mx-auto space-y-0 md:space-y-0 lg:flex-row-reverse lg:justify-center lg:gap-20">
+    <main class="container flex flex-col items-center p-6 mx-auto space-y-0 md:space-y-0 lg:flex-row-reverse lg:justify-center lg:gap-20">
         <div class="w-fit flex flex-col my-9 space-y-12">
             <h1 class="max-w-lg text-3xl font-bold text-secondary text-center lg:text-4xl lg:text-left">
-               Want to try out this awesome app but don't want to signup an account? <span class="max-w-lg text-3xl font-bold text-primary text-center lg:text-4xl lg:text-left">No problem, feel free to try our demo accounts with limited features</span></h1>
+               Don't want to signup for an account? <span class="max-w-lg text-3xl font-bold text-primary text-center lg:text-4xl lg:text-left">Feel free to try our demo with limited features.</span></h1>
 
-            <p class="max-w-lg text-md text-center text-grey-300 lg:text-left">
-                <span class="underline decoration-red-400 decoration-2 underline-offset-4 font-bold font-mono">TRY AS</span>
-            </p>
+            <p class="max-w-lg text-xl text-center text-grey-300 lg:text-left">Try as:</p>
             <div class="flex justify-center space-x-3 lg:justify-start">
                 <form action="/demoCafeLogin" method="POST">
                     <input type="text" name="email" value="<%= demoUserData.cafe %>" hidden>
@@ -21,10 +19,23 @@
                 </form>
             </div>
         </div>
-        <div class="w-fit">
-            <img src="/images/demo.gif" alt="">
+        <div class="max-w-md">
+            <img src="/images/coffee-machine.png" alt="">
         </div>
     </main>
+    <section class="py-8">
+        <h2 class="text-center text-4xl text-success">Features reserved for user only</h2>
+        <div class="container flex flex-col lg:flex-row items-center mx-auto lg:justify-center lg:gap-20">
+            <div class="lg:max-w-lg py-6">
+                <h3 class="text-center text-2xl py-6">Photo upload</h3>
+                <img src="/images/addPhoto.gif" alt="" class="max-w-md">
+            </div>
+            <div class="lg:max-w-lg py-6">
+                <h3 class="text-center text-2xl py-6">Address lookup</h3>
+                <img src="/images/addAddress.gif" alt="" class="max-w-md">
+            </div>
+        </div>
+    </section>
 </section>
 
 <%- include('partials/footer') -%>
