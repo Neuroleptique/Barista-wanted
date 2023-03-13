@@ -382,10 +382,17 @@ exports.postPasswordResetActual = async (req, res) => {
 }
 
 exports.getDemo = (req, res) => {
-  const demoUserData= {
-    cafe: process.env.DEMO_CAFE,
-    barista: process.env.DEMO_BARISTA,
-    password: process.env.DEMO_PASSWORD
-  }
-  res.render("demo.ejs", { user: req.user, demoUserData: demoUserData })
+  res.render("demo.ejs", { user: req.user })
 };
+
+exports.postDemoBaristaLogin = (req, res) => {
+  req.body.email = process.env.DEMO_BARISTA
+  req.body.password = process.env.DEMO_PASSWORD
+  exports.postLogin(req, res)
+}
+
+exports.postDemoCafeLogin = (req, res) => {
+  req.body.email = process.env.DEMO_CAFE
+  req.body.password = process.env.DEMO_PASSWORD
+  exports.postLogin(req, res)
+}

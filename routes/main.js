@@ -23,8 +23,8 @@ router.post("/password_reset_request", authController.postPasswordResetRequest);
 router.get("/password-reset/:userId/:token", authController.getPasswordResetActual);
 router.post("/password-reset/:userId/:token", authController.postPasswordResetActual)
 router.get("/getDemo", ensureGuest, authController.getDemo)
-router.post("/demoBaristaLogin", authController.postLogin)
-router.post('/demoCafeLogin', authController.postLogin)
+router.post("/demoBaristaLogin", authController.postDemoBaristaLogin)
+router.post('/demoCafeLogin', authController.postDemoCafeLogin)
 
 // Profile from dashboard
 router.get("/profile", ensureAuth, accountsController.getProfile);

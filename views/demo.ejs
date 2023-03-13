@@ -8,13 +8,11 @@
             <p class="max-w-lg text-xl text-center text-grey-300 lg:text-left">Try as:</p>
             <div class="flex justify-center space-x-3 lg:justify-start">
                 <form action="/demoCafeLogin" method="POST">
-                    <input type="text" name="email" value="<%= demoUserData.cafe %>" hidden>
-                    <input type="text" name="password" value="<%= demoUserData.password %>" hidden>
+
                     <button type="submit" class="btn btn-primary btn-lg">Café</a>
                 </form>
                 <form action="/demoBaristaLogin" method="POST">
-                    <input type="text" name="email" value="<%= demoUserData.barista %>" hidden>
-                    <input type="text" name="password" value="<%= demoUserData.password %>" hidden>
+
                     <button type="submit" class="btn btn-secondary btn-lg">Barista</a>
                 </form>
             </div>
