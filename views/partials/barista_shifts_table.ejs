@@ -25,10 +25,10 @@
           <td>
             <% let cafeInfo = cafes.filter(coffeeShop => coffeeShop.userName == shift.cafeUserName )[0] %>
 
-            <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift.cafeName %></label>
+            <label for="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift.cafeName %></label>
 
             <!-- Popup box to display cafe info -->
-            <input type="checkbox" id="<%= `${i}-${shift.cafeUserName}` %>" class="modal-toggle" />
+            <input type="checkbox" id="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="modal-toggle" />
             <div class="modal">
               <div class="modal-box">
                 <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
@@ -51,7 +51,7 @@
                 </div>
                 <% } %>
                 <div class="modal-action">
-                  <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn">Close</label>
+                  <label for="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="btn">Close</label>
                 </div>
               </div>
             </div>
