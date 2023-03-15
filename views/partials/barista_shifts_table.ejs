@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th scope="col">Date</th>
-      <th scope="col">Location</th>
+      <th scope="col">Cafe / Shift info</th>
       <th scope="col">time / duration</th>
       <th scope="col">Wage</th>
       <th scope="col">action</th>
@@ -25,15 +25,18 @@
           <td>
             <% let cafeInfo = cafes.filter(coffeeShop => coffeeShop.userName == shift.cafeUserName )[0] %>
 
-            <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift.cafeName %></label>
+            <label for="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="btn btn-secondary btn-sm md:btn-md"><%= shift.cafeName %></label>
 
             <!-- Popup box to display cafe info -->
-            <input type="checkbox" id="<%= `${i}-${shift.cafeUserName}` %>" class="modal-toggle" />
+            <input type="checkbox" id="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="modal-toggle" />
             <div class="modal">
               <div class="modal-box">
                 <h2 class="text-xl font-bold"><%= cafeInfo.cafeName %></h2>
                 <% if(cafeInfo.more){ %>
-                  <span class="inline-block py-4">About us: <%= cafeInfo.more %></span>
+                  <span class="block">About us: <%= cafeInfo.more %></span>
+                <% } %>
+                <% if(shift.more){ %>
+                  <span class="block text-accent">About this shift: <%= shift.more %></span>
                 <% } %>
                 <div class="py-6">
                 <% if(shift.location) { %>
@@ -48,7 +51,7 @@
                 </div>
                 <% } %>
                 <div class="modal-action">
-                  <label for="<%= `${i}-${shift.cafeUserName}` %>" class="btn">Close</label>
+                  <label for="<%= `${noDataLabel}${i}-${shift.cafeUserName}` %>" class="btn">Close</label>
                 </div>
               </div>
             </div>
