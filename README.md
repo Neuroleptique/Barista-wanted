@@ -11,6 +11,8 @@ This app allows:
 
 **Link to project:** https://baristawanted.cyclic.app/
 
+<img src="https://github.com/Neuroleptique/Barista-wanted/blob/main/public/images/demo.gif?raw=true" width="45%"></img> 
+
 ## How It's Made:
 **Tech used:** EJS, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS, Google Maps API, Cloudinary
 
