@@ -3,7 +3,7 @@ A job posting app that uses MVC Architecture, it comes with account creation, em
 
 ## How does this app work?
 This app allows:
-- coffee shop users to post their vacant shift request 
+- coffee shop users to post their vacant shift request
 - barista users will get notified through email if they opt-in for notification service
 - barista users can put themself available for individual shift
 - shop owner will then see all available baristas for the shift(s) posted and their contact info
@@ -11,20 +11,20 @@ This app allows:
 
 **Link to project:** https://baristawanted.cyclic.app/
 
-<img src="https://github.com/Neuroleptique/Barista-wanted/blob/main/public/images/demo.gif?raw=true" width="45%"></img> 
+<img src="https://github.com/Neuroleptique/Barista-wanted/blob/main/public/images/demo.gif?raw=true" width="45%"></img>
 
 ## How It's Made:
 **Tech used:** EJS, CSS, JavaScript, Node, Express, MongoDB, TailwindCSS, Google Maps API, Cloudinary
 
-## Packages/Dependencies used 
-bcrypt, concurrently, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
+## Packages/Dependencies used
+bcrypt, concurrently, cloudinary, connect-mongo, daisyui, date-and-time, dotenv, ejs, express, express-flash, express-session, express-flash, hcaptcha, method-override, mongodb, mongoose, morgan, nodemailer, nodemon, passport, passport-local, tailwindcss, validator
 
 ## Install all the dependencies or node packages used for development via Terminal
-`npm install` 
+`npm install`
 
 ## Things to add
-- Create a `config.env` file in the `config` folder and add the following as `key: value` 
-  - PORT = 3000 
+- Create a `config.env` file in the `config` folder and add the following as `key: value`
+  - PORT = 3000
   - DB_STRING = `your MongoDB database URI`
   - BCRYPT_SALT = `Salt rounds value for password hashing`
   - MAIL_SERVICE = `gmail`
@@ -35,6 +35,9 @@ bcrypt, concurrently, cloudinary, connect-mongo, daisyui, dotenv, ejs, express, 
   - CLOUD_NAME = `your cloudinary cloud name`
   - CLOUD_API_KEY =  `your cloudinary API key`
   - CLOUD_API_SECRET = `your cloudinary API secret`
+  - DEMO_BARISTA = `Demo account email`
+  - DEMO_CAFE = `Demo account email`
+  - DEMO_PASSWORD = `Demo account password`
 
 ## Lessons Learned:
 Mongoose, Date object manipulation, email sending from the server, token generation and verification, TailwindCSS, Cloudinary upload and image cropping
