@@ -5,7 +5,7 @@
       <th scope="col">Cafe / Shift info</th>
       <th scope="col">time / duration</th>
       <th scope="col">Wage</th>
-      <th scope="col">action</th>
+      <th scope="col">available</th>
     </tr>
   </thead>
 
@@ -60,7 +60,7 @@
           <td><%= shift.wage %>$/h <%= shift.tips ? '+tips' : `(no tips)` %></td>
           <td>
             <% if (shift.availability.includes(user.userName)) { %>
-                <button type="button" class="not-available btn btn-secondary tooltip" data-tip="not available">
+                <button type="button" class="not-available btn btn-secondary tooltip" data-tip="<%= noDataLabel == "active" ? "Not available" : "Remove" %>">
                   <i class="fa-regular fa-circle-xmark"></i>
                 </button>
             <% } else { %>
