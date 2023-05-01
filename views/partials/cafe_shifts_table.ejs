@@ -66,14 +66,14 @@
             <% }) %>
           </td>
           <td>
-          <% if (shift.activeStatus) { %>
-            <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>
-          <% } else { %>
-            <button type="button" class="removeShift btn btn-secondary tooltip" data-tip="Remove"><i class="fa-regular fa-trash-can"></i></button>
-          <% } %>
-        </td>
-      </tr>
-    <% }) %>
+            <% if (shift.activeStatus && new Date(shift.start_at) >= Date.now()){ %>
+              <button type="button" class="inactiveShift btn btn-secondary tooltip" data-tip="Fulfilled"><i class="fa-solid fa-check"></i></button>
+            <% } else { %>
+              <button type="button" class="removeShift btn btn-secondary tooltip" data-tip="Remove"><i class="fa-regular fa-trash-can"></i></button>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
 
     <% } %>
   </tbody>
