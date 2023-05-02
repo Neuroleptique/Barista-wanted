@@ -1,28 +1,28 @@
 <%- include('partials/header') -%>
 <section>
-    <main class="container flex flex-col items-center p-6 mx-auto space-y-0 md:space-y-0 lg:flex-row-reverse lg:justify-center lg:gap-20">
-        <div class="w-fit flex flex-col my-9 space-y-12">
+    <main class="container flex flex-col items-center p-8 mx-auto space-y-5 md:space-y-0 lg:flex-row-reverse lg:justify-center lg:gap-20">
+        <div class="w-fit flex flex-col my-9 space-y-12 gap-4">
             <h1 class="max-w-lg text-3xl font-bold text-secondary text-center lg:text-4xl lg:text-left">
-               Want to take a peek?<br /><span class="max-w-lg text-3xl font-bold text-primary text-center lg:text-4xl lg:text-left">Try with the demo mode.</span></h1>
-
-            <p class="max-w-lg text-xl text-center text-grey-300 lg:text-left">Try as:</p>
+               Want to take a peek?<br />
+               <span class="max-w-lg text-3xl font-bold text-primary text-center lg:text-4xl lg:text-left">Try with the demo mode as:</span>
+            </h1>
             <div class="flex justify-center space-x-3 lg:justify-start">
                 <form action="/demoCafeLogin" method="POST">
 
-                    <button type="submit" class="btn btn-primary btn-lg">Café</a>
+                    <button type="submit" class="btn btn-outline btn-primary btn-md">Café</a>
                 </form>
                 <form action="/demoBaristaLogin" method="POST">
 
-                    <button type="submit" class="btn btn-secondary btn-lg">Barista</a>
+                    <button type="submit" class="btn btn-outline btn-secondary btn-md">Barista</a>
                 </form>
             </div>
         </div>
-        <div class="max-w-md">
-            <img src="/images/coffee-machine.png" alt="">
+        <div class="max-w-sm">
+            <img src="/images/coffee-machine.png" alt="An illustration of an expresso machine" class="w-96 h-96">
         </div>
     </main>
     <section class="py-8">
-        <h2 class="text-center text-4xl text-success">Some features NOT included in demo mode</h2>
+        <h2 class="text-center text-4xl text-info">Some features NOT included in the demo mode</h2>
         <div class="container flex flex-col lg:flex-row items-center mx-auto lg:justify-center lg:gap-20">
             <div class="lg:max-w-lg py-6">
                 <h3 class="text-center text-2xl py-6">Photo upload</h3>
