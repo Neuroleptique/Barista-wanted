@@ -1716,27 +1716,6 @@ html {
   outline: 2px solid hsl(var(--in));
 }
 
-.btn-success {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--su) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--su) / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: hsl(var(--suc, var(--nc)) / var(--tw-text-opacity));
-}
-
-.btn-success:hover,
-    .btn-success.btn-active {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--su) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--su) / var(--tw-bg-opacity));
-}
-
-.btn-success:focus-visible {
-  outline: 2px solid hsl(var(--su));
-}
-
 .btn.glass:hover,
     .btn.glass.btn-active {
   --glass-opacity: 25%;
@@ -2131,10 +2110,6 @@ html {
 
 .drawer-toggle:focus-visible ~ .drawer-content .drawer-button.btn-info {
   outline: 2px solid hsl(var(--in));
-}
-
-.drawer-toggle:focus-visible ~ .drawer-content .drawer-button.btn-success {
-  outline: 2px solid hsl(var(--su));
 }
 
 .drawer-toggle:focus-visible ~ .drawer-content .drawer-button.btn-ghost {
@@ -2713,14 +2688,6 @@ html {
   font-size: 0.875rem;
 }
 
-.btn-lg {
-  height: 4rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  min-height: 4rem;
-  font-size: 1.125rem;
-}
-
 .btn-square:where(.btn-sm) {
   height: 2rem;
   width: 2rem;
@@ -2730,12 +2697,6 @@ html {
 .btn-square:where(.btn-md) {
   height: 3rem;
   width: 3rem;
-  padding: 0px;
-}
-
-.btn-square:where(.btn-lg) {
-  height: 4rem;
-  width: 4rem;
   padding: 0px;
 }
 
@@ -2749,13 +2710,6 @@ html {
 .btn-circle:where(.btn-md) {
   height: 3rem;
   width: 3rem;
-  border-radius: 9999px;
-  padding: 0px;
-}
-
-.btn-circle:where(.btn-lg) {
-  height: 4rem;
-  width: 4rem;
   border-radius: 9999px;
   padding: 0px;
 }
@@ -3017,12 +2971,20 @@ html {
   max-height: 10rem;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .w-52 {
   width: 13rem;
 }
 
 .w-7 {
   width: 1.75rem;
+}
+
+.w-96 {
+  width: 24rem;
 }
 
 .w-fit {
@@ -3032,10 +2994,6 @@ html {
 
 .w-full {
   width: 100%;
-}
-
-.w-96 {
-  width: 24rem;
 }
 
 .max-w-lg {
@@ -3116,22 +3074,16 @@ html {
   margin-bottom: calc(3rem * var(--tw-space-y-reverse));
 }
 
-.space-y-8 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
-}
-
-.space-y-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-}
-
 .space-y-5 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
 .overflow-x-auto {
@@ -3184,10 +3136,6 @@ html {
   padding: 2rem;
 }
 
-.p-10 {
-  padding: 2.5rem;
-}
-
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -3228,9 +3176,8 @@ html {
   padding-bottom: 2rem;
 }
 
-.py-10 {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .pb-3 {
@@ -3324,6 +3271,11 @@ html {
   color: hsl(var(--a) / var(--tw-text-opacity));
 }
 
+.text-info {
+  --tw-text-opacity: 1;
+  color: hsl(var(--in) / var(--tw-text-opacity));
+}
+
 .text-primary {
   --tw-text-opacity: 1;
   color: hsl(var(--p) / var(--tw-text-opacity));
@@ -3339,30 +3291,12 @@ html {
   color: hsl(var(--s) / var(--tw-text-opacity));
 }
 
-.text-success {
-  --tw-text-opacity: 1;
-  color: hsl(var(--su) / var(--tw-text-opacity));
-}
-
-.text-info {
-  --tw-text-opacity: 1;
-  color: hsl(var(--in) / var(--tw-text-opacity));
-}
-
-.underline {
-  text-decoration-line: underline;
-}
-
 .decoration-red-400 {
   text-decoration-color: #f87171;
 }
 
 .decoration-dotted {
   text-decoration-style: dotted;
-}
-
-.decoration-2 {
-  text-decoration-thickness: 2px;
 }
 
 .underline-offset-4 {
@@ -3423,6 +3357,18 @@ footer {
 }
 
 /**** COMPONENTS ****/
+
+#barista-wanted::before {
+  content: "";
+  position: absolute;
+  left: 15%;
+  bottom: 5px;
+  width: 115px;
+  height: 11px;
+  transform: skew(-19deg) translateX(-25%) rotate(-2deg);
+  background: rgba(222, 61, 217, 0.453);
+  z-index: -1;
+}
 
 @media (min-width: 760px) {
   .md\:btn-md {

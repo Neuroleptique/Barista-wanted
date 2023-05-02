@@ -37,3 +37,14 @@ footer {
 }
 
 /**** COMPONENTS ****/
+#barista-wanted::before {
+  content: "";
+  position: absolute;
+  left: 15%;
+  bottom: 5px;
+  width: 115px;
+  height: 11px;
+  transform: skew(-19deg) translateX(-25%) rotate(-2deg);
+  background: rgba(222, 61, 217, 0.453);
+  z-index: -1;
+}
