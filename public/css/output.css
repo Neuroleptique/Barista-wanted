@@ -2963,10 +2963,6 @@ html {
   height: 1.75rem;
 }
 
-.h-96 {
-  height: 24rem;
-}
-
 .max-h-40 {
   max-height: 10rem;
 }
@@ -2983,10 +2979,6 @@ html {
   width: 1.75rem;
 }
 
-.w-96 {
-  width: 24rem;
-}
-
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
@@ -2998,10 +2990,6 @@ html {
 
 .max-w-lg {
   max-width: 32rem;
-}
-
-.max-w-md {
-  max-width: 28rem;
 }
 
 .max-w-sm {
@@ -3032,6 +3020,10 @@ html {
   flex-direction: column-reverse;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .flex-wrap-reverse {
   flex-wrap: wrap-reverse;
 }
@@ -3050,6 +3042,10 @@ html {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .gap-4 {
