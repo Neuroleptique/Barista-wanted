@@ -9,8 +9,6 @@ This app allows:
 - shop owner will then see all available baristas for the shift(s) posted and their contact info
 - users can add and edit their personal information at profile page
 
-**Link to project:** https://baristawanted.cyclic.app/
-
 <img src="https://github.com/Neuroleptique/Barista-wanted/blob/main/public/images/demo.gif?raw=true" width="45%"></img>
 
 ## How It's Made:
